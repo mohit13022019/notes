@@ -90,6 +90,7 @@
             color: #fff;
             letter-spacing: -0.3px;
             white-space: nowrap;
+            cursor: pointer;
         }
         .logo span { color: var(--accent-light); }
         .header-actions { display: flex; align-items: center; gap: 0.5rem; }
@@ -117,6 +118,13 @@
             box-shadow: 0 2px 12px rgba(200, 148, 74, 0.3);
         }
         .btn-accent:hover { background: var(--accent-light); transform: translateY(-1px); box-shadow: 0 4px 20px rgba(200, 148, 74, 0.4); }
+        .btn-back {
+            background: var(--surface);
+            color: var(--primary);
+            border: 2px solid var(--border);
+            font-weight: 600;
+        }
+        .btn-back:hover { background: var(--surface-alt); border-color: var(--accent); }
         .btn-icon {
             width: 38px; height: 38px; border-radius: 50%;
             background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.2);
@@ -174,6 +182,8 @@
             letter-spacing: -0.5px;
         }
         .semester-subtitle { color: var(--text-muted); font-size: 0.88rem; }
+        .back-bar { margin-bottom: 1.5rem; display: none; }
+        .back-bar.visible { display: block; }
         .search-bar { margin-bottom: 2rem; max-width: 420px; position: relative; }
         .search-bar input {
             width: 100%;
@@ -213,7 +223,15 @@
             box-shadow: var(--shadow-sm);
         }
         .subject-card:hover { box-shadow: var(--shadow); border-color: var(--border); transform: translateY(-1px); }
-        .subject-card.expanded { box-shadow: var(--shadow-lg); border-color: var(--accent); border-width: 1.5px; }
+        .subject-card.hidden-card { display: none; }
+        .subject-card.selected-card {
+            grid-column: 1/-1;
+            max-width: 100%;
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+            border-width: 1.5px;
+            cursor: default;
+        }
         .card-header {
             padding: 1rem 1.3rem;
             display: flex;
@@ -230,7 +248,7 @@
             font-size: 0.7rem;
             flex-shrink: 0;
         }
-        .subject-card.expanded .card-chevron { transform: rotate(180deg); color: var(--accent); }
+        .selected-card .card-chevron { transform: rotate(180deg); color: var(--accent); }
 
         .card-expand {
             max-height: 0;
@@ -238,11 +256,11 @@
             transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             background: var(--surface-alt);
         }
-        .subject-card.expanded .card-expand { max-height: 800px; border-top: 1px solid var(--border-light); }
+        .selected-card .card-expand { max-height: 1000px; border-top: 1px solid var(--border-light); }
         .card-expand-inner {
             padding: 1rem 1.3rem 1.3rem;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 0.7rem;
         }
         .note-category {
@@ -316,13 +334,14 @@
             .semester-title { font-size: 1.5rem; }
             .subjects-grid { grid-template-columns: 1fr; }
             .sem-tab { padding: 0.5rem 0.9rem; font-size: 0.75rem; }
+            .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
         }
     </style>
 </head>
 <body class="light">
     <header class="header">
         <div class="header-inner">
-            <div class="logo">BioTech<span>Notes</span></div>
+            <div class="logo" onclick="showAllCards()" title="Back to all subjects">BioTech<span>Notes</span></div>
             <div class="header-actions">
                 <button class="btn btn-ghost" id="quickViewBtn">Quick View</button>
                 <button class="btn btn-accent" id="adminUploadBtn">Admin</button>
@@ -476,12 +495,10 @@
             {key:'cie2',label:'CIE 2'},{key:'cie3',label:'CIE 3'},{key:'endsem',label:'Endsem'},
             {key:'textbook',label:'Textbook'},{key:'folder',label:'Folder'}
         ];
-        const LAB_CATEGORIES = [
-            {key:'labmanual',label:'Lab Manual'},{key:'folder',label:'Folder'}
-        ];
+        const LAB_CATEGORIES = [{key:'labmanual',label:'Lab Manual'},{key:'folder',label:'Folder'}];
         function isLabSubject(title) { return title.toLowerCase().includes('lab'); }
 
-        let notesData = {}, currentSemester = '3', isAdmin = false, githubToken = '';
+        let notesData = {}, currentSemester = '3', selectedCardCode = null, isAdmin = false, githubToken = '';
 
         async function fetchLiveNotes() {
             try {
@@ -499,6 +516,8 @@
         function extractFolderId(url) { const m = url.match(/\/folders\/([a-zA-Z0-9_-]+)/); return m ? m[1] : null; }
         function showToast(msg) { const c=document.getElementById('toastContainer'); const t=document.createElement('div'); t.className='toast'; t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); }
 
+        function showAllCards() { selectedCardCode = null; renderPanels(); }
+
         function renderAll() { renderTabs(); renderPanels(); }
         function renderTabs() {
             const nav = document.getElementById('semesterNav'); nav.innerHTML='';
@@ -508,7 +527,7 @@
                 const d = SEMESTER_DATA[s];
                 const total = (d.subjects?.length||0) + (d.electives ? Object.values(d.electives).flat().length : 0);
                 btn.innerHTML = `Sem ${s} <span class="badge">${total}</span>`;
-                btn.onclick = ()=>{ currentSemester=s.toString(); renderAll(); };
+                btn.onclick = ()=>{ currentSemester=s.toString(); selectedCardCode=null; renderAll(); };
                 nav.appendChild(btn);
             }
         }
@@ -517,25 +536,57 @@
             for(let s=3; s<=8; s++) {
                 const panel = document.createElement('div');
                 panel.style.display = s.toString()===currentSemester?'':'none';
-                panel.innerHTML = `<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[s].name}</h2><p class="semester-subtitle">Core and elective subjects</p></div>
-                <div class="search-bar"><input type="text" placeholder="Search subjects..." oninput="filterCards(this,'${s}')"></div>
-                <div class="subjects-grid" id="grid${s}">${renderSubjects(s)}</div>`;
+                const isSingleCard = selectedCardCode && s.toString()===currentSemester;
+                panel.innerHTML = renderSemesterContent(s, isSingleCard);
                 mc.appendChild(panel);
             }
             attachCardListeners();
         }
-        function renderSubjects(sem) {
+        function renderSemesterContent(sem, isSingleCard) {
+            let html = `<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`;
+            if (!isSingleCard) {
+                html += `<p class="semester-subtitle">Core and elective subjects — click a subject to focus</p>`;
+            }
+            html += `</div>`;
+            if (isSingleCard) {
+                html += `<div class="back-bar visible"><button class="btn btn-back" onclick="showAllCards()">← Back to all subjects</button></div>`;
+            } else {
+                html += `<div class="back-bar"></div>`;
+            }
+            if (!isSingleCard) {
+                html += `<div class="search-bar"><input type="text" placeholder="Search subjects..." oninput="filterCards(this,'${sem}')"></div>`;
+            }
+            html += `<div class="subjects-grid" id="grid${sem}">`;
+            if (isSingleCard) {
+                const allSubs = getAllSubjects(sem);
+                const sub = allSubs.find(s => s.code === selectedCardCode);
+                if (sub) html += renderCard(sem, sub, true);
+            } else {
+                html += renderAllCards(sem);
+            }
+            html += '</div>';
+            return html;
+        }
+        function getAllSubjects(sem) {
+            const d = SEMESTER_DATA[sem];
+            let all = [...(d.subjects||[])];
+            if (d.electives) Object.values(d.electives).forEach(arr => all.push(...arr));
+            return all;
+        }
+        function renderAllCards(sem) {
             const d = SEMESTER_DATA[sem]; let html = '';
-            if(d.subjects) d.subjects.forEach(s=>html+=renderCard(sem,s));
+            if(d.subjects) d.subjects.forEach(s=>html+=renderCard(sem,s,false));
             if(d.electives) for(const [grp,subs] of Object.entries(d.electives)) {
                 html += `<div class="elective-group-label">${grp}</div>`;
-                subs.forEach(s=>html+=renderCard(sem,s));
+                subs.forEach(s=>html+=renderCard(sem,s,false));
             }
             return html;
         }
-        function renderCard(sem, sub) {
+        function renderCard(sem, sub, isSelected) {
             const categories = isLabSubject(sub.title) ? LAB_CATEGORIES : THEORY_CATEGORIES;
-            let html = `<div class="subject-card" data-code="${sub.code}" data-sem="${sem}">
+            const cardClass = isSelected ? 'subject-card selected-card' : 'subject-card';
+            const hiddenClass = selectedCardCode && !isSelected ? ' hidden-card' : '';
+            let html = `<div class="${cardClass}${hiddenClass}" data-code="${sub.code}" data-sem="${sem}">
                 <div class="card-header">
                     <div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div>
                     <span class="card-chevron">▾</span>
@@ -556,12 +607,12 @@
             return html + '</div></div></div>';
         }
         function attachCardListeners() {
-            document.querySelectorAll('.subject-card').forEach(card=>{
+            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(card=>{
                 card.addEventListener('click', function(e) {
                     if(e.target.closest('.file-link')||e.target.closest('iframe')||e.target.closest('button')) return;
-                    const wasExpanded = this.classList.contains('expanded');
-                    document.querySelectorAll('.subject-card').forEach(c => c.classList.remove('expanded'));
-                    if (!wasExpanded) this.classList.add('expanded');
+                    selectedCardCode = this.getAttribute('data-code');
+                    renderPanels();
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
                 });
             });
             document.querySelectorAll('.file-link[data-drive-url]').forEach(link=>{
@@ -579,7 +630,7 @@
         }
         window.filterCards = function(input, sem) {
             const q = input.value.toLowerCase();
-            document.querySelectorAll(`#grid${sem} .subject-card`).forEach(card=>{
+            document.querySelectorAll(`#grid${sem} .subject-card:not(.selected-card)`).forEach(card=>{
                 card.style.display = (!q || card.querySelector('.card-title').textContent.toLowerCase().includes(q)) ? '' : 'none';
             });
         };
