@@ -38,7 +38,6 @@
             --radius-lg: 20px;
             --radius-xl: 24px;
             --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
             --gradient-1: linear-gradient(135deg, #f9f7f3 0%, #fdf6ea 50%, #f5f3ee 100%);
             --gradient-2: linear-gradient(135deg, #1b3b2e 0%, #2a5c45 50%, #1b3b2e 100%);
             --gradient-accent: linear-gradient(135deg, #c8944a 0%, #d4a85c 50%, #e0b96b 100%);
@@ -69,11 +68,8 @@
             --gradient-2: linear-gradient(135deg, #1b2a20 0%, #2a4030 50%, #1b2a20 100%);
         }
 
-        /* Print styles */
         @media print {
-            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .bg-orb, .modal-overlay, .toast-container, .card-chevron, .back-to-top {
-                display: none !important;
-            }
+            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .particle-canvas, .modal-overlay, .toast-container, .card-chevron, .back-to-top { display: none !important; }
             body { background: white !important; color: #000 !important; font-size: 11pt; line-height: 1.4; }
             .main-container { padding: 0 !important; max-width: 100% !important; }
             .subjects-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
@@ -83,11 +79,9 @@
             .note-category { border: 1px solid #ddd !important; background: #fafafa !important; }
             .file-link { border: 1px solid #ccc !important; color: #000 !important; }
             .semester-title { font-size: 16pt !important; color: #000 !important; }
-            .semester-header { margin-bottom: 0.5rem !important; }
             @page { margin: 1.5cm; }
         }
 
-        /* Custom Scrollbar */
         ::-webkit-scrollbar { width: 8px; height: 8px; }
         ::-webkit-scrollbar-track { background: transparent; }
         ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
@@ -107,19 +101,14 @@
             overflow-x: hidden;
         }
 
-        /* Parallax Background Orbs */
-        .bg-orb {
+        /* Particle canvas */
+        .particle-canvas {
             position: fixed;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.15;
+            inset: 0;
             z-index: 0;
             pointer-events: none;
-            will-change: transform;
+            opacity: 0.5;
         }
-        .bg-orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -150px; }
-        .bg-orb-2 { width: 500px; height: 500px; background: #2a5c45; bottom: -200px; right: -100px; }
-        .bg-orb-3 { width: 400px; height: 400px; background: var(--accent-light); top: 50%; left: 40%; }
 
         .header {
             background: var(--glass-bg);
@@ -149,10 +138,7 @@
             font-size: 0.82rem; cursor: pointer; border: none; transition: var(--transition);
             font-family: 'Inter', sans-serif; white-space: nowrap; position: relative; overflow: hidden;
         }
-        .btn::after {
-            content: ''; position: absolute; inset: 0;
-            background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s;
-        }
+        .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s; }
         .btn:hover::after { opacity: 1; }
         .btn-ghost { background: rgba(255,255,255,0.1); color: var(--text); border: 1.5px solid var(--glass-border); backdrop-filter: blur(10px); }
         .btn-ghost:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: var(--shadow); }
@@ -183,27 +169,14 @@
         }
         .sem-tab:hover { background: rgba(255,255,255,0.2); color: var(--text); transform: translateY(-1px); }
         .sem-tab.active { background: var(--gradient-2); color: #fff; box-shadow: var(--shadow-md); }
-        .sem-tab .badge {
-            display: inline-block; background: rgba(255,255,255,0.2); padding: 0.15rem 0.5rem;
-            border-radius: 15px; margin-left: 0.4rem; font-size: 0.68rem; font-weight: 500;
-        }
+        .sem-tab .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.15rem 0.5rem; border-radius: 15px; margin-left: 0.4rem; font-size: 0.68rem; font-weight: 500; }
 
         .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
 
-        /* Page transition */
-        .semester-panel {
-            animation: crossfadeIn 0.4s ease forwards;
-        }
-        @keyframes crossfadeIn {
-            from { opacity: 0; transform: translateY(12px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .semester-panel { animation: crossfadeIn 0.4s ease forwards; }
+        @keyframes crossfadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        .skeleton {
-            background: var(--glass-bg); border-radius: var(--radius-lg);
-            border: 1px solid var(--glass-border); padding: 1.2rem;
-            animation: shimmer 1.5s infinite; backdrop-filter: blur(10px);
-        }
+        .skeleton { background: var(--glass-bg); border-radius: var(--radius-lg); border: 1px solid var(--glass-border); padding: 1.2rem; animation: shimmer 1.5s infinite; backdrop-filter: blur(10px); }
         @keyframes shimmer { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
         .skeleton-line { height: 12px; background: var(--border); border-radius: 6px; margin-bottom: 8px; }
         .skeleton-line:last-child { width: 60%; }
@@ -211,11 +184,7 @@
 
         .fade-in-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        .stagger-1 { animation-delay: 0.05s; } .stagger-2 { animation-delay: 0.1s; } .stagger-3 { animation-delay: 0.15s; }
-        .stagger-4 { animation-delay: 0.2s; } .stagger-5 { animation-delay: 0.25s; } .stagger-6 { animation-delay: 0.3s; }
-        .stagger-7 { animation-delay: 0.35s; } .stagger-8 { animation-delay: 0.4s; } .stagger-9 { animation-delay: 0.45s; }
-        .stagger-10 { animation-delay: 0.5s; } .stagger-11 { animation-delay: 0.55s; } .stagger-12 { animation-delay: 0.6s; }
-        .stagger-13 { animation-delay: 0.65s; } .stagger-14 { animation-delay: 0.7s; } .stagger-15 { animation-delay: 0.75s; } .stagger-16 { animation-delay: 0.8s; }
+        .stagger-1{animation-delay:0.05s}.stagger-2{animation-delay:0.1s}.stagger-3{animation-delay:0.15s}.stagger-4{animation-delay:0.2s}.stagger-5{animation-delay:0.25s}.stagger-6{animation-delay:0.3s}.stagger-7{animation-delay:0.35s}.stagger-8{animation-delay:0.4s}.stagger-9{animation-delay:0.45s}.stagger-10{animation-delay:0.5s}.stagger-11{animation-delay:0.55s}.stagger-12{animation-delay:0.6s}.stagger-13{animation-delay:0.65s}.stagger-14{animation-delay:0.7s}.stagger-15{animation-delay:0.75s}.stagger-16{animation-delay:0.8s}
 
         .semester-header { margin-bottom: 2rem; }
         .semester-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem; letter-spacing: -0.5px; }
@@ -223,52 +192,27 @@
         .back-bar { margin-bottom: 1.5rem; display: none; }
         .back-bar.visible { display: block; }
         .search-bar { margin-bottom: 2rem; max-width: 420px; position: relative; }
-        .search-bar input {
-            width: 100%; padding: 0.75rem 1.2rem 0.75rem 2.8rem; border: 2px solid var(--glass-border);
-            border-radius: 50px; font-size: 0.88rem; background: var(--glass-bg);
-            backdrop-filter: blur(10px); color: var(--text); outline: none; transition: var(--transition); font-family: 'Inter', sans-serif;
-        }
+        .search-bar input { width: 100%; padding: 0.75rem 1.2rem 0.75rem 2.8rem; border: 2px solid var(--glass-border); border-radius: 50px; font-size: 0.88rem; background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--text); outline: none; transition: var(--transition); font-family: 'Inter', sans-serif; }
         .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); background: var(--surface); }
         .search-bar::before { content: '🔍'; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.5; }
 
         .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 0.9rem; perspective: 1000px; }
-        .elective-group-label {
-            grid-column: 1/-1; font-family: 'Playfair Display', serif; font-size: 1.1rem;
-            font-weight: 600; color: var(--accent); margin: 1.5rem 0 0.3rem;
-            padding-bottom: 0.4rem; border-bottom: 2px solid var(--accent-pale); letter-spacing: -0.2px;
-        }
+        .elective-group-label { grid-column: 1/-1; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--accent); margin: 1.5rem 0 0.3rem; padding-bottom: 0.4rem; border-bottom: 2px solid var(--accent-pale); letter-spacing: -0.2px; }
 
-        /* Glass card with reflection */
         .subject-card {
             background: var(--glass-bg); backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
             border-radius: var(--radius-lg); border: 1px solid var(--glass-border);
             overflow: hidden; cursor: pointer;
             transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
-            box-shadow: var(--glass-shadow); transform-style: preserve-3d; will-change: transform;
-            position: relative;
+            box-shadow: var(--glass-shadow); transform-style: preserve-3d; will-change: transform; position: relative;
         }
-        /* Glass reflection */
-        .subject-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none; z-index: 1; transition: opacity 0.3s;
-        }
-        body.dark .subject-card::before {
-            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.01) 100%);
-        }
+        .subject-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.05) 100%); pointer-events: none; z-index: 1; transition: opacity 0.3s; }
+        body.dark .subject-card::before { background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.01) 100%); }
         .subject-card:hover { box-shadow: var(--shadow-xl); border-color: var(--accent); background: var(--surface); }
         .subject-card.hidden-card { display: none; }
-        .subject-card.selected-card {
-            grid-column: 1/-1; max-width: 100%; box-shadow: var(--shadow-xl);
-            border-color: var(--accent); background: var(--surface); cursor: default; transform: none !important;
-        }
-        /* Card shine effect */
-        .subject-card::after {
-            content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            pointer-events: none; z-index: 2; transition: left 0.6s ease;
-        }
+        .subject-card.selected-card { grid-column: 1/-1; max-width: 100%; box-shadow: var(--shadow-xl); border-color: var(--accent); background: var(--surface); cursor: default; transform: none !important; }
+        .subject-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); pointer-events: none; z-index: 2; transition: left 0.6s ease; }
         .subject-card:hover::after { left: 120%; }
 
         .card-header { padding: 1rem 1.3rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; z-index: 3; }
@@ -289,48 +233,21 @@
         .folder-embed { width: 100%; height: 200px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); margin-top: 0.3rem; }
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.65rem; opacity: 0.7; }
 
-        /* Back to top button */
-        .back-to-top {
-            position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px;
-            border-radius: 50%; background: var(--gradient-accent); color: #1b3b2e;
-            border: none; cursor: pointer; font-size: 1.2rem; z-index: 99;
-            box-shadow: var(--shadow-lg); transition: var(--transition);
-            opacity: 0; pointer-events: none; transform: translateY(10px);
-            display: flex; align-items: center; justify-content: center;
-        }
+        .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-accent); color: #1b3b2e; border: none; cursor: pointer; font-size: 1.2rem; z-index: 99; box-shadow: var(--shadow-lg); transition: var(--transition); opacity: 0; pointer-events: none; transform: translateY(10px); display: flex; align-items: center; justify-content: center; }
         .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
         .back-to-top:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); }
 
-        /* Blur-in modals */
-        .modal-overlay {
-            position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
-            z-index: 200; padding: 1rem; background: rgba(0,0,0,0);
-            backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
-            transition: background 0.35s ease, backdrop-filter 0.35s ease;
-        }
-        .modal-overlay.open {
-            display: flex; background: rgba(0,0,0,0.5);
-            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-        }
-        .modal {
-            background: var(--glass-bg); backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            padding: 2rem; border-radius: var(--radius-xl); width: 100%;
-            max-width: 500px; max-height: 85vh; overflow-y: auto;
-            box-shadow: var(--shadow-xl); border: 1px solid var(--glass-border);
-            animation: scaleIn 0.35s ease;
-        }
+        .modal-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 200; padding: 1rem; background: rgba(0,0,0,0); backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); transition: background 0.35s ease, backdrop-filter 0.35s ease; }
+        .modal-overlay.open { display: flex; background: rgba(0,0,0,0.5); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+        .modal { background: var(--glass-bg); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); padding: 2rem; border-radius: var(--radius-xl); width: 100%; max-width: 520px; max-height: 85vh; overflow-y: auto; box-shadow: var(--shadow-xl); border: 1px solid var(--glass-border); animation: scaleIn 0.35s ease; }
         @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal h3 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 1.2rem; }
-        .modal input, .modal select {
-            width: 100%; padding: 0.65rem 0.9rem; margin: 0.3rem 0 0.7rem;
-            border: 2px solid var(--glass-border); border-radius: var(--radius-sm);
-            background: var(--surface); color: var(--text); font-size: 0.85rem;
-            font-family: 'Inter', sans-serif; transition: var(--transition);
-        }
-        .modal input:focus, .modal select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+        .modal h3 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 1rem; }
+        .modal input, .modal select, .modal textarea { width: 100%; padding: 0.65rem 0.9rem; margin: 0.3rem 0 0.7rem; border: 2px solid var(--glass-border); border-radius: var(--radius-sm); background: var(--surface); color: var(--text); font-size: 0.85rem; font-family: 'Inter', sans-serif; transition: var(--transition); }
+        .modal textarea { resize: vertical; min-height: 80px; }
+        .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
         .modal-close { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
         .modal-close:hover { color: var(--text); transform: rotate(90deg); }
+        .modal .btn { margin-top: 0.4rem; }
 
         .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--glass-bg); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--glass-border); z-index: 95; padding: 0.5rem 1rem; }
         .mobile-nav-inner { display: flex; justify-content: space-around; align-items: center; gap: 0.3rem; }
@@ -341,32 +258,21 @@
         .toast-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; }
         .toast { background: var(--gradient-2); color: #fff; padding: 0.7rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; box-shadow: var(--shadow-lg); animation: toastIn 0.4s ease; backdrop-filter: blur(10px); }
         @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
         .kc-toast { position: fixed; bottom: 50%; left: 50%; transform: translate(-50%,50%); background: var(--gradient-2); color: #fff; padding: 1.5rem 2.5rem; border-radius: 20px; font-size: 1.5rem; font-weight: 700; z-index: 400; pointer-events: none; opacity: 0; transition: opacity 0.15s ease; box-shadow: var(--shadow-xl); font-family: 'Playfair Display', serif; }
         .kc-toast.show { opacity: 1; }
 
         @media (max-width: 768px) {
-            .header { padding: 0 0.8rem; } .header-inner { height: 56px; } .logo { font-size: 1rem; }
-            .btn { padding: 0.4rem 0.9rem; font-size: 0.7rem; } .main-container { padding: 1rem 0.8rem 5rem; }
-            .semester-title { font-size: 1.4rem; } .subjects-grid { grid-template-columns: 1fr; }
-            .semester-nav { padding: 0.4rem 0.6rem; } .sem-tab { padding: 0.45rem 0.8rem; font-size: 0.7rem; }
-            .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-            .search-bar { max-width: 100%; } .mobile-nav { display: block; }
-            .bg-orb { opacity: 0.08; } .subject-card:hover { transform: none !important; }
-            .subject-card::after { display: none; }
+            .header{padding:0 .8rem}.header-inner{height:56px}.logo{font-size:1rem}.btn{padding:.4rem .9rem;font-size:.7rem}.main-container{padding:1rem .8rem 5rem}.semester-title{font-size:1.4rem}.subjects-grid{grid-template-columns:1fr}.semester-nav{padding:.4rem .6rem}.sem-tab{padding:.45rem .8rem;font-size:.7rem}.card-expand-inner{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}.search-bar{max-width:100%}.mobile-nav{display:block}.subject-card:hover{transform:none!important}.subject-card::after{display:none}
         }
         @media (max-width: 480px) {
-            .header-actions .btn-ghost { display: none; } .semester-nav { top: 56px; } .semester-title { font-size: 1.2rem; }
+            .header-actions .btn-ghost{display:none}.semester-nav{top:56px}.semester-title{font-size:1.2rem}
         }
     </style>
 </head>
 <body class="light">
-    <div class="bg-orb bg-orb-1"></div>
-    <div class="bg-orb bg-orb-2"></div>
-    <div class="bg-orb bg-orb-3"></div>
+    <canvas class="particle-canvas" id="particleCanvas"></canvas>
 
     <div class="kc-toast" id="kcToast"></div>
-
     <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
     <header class="header">
@@ -408,10 +314,23 @@
                 <select id="adminSemester" onchange="updateAdminSubjects()"></select>
                 <select id="adminSubject" onchange="updateAdminCategoryOptions()"></select>
                 <select id="adminCategory"></select>
-                <input type="text" id="adminLabel" placeholder="File label">
+
+                <!-- Single file upload -->
+                <label style="font-weight:600;font-size:0.75rem;">Single File</label>
+                <input type="text" id="adminFileLabel" placeholder="File label">
                 <input type="text" id="adminDriveLink" placeholder="Google Drive shareable link">
-                <button class="btn btn-accent" onclick="adminAddAndCommit()" style="width:100%;">Add & Publish</button>
+                <button class="btn btn-accent" onclick="adminAddSingle()" style="width:100%;">Add Single File</button>
+
                 <hr style="margin:1rem 0;border-color:var(--border);">
+
+                <!-- Bulk upload -->
+                <label style="font-weight:600;font-size:0.75rem;">Bulk Upload</label>
+                <p style="font-size:0.65rem;color:var(--text-muted);">Paste multiple links — one per line.<br>Format: <code>Label | https://drive.google.com/...</code></p>
+                <textarea id="adminBulkLinks" placeholder="Unit 1 Notes | https://drive.google.com/file/d/...&#10;Unit 2 Notes | https://drive.google.com/file/d/...&#10;CIE 1 Paper | https://drive.google.com/file/d/..."></textarea>
+                <button class="btn btn-accent" onclick="adminAddBulk()" style="width:100%;">Add All Files</button>
+
+                <hr style="margin:1rem 0;border-color:var(--border);">
+                <p style="font-weight:700;font-size:0.75rem;">Existing files:</p>
                 <div id="adminExistingFiles" style="max-height:150px;overflow-y:auto;font-size:0.75rem;"></div>
                 <button class="btn btn-ghost" onclick="refreshAdminExisting()" style="font-size:0.7rem;color:var(--text);">Refresh</button>
                 <hr style="margin:1rem 0;border-color:var(--border);">
@@ -438,6 +357,76 @@
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
+        // ── Particle Background ──
+        (function() {
+            const canvas = document.getElementById('particleCanvas');
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const maxParticles = 50;
+
+            function resize() {
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
+            window.addEventListener('resize', resize);
+            resize();
+
+            class Particle {
+                constructor() {
+                    this.reset();
+                }
+                reset() {
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.size = Math.random() * 3 + 1;
+                    this.speedX = (Math.random() - 0.5) * 0.5;
+                    this.speedY = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.6 + 0.2;
+                }
+                update() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                        this.reset();
+                        this.x = Math.random() * canvas.width;
+                        this.y = Math.random() * canvas.height;
+                    }
+                }
+                draw() {
+                    const isDark = document.body.classList.contains('dark');
+                    const color = isDark ? '200, 148, 74' : '26, 60, 46';
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(${color}, ${this.opacity})`;
+                    ctx.fill();
+                }
+            }
+
+            for (let i = 0; i < maxParticles; i++) {
+                particles.push(new Particle());
+            }
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(p => { p.update(); p.draw(); });
+                requestAnimationFrame(animate);
+            }
+            animate();
+        })();
+
+        // ── Dark Mode Auto-Detect ──
+        (function() {
+            const saved = localStorage.getItem('theme');
+            if (saved) {
+                document.body.classList.add(saved);
+                document.body.classList.remove(saved === 'dark' ? 'light' : 'dark');
+            } else {
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                document.body.classList.add(prefersDark ? 'dark' : 'light');
+                document.body.classList.remove(prefersDark ? 'light' : 'dark');
+            }
+        })();
+
         const SEMESTER_DATA = {
             3:{name:'III Semester',subjects:[
                 {code:'23MA3BSTFN',title:'Transform Calculus, Fourier Series and Numerical Techniques'},
@@ -511,17 +500,6 @@
 
         let notesData = {}, currentSemester = '3', selectedCardCode = null, isAdmin = false, githubToken = '';
 
-        // Parallax orbs
-        function updateParallax() {
-            const scrollY = window.scrollY;
-            document.querySelectorAll('.bg-orb').forEach((orb, i) => {
-                const speed = 0.03 + (i * 0.02);
-                orb.style.transform = `translateY(${scrollY * speed}px)`;
-            });
-        }
-        window.addEventListener('scroll', updateParallax, {passive: true});
-
-        // Back to top button
         function updateBackToTop() {
             const btn = document.getElementById('backToTop');
             if (window.scrollY > 500) btn.classList.add('visible');
@@ -653,15 +631,75 @@
         function updateAdminSubjects() { const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject'); s.innerHTML=''; [...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{ const o=document.createElement('option'); o.value=x.code; o.textContent=x.code+' - '+x.title; o.dataset.title=x.title; s.appendChild(o); }); }
         function updateAdminCategoryOptions() { const s=document.getElementById('adminCategory'),o=document.getElementById('adminSubject').selectedOptions[0],c=isLabSubject(o?o.dataset.title||o.textContent.split(' - ')[1]||'':'')?LAB_CATEGORIES:THEORY_CATEGORIES; s.innerHTML=''; c.forEach(x=>{ const e=document.createElement('option'); e.value=x.key; e.textContent=x.label; s.appendChild(e); }); refreshAdminExisting(); }
         function refreshAdminExisting() { const n=getNotes(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles'); d.innerHTML=n.length?'':'No files yet.'; n.forEach((x,i)=>{ const e=document.createElement('div'); e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;'; e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.6rem;">x</button>`; e.querySelector('button').onclick=()=>{ const k=getNotesKey(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value); if(notesData[k]){notesData[k].splice(i,1);if(!notesData[k].length)delete notesData[k];saveLocal();refreshAdminExisting();renderPanels();showToast('Deleted');} }; d.appendChild(e); }); }
-        async function adminAddAndCommit() { const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value,cat=document.getElementById('adminCategory').value,l=document.getElementById('adminLabel').value.trim(),u=document.getElementById('adminDriveLink').value.trim(); if(!l||!u)return showToast('Fill all fields'); if(cat==='folder'&&!extractFolderId(u))return showToast('Invalid folder link'); if(cat!=='folder'&&!extractFileId(u))return showToast('Invalid file link'); const k=getNotesKey(s,c,cat); if(!notesData[k])notesData[k]=[]; notesData[k].push({label:l,driveUrl:u,addedAt:Date.now()}); saveLocal(); try{ const ct=JSON.stringify(notesData,null,2),b64=btoa(unescape(encodeURIComponent(ct))),gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}}),fi=await gr.json(); await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:b64,sha:fi.sha})}); showToast('Published!'); }catch(e){showToast('Saved locally');} refreshAdminExisting(); renderPanels(); document.getElementById('adminLabel').value=''; document.getElementById('adminDriveLink').value=''; }
+
+        async function commitToGithub() {
+            try {
+                const content=JSON.stringify(notesData,null,2);
+                const base64=btoa(unescape(encodeURIComponent(content)));
+                const getRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});
+                const fi=await getRes.json();
+                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:base64,sha:fi.sha})});
+                return true;
+            } catch(e) { return false; }
+        }
+
+        async function adminAddSingle() {
+            const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;
+            const cat=document.getElementById('adminCategory').value,l=document.getElementById('adminFileLabel').value.trim();
+            const u=document.getElementById('adminDriveLink').value.trim();
+            if(!l||!u) return showToast('Fill all fields');
+            if(cat==='folder'&&!extractFolderId(u)) return showToast('Invalid folder link');
+            if(cat!=='folder'&&!extractFileId(u)) return showToast('Invalid file link');
+            const k=getNotesKey(s,c,cat);
+            if(!notesData[k]) notesData[k]=[];
+            notesData[k].push({label:l,driveUrl:u,addedAt:Date.now()}); saveLocal();
+            const ok=await commitToGithub();
+            showToast(ok?'Published!':'Saved locally');
+            document.getElementById('adminFileLabel').value=''; document.getElementById('adminDriveLink').value='';
+            refreshAdminExisting(); renderPanels();
+        }
+
+        async function adminAddBulk() {
+            const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;
+            const cat=document.getElementById('adminCategory').value;
+            const raw=document.getElementById('adminBulkLinks').value.trim();
+            if(!raw) return showToast('Paste some links first');
+            const lines=raw.split('\n').filter(l=>l.trim());
+            let added=0;
+            for(const line of lines) {
+                const parts=line.split('|');
+                if(parts.length<2) continue;
+                const label=parts[0].trim();
+                const url=parts.slice(1).join('|').trim();
+                if(!label||!url) continue;
+                if(cat==='folder'&&!extractFolderId(url)) continue;
+                if(cat!=='folder'&&!extractFileId(url)) continue;
+                const k=getNotesKey(s,c,cat);
+                if(!notesData[k]) notesData[k]=[];
+                notesData[k].push({label,driveUrl:url,addedAt:Date.now()});
+                added++;
+            }
+            if(added===0) return showToast('No valid links found');
+            saveLocal();
+            const ok=await commitToGithub();
+            showToast(ok?`${added} files published!`:`${added} files saved locally`);
+            document.getElementById('adminBulkLinks').value='';
+            refreshAdminExisting(); renderPanels();
+        }
+
+        window.adminAddSingle = adminAddSingle;
+        window.adminAddBulk = adminAddBulk;
+
         function exportJSON() { const b=new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='notes-data.json'; a.click(); }
         function importJSON(e) { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=ev=>{notesData=JSON.parse(ev.target.result);saveLocal();renderPanels();refreshAdminExisting();showToast('Imported');}; r.readAsText(f); e.target.value=''; }
 
         document.getElementById('quickViewBtn').addEventListener('click',()=>{ document.getElementById('previewIframe').style.display='none'; document.getElementById('quickViewInput').style.display=''; openPreviewModal(); });
         window.quickPreview=function(){ const i=extractFileId(document.getElementById('quickDriveLink').value.trim()); if(i){ document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${i}/preview`; document.getElementById('previewIframe').style.display=''; document.getElementById('quickViewInput').style.display='none'; } else showToast('Invalid link'); };
 
-        document.getElementById('themeToggle').addEventListener('click',()=>{ document.body.classList.toggle('dark'); localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light'); });
-        (()=>{const t=localStorage.getItem('theme')||'light';document.body.classList.add(t);})();
+        document.getElementById('themeToggle').addEventListener('click',()=>{
+            document.body.classList.toggle('dark');
+            localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');
+        });
         fetchLiveNotes();
     </script>
 </body>
