@@ -69,6 +69,31 @@
             --gradient-2: linear-gradient(135deg, #1b2a20 0%, #2a4030 50%, #1b2a20 100%);
         }
 
+        /* Print styles */
+        @media print {
+            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .bg-orb, .modal-overlay, .toast-container, .card-chevron, .back-to-top {
+                display: none !important;
+            }
+            body { background: white !important; color: #000 !important; font-size: 11pt; line-height: 1.4; }
+            .main-container { padding: 0 !important; max-width: 100% !important; }
+            .subjects-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
+            .subject-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; transform: none !important; page-break-inside: avoid; }
+            .subject-card.hidden-card { display: block !important; }
+            .card-expand { max-height: none !important; display: block !important; }
+            .note-category { border: 1px solid #ddd !important; background: #fafafa !important; }
+            .file-link { border: 1px solid #ccc !important; color: #000 !important; }
+            .semester-title { font-size: 16pt !important; color: #000 !important; }
+            .semester-header { margin-bottom: 0.5rem !important; }
+            @page { margin: 1.5cm; }
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--accent-light); }
+        * { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -82,7 +107,7 @@
             overflow-x: hidden;
         }
 
-        /* Animated background orbs */
+        /* Parallax Background Orbs */
         .bg-orb {
             position: fixed;
             border-radius: 50%;
@@ -90,18 +115,11 @@
             opacity: 0.15;
             z-index: 0;
             pointer-events: none;
-            animation: orbFloat 20s ease-in-out infinite;
+            will-change: transform;
         }
-        .bg-orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -150px; animation-delay: 0s; }
-        .bg-orb-2 { width: 500px; height: 500px; background: #2a5c45; bottom: -200px; right: -100px; animation-delay: -7s; animation-duration: 25s; }
-        .bg-orb-3 { width: 400px; height: 400px; background: var(--accent-light); top: 50%; left: 40%; animation-delay: -14s; animation-duration: 22s; }
-
-        @keyframes orbFloat {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(80px, 60px) scale(1.1); }
-            50% { transform: translate(-40px, -80px) scale(0.9); }
-            75% { transform: translate(-100px, 30px) scale(1.05); }
-        }
+        .bg-orb-1 { width: 600px; height: 600px; background: var(--accent); top: -200px; left: -150px; }
+        .bg-orb-2 { width: 500px; height: 500px; background: #2a5c45; bottom: -200px; right: -100px; }
+        .bg-orb-3 { width: 400px; height: 400px; background: var(--accent-light); top: 50%; left: 40%; }
 
         .header {
             background: var(--glass-bg);
@@ -114,486 +132,246 @@
             z-index: 100;
         }
         .header-inner {
-            max-width: 1400px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            height: 64px;
-            gap: 1.5rem;
+            max-width: 1400px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: space-between;
+            height: 64px; gap: 1.5rem;
         }
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.35rem;
-            font-weight: 700;
+            font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700;
             background: var(--gradient-accent);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: var(--transition);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            cursor: pointer; white-space: nowrap; transition: var(--transition);
         }
         .logo:hover { transform: scale(1.03); }
         .header-actions { display: flex; align-items: center; gap: 0.5rem; }
         .btn {
-            padding: 0.5rem 1.3rem;
-            border-radius: 50px;
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            border: none;
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
-            white-space: nowrap;
-            position: relative;
-            overflow: hidden;
+            padding: 0.5rem 1.3rem; border-radius: 50px; font-weight: 600;
+            font-size: 0.82rem; cursor: pointer; border: none; transition: var(--transition);
+            font-family: 'Inter', sans-serif; white-space: nowrap; position: relative; overflow: hidden;
         }
         .btn::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: rgba(255,255,255,0.2);
-            opacity: 0;
-            transition: opacity 0.3s;
+            content: ''; position: absolute; inset: 0;
+            background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s;
         }
         .btn:hover::after { opacity: 1; }
-        .btn-ghost {
-            background: rgba(255,255,255,0.1);
-            color: var(--text);
-            border: 1.5px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-        }
+        .btn-ghost { background: rgba(255,255,255,0.1); color: var(--text); border: 1.5px solid var(--glass-border); backdrop-filter: blur(10px); }
         .btn-ghost:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: var(--shadow); }
-        .btn-accent {
-            background: var(--gradient-accent);
-            color: #1b3b2e;
-            font-weight: 700;
-            box-shadow: 0 4px 20px rgba(200, 148, 74, 0.3);
-        }
-        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200, 148, 74, 0.4); }
-        .btn-back {
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: var(--primary);
-            border: 1.5px solid var(--glass-border);
-            font-weight: 600;
-        }
+        .btn-accent { background: var(--gradient-accent); color: #1b3b2e; font-weight: 700; box-shadow: 0 4px 20px rgba(200,148,74,0.3); }
+        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,148,74,0.4); }
+        .btn-back { background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--primary); border: 1.5px solid var(--glass-border); font-weight: 600; }
         .btn-back:hover { background: var(--surface); border-color: var(--accent); transform: translateY(-2px); }
         .btn-icon {
-            width: 38px; height: 38px; border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1.5px solid var(--glass-border);
-            color: var(--text);
-            cursor: pointer;
-            font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: var(--transition);
-            backdrop-filter: blur(10px);
+            width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1);
+            border: 1.5px solid var(--glass-border); color: var(--text); cursor: pointer;
+            font-size: 1.1rem; display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); backdrop-filter: blur(10px);
         }
         .btn-icon:hover { background: rgba(255,255,255,0.2); transform: rotate(15deg); }
 
         .semester-nav {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px) saturate(180%);
+            background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%);
             -webkit-backdrop-filter: blur(20px) saturate(180%);
-            border-bottom: 1px solid var(--glass-border);
-            position: sticky;
-            top: 64px;
-            z-index: 90;
-            padding: 0.6rem 1.5rem;
-            display: flex;
-            gap: 0.4rem;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
+            border-bottom: 1px solid var(--glass-border); position: sticky; top: 64px;
+            z-index: 90; padding: 0.6rem 1.5rem; display: flex; gap: 0.4rem;
+            overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none;
         }
         .semester-nav::-webkit-scrollbar { display: none; }
         .sem-tab {
-            padding: 0.6rem 1.3rem;
-            border-radius: 50px;
-            border: none;
-            background: transparent;
-            color: var(--text-secondary);
-            font-weight: 600;
-            font-size: 0.82rem;
-            cursor: pointer;
-            white-space: nowrap;
-            transition: var(--transition);
+            padding: 0.6rem 1.3rem; border-radius: 50px; border: none;
+            background: transparent; color: var(--text-secondary); font-weight: 600;
+            font-size: 0.82rem; cursor: pointer; white-space: nowrap; transition: var(--transition);
         }
         .sem-tab:hover { background: rgba(255,255,255,0.2); color: var(--text); transform: translateY(-1px); }
-        .sem-tab.active {
-            background: var(--gradient-2);
-            color: #fff;
-            box-shadow: var(--shadow-md);
-        }
+        .sem-tab.active { background: var(--gradient-2); color: #fff; box-shadow: var(--shadow-md); }
         .sem-tab .badge {
-            display: inline-block;
-            background: rgba(255,255,255,0.2);
-            padding: 0.15rem 0.5rem;
-            border-radius: 15px;
-            margin-left: 0.4rem;
-            font-size: 0.68rem;
-            font-weight: 500;
+            display: inline-block; background: rgba(255,255,255,0.2); padding: 0.15rem 0.5rem;
+            border-radius: 15px; margin-left: 0.4rem; font-size: 0.68rem; font-weight: 500;
         }
 
-        .main-container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 2rem;
-            position: relative;
-            z-index: 1;
-        }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem; position: relative; z-index: 1; }
 
-        /* Loading skeleton */
-        .skeleton {
-            background: var(--glass-bg);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--glass-border);
-            padding: 1.2rem;
-            animation: shimmer 1.5s infinite;
-            backdrop-filter: blur(10px);
+        /* Page transition */
+        .semester-panel {
+            animation: crossfadeIn 0.4s ease forwards;
         }
-        @keyframes shimmer {
-            0% { opacity: 0.6; }
-            50% { opacity: 1; }
-            100% { opacity: 0.6; }
-        }
-        .skeleton-line {
-            height: 12px;
-            background: var(--border);
-            border-radius: 6px;
-            margin-bottom: 8px;
-        }
-        .skeleton-line:last-child { width: 60%; }
-        .skeleton-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-            gap: 0.9rem;
-        }
-
-        /* Page load animation */
-        .fade-in-up {
-            animation: fadeInUp 0.6s ease forwards;
-            opacity: 0;
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
+        @keyframes crossfadeIn {
+            from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
-        .stagger-1 { animation-delay: 0.05s; }
-        .stagger-2 { animation-delay: 0.1s; }
-        .stagger-3 { animation-delay: 0.15s; }
-        .stagger-4 { animation-delay: 0.2s; }
-        .stagger-5 { animation-delay: 0.25s; }
-        .stagger-6 { animation-delay: 0.3s; }
-        .stagger-7 { animation-delay: 0.35s; }
-        .stagger-8 { animation-delay: 0.4s; }
-        .stagger-9 { animation-delay: 0.45s; }
-        .stagger-10 { animation-delay: 0.5s; }
-        .stagger-11 { animation-delay: 0.55s; }
-        .stagger-12 { animation-delay: 0.6s; }
-        .stagger-13 { animation-delay: 0.65s; }
-        .stagger-14 { animation-delay: 0.7s; }
-        .stagger-15 { animation-delay: 0.75s; }
-        .stagger-16 { animation-delay: 0.8s; }
 
-        .semester-header { margin-bottom: 2rem; animation: fadeInUp 0.5s ease forwards; }
-        .semester-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.3rem;
-            letter-spacing: -0.5px;
+        .skeleton {
+            background: var(--glass-bg); border-radius: var(--radius-lg);
+            border: 1px solid var(--glass-border); padding: 1.2rem;
+            animation: shimmer 1.5s infinite; backdrop-filter: blur(10px);
         }
+        @keyframes shimmer { 0% { opacity: 0.6; } 50% { opacity: 1; } 100% { opacity: 0.6; } }
+        .skeleton-line { height: 12px; background: var(--border); border-radius: 6px; margin-bottom: 8px; }
+        .skeleton-line:last-child { width: 60%; }
+        .skeleton-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 0.9rem; }
+
+        .fade-in-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .stagger-1 { animation-delay: 0.05s; } .stagger-2 { animation-delay: 0.1s; } .stagger-3 { animation-delay: 0.15s; }
+        .stagger-4 { animation-delay: 0.2s; } .stagger-5 { animation-delay: 0.25s; } .stagger-6 { animation-delay: 0.3s; }
+        .stagger-7 { animation-delay: 0.35s; } .stagger-8 { animation-delay: 0.4s; } .stagger-9 { animation-delay: 0.45s; }
+        .stagger-10 { animation-delay: 0.5s; } .stagger-11 { animation-delay: 0.55s; } .stagger-12 { animation-delay: 0.6s; }
+        .stagger-13 { animation-delay: 0.65s; } .stagger-14 { animation-delay: 0.7s; } .stagger-15 { animation-delay: 0.75s; } .stagger-16 { animation-delay: 0.8s; }
+
+        .semester-header { margin-bottom: 2rem; }
+        .semester-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: var(--primary); margin-bottom: 0.3rem; letter-spacing: -0.5px; }
         .semester-subtitle { color: var(--text-muted); font-size: 0.88rem; }
         .back-bar { margin-bottom: 1.5rem; display: none; }
-        .back-bar.visible { display: block; animation: fadeInUp 0.4s ease forwards; }
-        .search-bar { margin-bottom: 2rem; max-width: 420px; position: relative; animation: fadeInUp 0.5s ease forwards; }
+        .back-bar.visible { display: block; }
+        .search-bar { margin-bottom: 2rem; max-width: 420px; position: relative; }
         .search-bar input {
-            width: 100%;
-            padding: 0.75rem 1.2rem 0.75rem 2.8rem;
-            border: 2px solid var(--glass-border);
-            border-radius: 50px;
-            font-size: 0.88rem;
-            background: var(--glass-bg);
-            backdrop-filter: blur(10px);
-            color: var(--text);
-            outline: none;
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
+            width: 100%; padding: 0.75rem 1.2rem 0.75rem 2.8rem; border: 2px solid var(--glass-border);
+            border-radius: 50px; font-size: 0.88rem; background: var(--glass-bg);
+            backdrop-filter: blur(10px); color: var(--text); outline: none; transition: var(--transition); font-family: 'Inter', sans-serif;
         }
-        .search-bar input:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px var(--accent-glow);
-            background: var(--surface);
-        }
-        .search-bar::before {
-            content: '🔍';
-            position: absolute;
-            left: 1rem;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.9rem;
-            opacity: 0.5;
-        }
+        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); background: var(--surface); }
+        .search-bar::before { content: '🔍'; position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); font-size: 0.9rem; opacity: 0.5; }
 
-        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 0.9rem; }
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 0.9rem; perspective: 1000px; }
         .elective-group-label {
-            grid-column: 1/-1;
-            font-family: 'Playfair Display', serif;
-            font-size: 1.1rem;
-            font-weight: 600;
-            color: var(--accent);
-            margin: 1.5rem 0 0.3rem;
-            padding-bottom: 0.4rem;
-            border-bottom: 2px solid var(--accent-pale);
-            letter-spacing: -0.2px;
-            animation: fadeInUp 0.5s ease forwards;
+            grid-column: 1/-1; font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            font-weight: 600; color: var(--accent); margin: 1.5rem 0 0.3rem;
+            padding-bottom: 0.4rem; border-bottom: 2px solid var(--accent-pale); letter-spacing: -0.2px;
         }
 
+        /* Glass card with reflection */
         .subject-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px) saturate(180%);
+            background: var(--glass-bg); backdrop-filter: blur(16px) saturate(180%);
             -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--glass-border);
-            overflow: hidden;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: var(--glass-shadow);
+            border-radius: var(--radius-lg); border: 1px solid var(--glass-border);
+            overflow: hidden; cursor: pointer;
+            transition: box-shadow 0.4s ease, border-color 0.4s ease, background 0.4s ease;
+            box-shadow: var(--glass-shadow); transform-style: preserve-3d; will-change: transform;
+            position: relative;
         }
-        .subject-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent);
-            background: var(--surface);
+        /* Glass reflection */
+        .subject-card::before {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.05) 100%);
+            pointer-events: none; z-index: 1; transition: opacity 0.3s;
         }
+        body.dark .subject-card::before {
+            background: linear-gradient(135deg, rgba(255,255,255,0.03) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.01) 100%);
+        }
+        .subject-card:hover { box-shadow: var(--shadow-xl); border-color: var(--accent); background: var(--surface); }
         .subject-card.hidden-card { display: none; }
         .subject-card.selected-card {
-            grid-column: 1/-1;
-            max-width: 100%;
-            box-shadow: var(--shadow-xl);
-            border-color: var(--accent);
-            background: var(--surface);
-            cursor: default;
-            transform: none;
+            grid-column: 1/-1; max-width: 100%; box-shadow: var(--shadow-xl);
+            border-color: var(--accent); background: var(--surface); cursor: default; transform: none !important;
         }
-        .card-header {
-            padding: 1rem 1.3rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 1rem;
+        /* Card shine effect */
+        .subject-card::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+            pointer-events: none; z-index: 2; transition: left 0.6s ease;
         }
+        .subject-card:hover::after { left: 120%; }
+
+        .card-header { padding: 1rem 1.3rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; z-index: 3; }
         .card-header-left { flex: 1; min-width: 0; }
         .card-title { font-weight: 600; font-size: 0.9rem; color: var(--text); line-height: 1.4; }
         .card-code { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.15rem; font-weight: 500; }
-        .card-chevron {
-            color: var(--text-muted);
-            transition: var(--transition);
-            font-size: 0.7rem;
-            flex-shrink: 0;
-        }
+        .card-chevron { color: var(--text-muted); transition: var(--transition); font-size: 0.7rem; flex-shrink: 0; }
         .selected-card .card-chevron { transform: rotate(180deg); color: var(--accent); }
 
-        .card-expand {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--surface-alt);
-            backdrop-filter: blur(10px);
-        }
+        .card-expand { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); background: var(--surface-alt); backdrop-filter: blur(10px); position: relative; z-index: 3; }
         .selected-card .card-expand { max-height: 1200px; border-top: 1px solid var(--glass-border); }
-        .card-expand-inner {
-            padding: 1rem 1.3rem 1.3rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 0.7rem;
-        }
-        .note-category {
-            background: var(--glass-bg);
-            backdrop-filter: blur(8px);
-            border-radius: var(--radius-sm);
-            padding: 0.65rem;
-            border: 1px solid var(--glass-border);
-            transition: var(--transition);
-        }
+        .card-expand-inner { padding: 1rem 1.3rem 1.3rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.7rem; }
+        .note-category { background: var(--glass-bg); backdrop-filter: blur(8px); border-radius: var(--radius-sm); padding: 0.65rem; border: 1px solid var(--glass-border); transition: var(--transition); }
         .note-category:hover { border-color: var(--accent); transform: translateY(-2px); }
-        .note-cat-title {
-            font-weight: 700;
-            font-size: 0.68rem;
-            color: var(--primary);
-            margin-bottom: 0.35rem;
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-            opacity: 0.85;
-        }
-        .file-link {
-            display: block;
-            padding: 0.35rem 0.55rem;
-            margin: 0.15rem 0;
-            background: var(--surface);
-            border-radius: 8px;
-            font-size: 0.7rem;
-            color: var(--text);
-            text-decoration: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            border: 1px solid transparent;
-        }
-        .file-link:hover {
-            background: var(--accent-pale);
-            color: var(--primary);
-            border-color: var(--accent);
-            transform: translateX(3px);
-        }
-        .folder-embed {
-            width: 100%;
-            height: 200px;
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-sm);
-            margin-top: 0.3rem;
-        }
+        .note-cat-title { font-weight: 700; font-size: 0.68rem; color: var(--primary); margin-bottom: 0.35rem; text-transform: uppercase; letter-spacing: 0.4px; opacity: 0.85; }
+        .file-link { display: block; padding: 0.35rem 0.55rem; margin: 0.15rem 0; background: var(--surface); border-radius: 8px; font-size: 0.7rem; color: var(--text); text-decoration: none; cursor: pointer; transition: var(--transition); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
+        .file-link:hover { background: var(--accent-pale); color: var(--primary); border-color: var(--accent); transform: translateX(3px); }
+        .folder-embed { width: 100%; height: 200px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); margin-top: 0.3rem; }
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.65rem; opacity: 0.7; }
 
+        /* Back to top button */
+        .back-to-top {
+            position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px;
+            border-radius: 50%; background: var(--gradient-accent); color: #1b3b2e;
+            border: none; cursor: pointer; font-size: 1.2rem; z-index: 99;
+            box-shadow: var(--shadow-lg); transition: var(--transition);
+            opacity: 0; pointer-events: none; transform: translateY(10px);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
+        .back-to-top:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); }
+
+        /* Blur-in modals */
         .modal-overlay {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            display: none;
-            align-items: center;
-            justify-content: center;
-            z-index: 200;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            padding: 1rem;
-            animation: fadeIn 0.3s ease;
+            position: fixed; inset: 0; display: none; align-items: center; justify-content: center;
+            z-index: 200; padding: 1rem; background: rgba(0,0,0,0);
+            backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px);
+            transition: background 0.35s ease, backdrop-filter 0.35s ease;
         }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-overlay.open {
+            display: flex; background: rgba(0,0,0,0.5);
+            backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+        }
         .modal {
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px) saturate(180%);
+            background: var(--glass-bg); backdrop-filter: blur(24px) saturate(180%);
             -webkit-backdrop-filter: blur(24px) saturate(180%);
-            padding: 2rem;
-            border-radius: var(--radius-xl);
-            width: 100%;
-            max-width: 500px;
-            max-height: 85vh;
-            overflow-y: auto;
-            box-shadow: var(--shadow-xl);
-            border: 1px solid var(--glass-border);
-            animation: scaleIn 0.3s ease;
+            padding: 2rem; border-radius: var(--radius-xl); width: 100%;
+            max-width: 500px; max-height: 85vh; overflow-y: auto;
+            box-shadow: var(--shadow-xl); border: 1px solid var(--glass-border);
+            animation: scaleIn 0.35s ease;
         }
-        @keyframes scaleIn { from { transform: scale(0.95); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        @keyframes scaleIn { from { transform: scale(0.92); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal h3 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 1.2rem; }
         .modal input, .modal select {
-            width: 100%;
-            padding: 0.65rem 0.9rem;
-            margin: 0.3rem 0 0.7rem;
-            border: 2px solid var(--glass-border);
-            border-radius: var(--radius-sm);
-            background: var(--surface);
-            color: var(--text);
-            font-size: 0.85rem;
-            font-family: 'Inter', sans-serif;
-            transition: var(--transition);
+            width: 100%; padding: 0.65rem 0.9rem; margin: 0.3rem 0 0.7rem;
+            border: 2px solid var(--glass-border); border-radius: var(--radius-sm);
+            background: var(--surface); color: var(--text); font-size: 0.85rem;
+            font-family: 'Inter', sans-serif; transition: var(--transition);
         }
         .modal input:focus, .modal select:focus { border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
         .modal-close { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
         .modal-close:hover { color: var(--text); transform: rotate(90deg); }
 
-        /* Mobile bottom nav */
-        .mobile-nav {
-            display: none;
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            background: var(--glass-bg);
-            backdrop-filter: blur(24px) saturate(180%);
-            -webkit-backdrop-filter: blur(24px) saturate(180%);
-            border-top: 1px solid var(--glass-border);
-            z-index: 95;
-            padding: 0.5rem 1rem;
-        }
-        .mobile-nav-inner {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            gap: 0.3rem;
-        }
-        .mobile-nav-btn {
-            background: transparent;
-            border: none;
-            color: var(--text-secondary);
-            font-size: 0.65rem;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 0.4rem 0.6rem;
-            border-radius: 30px;
-            transition: var(--transition);
-            font-family: 'Inter', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-        }
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--glass-bg); backdrop-filter: blur(24px) saturate(180%); -webkit-backdrop-filter: blur(24px) saturate(180%); border-top: 1px solid var(--glass-border); z-index: 95; padding: 0.5rem 1rem; }
+        .mobile-nav-inner { display: flex; justify-content: space-around; align-items: center; gap: 0.3rem; }
+        .mobile-nav-btn { background: transparent; border: none; color: var(--text-secondary); font-size: 0.65rem; font-weight: 600; cursor: pointer; padding: 0.4rem 0.6rem; border-radius: 30px; transition: var(--transition); font-family: 'Inter', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 0.2rem; }
         .mobile-nav-btn.active { color: var(--accent); background: var(--accent-pale); }
         .mobile-nav-btn .nav-icon { font-size: 1.1rem; }
 
         .toast-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; }
-        .toast {
-            background: var(--gradient-2);
-            color: #fff;
-            padding: 0.7rem 1.2rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            box-shadow: var(--shadow-lg);
-            animation: toastIn 0.4s ease;
-            backdrop-filter: blur(10px);
-        }
+        .toast { background: var(--gradient-2); color: #fff; padding: 0.7rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; box-shadow: var(--shadow-lg); animation: toastIn 0.4s ease; backdrop-filter: blur(10px); }
         @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
 
+        .kc-toast { position: fixed; bottom: 50%; left: 50%; transform: translate(-50%,50%); background: var(--gradient-2); color: #fff; padding: 1.5rem 2.5rem; border-radius: 20px; font-size: 1.5rem; font-weight: 700; z-index: 400; pointer-events: none; opacity: 0; transition: opacity 0.15s ease; box-shadow: var(--shadow-xl); font-family: 'Playfair Display', serif; }
+        .kc-toast.show { opacity: 1; }
+
         @media (max-width: 768px) {
-            .header { padding: 0 0.8rem; }
-            .header-inner { height: 56px; }
-            .logo { font-size: 1rem; }
-            .btn { padding: 0.4rem 0.9rem; font-size: 0.7rem; }
-            .main-container { padding: 1rem 0.8rem 5rem; }
-            .semester-title { font-size: 1.4rem; }
-            .subjects-grid { grid-template-columns: 1fr; }
-            .semester-nav { padding: 0.4rem 0.6rem; }
-            .sem-tab { padding: 0.45rem 0.8rem; font-size: 0.7rem; }
+            .header { padding: 0 0.8rem; } .header-inner { height: 56px; } .logo { font-size: 1rem; }
+            .btn { padding: 0.4rem 0.9rem; font-size: 0.7rem; } .main-container { padding: 1rem 0.8rem 5rem; }
+            .semester-title { font-size: 1.4rem; } .subjects-grid { grid-template-columns: 1fr; }
+            .semester-nav { padding: 0.4rem 0.6rem; } .sem-tab { padding: 0.45rem 0.8rem; font-size: 0.7rem; }
             .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
-            .search-bar { max-width: 100%; }
-            .mobile-nav { display: block; }
-            .bg-orb { opacity: 0.08; }
+            .search-bar { max-width: 100%; } .mobile-nav { display: block; }
+            .bg-orb { opacity: 0.08; } .subject-card:hover { transform: none !important; }
+            .subject-card::after { display: none; }
         }
         @media (max-width: 480px) {
-            .header-actions .btn-ghost { display: none; }
-            .semester-nav { top: 56px; }
-            .semester-title { font-size: 1.2rem; }
+            .header-actions .btn-ghost { display: none; } .semester-nav { top: 56px; } .semester-title { font-size: 1.2rem; }
         }
     </style>
 </head>
 <body class="light">
-    <!-- Background orbs -->
     <div class="bg-orb bg-orb-1"></div>
     <div class="bg-orb bg-orb-2"></div>
     <div class="bg-orb bg-orb-3"></div>
 
+    <div class="kc-toast" id="kcToast"></div>
+
+    <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
     <header class="header">
         <div class="header-inner">
-            <div class="logo" onclick="showAllCards()" title="Back to all subjects">BioTech Notes</div>
+            <div class="logo" onclick="showAllCards()" title="Back to all subjects (Esc)">BioTech Notes</div>
             <div class="header-actions">
                 <button class="btn btn-ghost" id="quickViewBtn">Quick View</button>
                 <button class="btn btn-accent" id="adminUploadBtn">Admin</button>
@@ -614,10 +392,7 @@
         </div>
     </div>
 
-    <!-- Mobile bottom nav -->
-    <nav class="mobile-nav" id="mobileNav">
-        <div class="mobile-nav-inner" id="mobileNavInner"></div>
-    </nav>
+    <nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-inner" id="mobileNavInner"></div></nav>
 
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal">
@@ -666,92 +441,62 @@
         const SEMESTER_DATA = {
             3:{name:'III Semester',subjects:[
                 {code:'23MA3BSTFN',title:'Transform Calculus, Fourier Series and Numerical Techniques'},
-                {code:'23BT3ESPPC',title:'Process Principles and Calculations'},
-                {code:'23BT3PCFME',title:'Fluid Mechanics'},
-                {code:'23BT3PCCMB',title:'Cell and Molecular Biology'},
-                {code:'23BT3PCMBG',title:'Microbiology'},
-                {code:'23BT3PCBBM',title:'Basics of Biomolecules'},
-                {code:'22MA3HSUHV',title:'Universal Human Values'},
-                {code:'23BT3AEFBL',title:'Fundamentals of Biotechnology Lab'},
-                {code:'23BT3PCMBL',title:'Microbiology Lab'},
+                {code:'23BT3ESPPC',title:'Process Principles and Calculations'},{code:'23BT3PCFME',title:'Fluid Mechanics'},
+                {code:'23BT3PCCMB',title:'Cell and Molecular Biology'},{code:'23BT3PCMBG',title:'Microbiology'},
+                {code:'23BT3PCBBM',title:'Basics of Biomolecules'},{code:'22MA3HSUHV',title:'Universal Human Values'},
+                {code:'23BT3AEFBL',title:'Fundamentals of Biotechnology Lab'},{code:'23BT3PCMBL',title:'Microbiology Lab'},
                 {code:'23BT3PCFML',title:'Fluid Mechanics Lab'}
             ]},
             4:{name:'IV Semester',subjects:[
-                {code:'23MA4BSBDE',title:'Biostatistics and Design of Experiments'},
-                {code:'23BT4ESPET',title:'Process Engineering Thermodynamics'},
-                {code:'23BT4PCBAB',title:'Biochemistry and Bioenergetics'},
-                {code:'23BT4PCGEN',title:'Genetic Engineering'},
-                {code:'23BT4PCBCA',title:'Basics of Computer Applications'},
-                {code:'23BT4PCHMT',title:'Heat and Mass Transfer'},
-                {code:'23BT4PCBIE',title:'Bioinspired Engineering'},
-                {code:'23BT4AECBL',title:'Computational Biology Lab'},
-                {code:'23BT4PCBCL',title:'Biochemistry Lab'},
-                {code:'23BT4PCGEL',title:'Genetic Engineering Lab'}
+                {code:'23MA4BSBDE',title:'Biostatistics and Design of Experiments'},{code:'23BT4ESPET',title:'Process Engineering Thermodynamics'},
+                {code:'23BT4PCBAB',title:'Biochemistry and Bioenergetics'},{code:'23BT4PCGEN',title:'Genetic Engineering'},
+                {code:'23BT4PCBCA',title:'Basics of Computer Applications'},{code:'23BT4PCHMT',title:'Heat and Mass Transfer'},
+                {code:'23BT4PCBIE',title:'Bioinspired Engineering'},{code:'23BT4AECBL',title:'Computational Biology Lab'},
+                {code:'23BT4PCBCL',title:'Biochemistry Lab'},{code:'23BT4PCGEL',title:'Genetic Engineering Lab'}
             ]},
             5:{name:'V Semester',subjects:[
-                {code:'23BT5PCREN',title:'Reaction Engineering'},
-                {code:'23BT5PCBIN',title:'Bioinformatics'},
-                {code:'23BT5PCBAT',title:'Bioanalytical Techniques'},
-                {code:'23BT5PCIMM',title:'Immunotechnology'},
-                {code:'23BT5HSEVS',title:'Environmental Studies'},
-                {code:'23BT5PCPW-1',title:'Project-1'},
-                {code:'23BT5PCBIL',title:'Bioinformatics Lab'},
-                {code:'23BT5PCBTL',title:'Bioanalytical Techniques Lab'},
+                {code:'23BT5PCREN',title:'Reaction Engineering'},{code:'23BT5PCBIN',title:'Bioinformatics'},
+                {code:'23BT5PCBAT',title:'Bioanalytical Techniques'},{code:'23BT5PCIMM',title:'Immunotechnology'},
+                {code:'23BT5HSEVS',title:'Environmental Studies'},{code:'23BT5PCPW-1',title:'Project-1'},
+                {code:'23BT5PCBIL',title:'Bioinformatics Lab'},{code:'23BT5PCBTL',title:'Bioanalytical Techniques Lab'},
                 {code:'23BTA5ERMI',title:'Research Methodology and IPR'}
             ],electives:{'Professional Elective 1':[
-                {code:'23BT5PEMTE',title:'Metabolic Engineering'},
-                {code:'23BT5PESTN',title:'Signal Transduction'},
-                {code:'23BT5PEMBT',title:'Microbial Biotechnology'},
-                {code:'23BT5PEFMB',title:'Food Microbiology'},
+                {code:'23BT5PEMTE',title:'Metabolic Engineering'},{code:'23BT5PESTN',title:'Signal Transduction'},
+                {code:'23BT5PEMBT',title:'Microbial Biotechnology'},{code:'23BT5PEFMB',title:'Food Microbiology'},
                 {code:'23BT5PEVCI',title:'Vaccines and Cancer Immunotherapy'}
             ]}},
             6:{name:'VI Semester',subjects:[
-                {code:'23BT6PCGAP',title:'Genomics and Proteomics'},
-                {code:'23BT6PCETK',title:'Enzyme Technology and Kinetics'},
-                {code:'23BT6HSPMF',title:'Project Management and Finance'},
-                {code:'23BT6PCBPT',title:'Bioprocess Technology'},
-                {code:'23BT6PCETL',title:'Enzyme Technology and Kinetics Lab'},
-                {code:'23BT6PCBPL',title:'Bioprocess Technology Lab'},
-                {code:'23BT6PCPW-1',title:'Project Work-1'},
-                {code:'23BT6AEISD',title:'Industry Skill Development'}
+                {code:'23BT6PCGAP',title:'Genomics and Proteomics'},{code:'23BT6PCETK',title:'Enzyme Technology and Kinetics'},
+                {code:'23BT6HSPMF',title:'Project Management and Finance'},{code:'23BT6PCBPT',title:'Bioprocess Technology'},
+                {code:'23BT6PCETL',title:'Enzyme Technology and Kinetics Lab'},{code:'23BT6PCBPL',title:'Bioprocess Technology Lab'},
+                {code:'23BT6PCPW-1',title:'Project Work-1'},{code:'23BT6AEISD',title:'Industry Skill Development'}
             ],electives:{'Professional Elective 2':[
-                {code:'23BT6PESYB',title:'Systems Biology'},
-                {code:'23BT6PETAP',title:'Toxicology & Pharmacology'},
-                {code:'23BT6PEPBT',title:'Plant Biotechnology'},
-                {code:'23BT6PEAFC',title:'Advances in Food Chemistry'},
+                {code:'23BT6PESYB',title:'Systems Biology'},{code:'23BT6PETAP',title:'Toxicology & Pharmacology'},
+                {code:'23BT6PEPBT',title:'Plant Biotechnology'},{code:'23BT6PEAFC',title:'Advances in Food Chemistry'},
                 {code:'23BT6PEBIM',title:'Biomaterials'}
             ],'Open Elective 1':[
-                {code:'23BT6OEIMA',title:'Instrumental Methods of Analysis'},
-                {code:'23BT6OEBBI',title:'Biosensors & Bioinstrumentation'},
+                {code:'23BT6OEIMA',title:'Instrumental Methods of Analysis'},{code:'23BT6OEBBI',title:'Biosensors & Bioinstrumentation'},
                 {code:'23BT6OEBTE',title:'Battery Technology'}
             ]}},
             7:{name:'VII Semester',subjects:[
-                {code:'23BT7PCEQD',title:'Bioprocess Equipment Design and CAED'},
-                {code:'23BT7PCEQL',title:'Bioprocess Equipment Design and CAED Lab'},
-                {code:'23BT7PCPW-3',title:'Project-3'},
-                {code:'25MA7HSIKL',title:'Indian Knowledge Systems'}
+                {code:'23BT7PCEQD',title:'Bioprocess Equipment Design and CAED'},{code:'23BT7PCEQL',title:'Bioprocess Equipment Design and CAED Lab'},
+                {code:'23BT7PCPW-3',title:'Project-3'},{code:'25MA7HSIKL',title:'Indian Knowledge Systems'}
             ],electives:{'Professional Elective 3':[
-                {code:'23BT7PEGIN',title:'Genome Informatics'},
-                {code:'23BT7PEBNB',title:'Biologics & Biopharmaceuticals'},
-                {code:'23BT7PEABT',title:'Animal Biotechnology'},
-                {code:'23BT7PEFPC',title:'Food Processing and Quality Control'},
+                {code:'23BT7PEGIN',title:'Genome Informatics'},{code:'23BT7PEBNB',title:'Biologics & Biopharmaceuticals'},
+                {code:'23BT7PEABT',title:'Animal Biotechnology'},{code:'23BT7PEFPC',title:'Food Processing and Quality Control'},
                 {code:'23BT7PETEN',title:'Tissue Engineering'}
             ],'Open Elective 2':[
-                {code:'23BT7OEIPR',title:'IPR in Engineering'},
-                {code:'23BT7OEEEM',title:'Ecology and Environmental Management'},
+                {code:'23BT7OEIPR',title:'IPR in Engineering'},{code:'23BT7OEEEM',title:'Ecology and Environmental Management'},
                 {code:'23BT7OESEN',title:'Sustainability Engineering'}
             ]}},
             8:{name:'VIII Semester',subjects:[
                 {code:'23BT8SRIN',title:'Internship-Based Seminar'}
             ],electives:{'Professional Elective 4':[
-                {code:'23BT8PEBDA',title:'Biological Data Analytics'},
-                {code:'23BT8PEDRD',title:'Drug Discovery'},
-                {code:'23BT8PEABP',title:'Advanced BT Processes and Products'},
-                {code:'23BT8PEFWM',title:'Food Waste Management'},
+                {code:'23BT8PEBDA',title:'Biological Data Analytics'},{code:'23BT8PEDRD',title:'Drug Discovery'},
+                {code:'23BT8PEABP',title:'Advanced BT Processes and Products'},{code:'23BT8PEFWM',title:'Food Waste Management'},
                 {code:'23BT8PENAT',title:'Nanotechnology'}
             ],'Open Elective 3':[
-                {code:'23BT8OEFRS',title:'Forensic Science'},
-                {code:'23BT8OEHAN',title:'Health and Nutrition'}
+                {code:'23BT8OEFRS',title:'Forensic Science'},{code:'23BT8OEHAN',title:'Health and Nutrition'}
             ]}}
         };
 
@@ -766,6 +511,24 @@
 
         let notesData = {}, currentSemester = '3', selectedCardCode = null, isAdmin = false, githubToken = '';
 
+        // Parallax orbs
+        function updateParallax() {
+            const scrollY = window.scrollY;
+            document.querySelectorAll('.bg-orb').forEach((orb, i) => {
+                const speed = 0.03 + (i * 0.02);
+                orb.style.transform = `translateY(${scrollY * speed}px)`;
+            });
+        }
+        window.addEventListener('scroll', updateParallax, {passive: true});
+
+        // Back to top button
+        function updateBackToTop() {
+            const btn = document.getElementById('backToTop');
+            if (window.scrollY > 500) btn.classList.add('visible');
+            else btn.classList.remove('visible');
+        }
+        window.addEventListener('scroll', updateBackToTop, {passive: true});
+
         async function fetchLiveNotes() {
             try {
                 const res = await fetch('./notes-data.json');
@@ -773,7 +536,8 @@
                 else { notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); }
             } catch(e) { notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); }
             setTimeout(() => {
-                document.getElementById('loadingSkeleton').style.display = 'none';
+                const skel = document.getElementById('loadingSkeleton');
+                if (skel) skel.style.display = 'none';
                 renderAll();
             }, 800);
         }
@@ -784,244 +548,119 @@
         function extractFileId(url) { const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/); return m ? m[1] : null; }
         function extractFolderId(url) { const m = url.match(/\/folders\/([a-zA-Z0-9_-]+)/); return m ? m[1] : null; }
         function showToast(msg) { const c=document.getElementById('toastContainer'); const t=document.createElement('div'); t.className='toast'; t.textContent=msg; c.appendChild(t); setTimeout(()=>t.remove(),2500); }
+        function showKcToast(msg) { const el=document.getElementById('kcToast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),800); }
 
-        function showAllCards() { selectedCardCode = null; renderPanels(); }
+        function showAllCards() { selectedCardCode = null; renderAll(); }
 
         function renderAll() { renderTabs(); renderMobileNav(); renderPanels(); }
         function renderTabs() {
-            const nav = document.getElementById('semesterNav'); nav.innerHTML='';
-            for(let s=3; s<=8; s++) {
-                const btn = document.createElement('button');
-                btn.className = 'sem-tab' + (s.toString()===currentSemester?' active':'');
-                const d = SEMESTER_DATA[s];
-                const total = (d.subjects?.length||0) + (d.electives ? Object.values(d.electives).flat().length : 0);
-                btn.innerHTML = `Sem ${s} <span class="badge">${total}</span>`;
-                btn.onclick = ()=>{ currentSemester=s.toString(); selectedCardCode=null; renderAll(); };
+            const nav=document.getElementById('semesterNav'); nav.innerHTML='';
+            for(let s=3;s<=8;s++) {
+                const btn=document.createElement('button');
+                btn.className='sem-tab'+(s.toString()===currentSemester?' active':'');
+                const d=SEMESTER_DATA[s];
+                const total=(d.subjects?.length||0)+(d.electives?Object.values(d.electives).flat().length:0);
+                btn.innerHTML=`Sem ${s} <span class="badge">${total}</span>`;
+                btn.onclick=()=>{ currentSemester=s.toString(); selectedCardCode=null; renderAll(); };
                 nav.appendChild(btn);
             }
         }
         function renderMobileNav() {
-            const nav = document.getElementById('mobileNavInner'); nav.innerHTML='';
-            for(let s=3; s<=8; s++) {
-                const btn = document.createElement('button');
-                btn.className = 'mobile-nav-btn' + (s.toString()===currentSemester?' active':'');
-                btn.innerHTML = `<span class="nav-icon">${s}</span>Sem ${s}`;
-                btn.onclick = ()=>{ currentSemester=s.toString(); selectedCardCode=null; renderAll(); };
+            const nav=document.getElementById('mobileNavInner'); nav.innerHTML='';
+            for(let s=3;s<=8;s++) {
+                const btn=document.createElement('button');
+                btn.className='mobile-nav-btn'+(s.toString()===currentSemester?' active':'');
+                btn.innerHTML=`<span class="nav-icon">${s}</span>Sem ${s}`;
+                btn.onclick=()=>{ currentSemester=s.toString(); selectedCardCode=null; renderAll(); };
                 nav.appendChild(btn);
             }
         }
         function renderPanels() {
-            const mc = document.getElementById('mainContainer');
-            if (document.getElementById('loadingSkeleton')) {
-                document.getElementById('loadingSkeleton').style.display = 'none';
-            }
+            const mc=document.getElementById('mainContainer');
+            const skel=document.getElementById('loadingSkeleton');
+            if(skel) skel.style.display='none';
             mc.innerHTML='';
-            for(let s=3; s<=8; s++) {
-                const panel = document.createElement('div');
-                panel.style.display = s.toString()===currentSemester?'':'none';
-                const isSingleCard = selectedCardCode && s.toString()===currentSemester;
-                panel.innerHTML = renderSemesterContent(s, isSingleCard);
+            for(let s=3;s<=8;s++) {
+                const panel=document.createElement('div');
+                panel.className='semester-panel';
+                panel.style.display=s.toString()===currentSemester?'':'none';
+                const isSingleCard=selectedCardCode && s.toString()===currentSemester;
+                panel.innerHTML=renderSemesterContent(s,isSingleCard);
                 mc.appendChild(panel);
             }
             attachCardListeners();
+            attachTiltEffect();
         }
-        function renderSemesterContent(sem, isSingleCard) {
-            let html = `<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`;
-            if (!isSingleCard) html += `<p class="semester-subtitle">Click any subject to focus — elegant & minimal</p>`;
-            html += `</div>`;
-            if (isSingleCard) {
-                html += `<div class="back-bar visible"><button class="btn btn-back" onclick="showAllCards()">← Back to all subjects</button></div>`;
-            } else {
-                html += `<div class="back-bar"></div>`;
-                html += `<div class="search-bar"><input type="text" placeholder="Search subjects..." oninput="filterCards(this,'${sem}')"></div>`;
-            }
-            html += `<div class="subjects-grid" id="grid${sem}">`;
-            if (isSingleCard) {
-                const allSubs = getAllSubjects(sem);
-                const sub = allSubs.find(s => s.code === selectedCardCode);
-                if (sub) html += renderCard(sem, sub, true);
-            } else {
-                html += renderAllCards(sem);
-            }
-            html += '</div>';
-            return html;
+        function renderSemesterContent(sem,isSingleCard) {
+            let html=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`;
+            if(!isSingleCard) html+=`<p class="semester-subtitle">Click any subject to focus</p>`;
+            html+=`</div>`;
+            if(isSingleCard) html+=`<div class="back-bar visible"><button class="btn btn-back" onclick="showAllCards()">← Back to all subjects (Esc)</button></div>`;
+            else { html+=`<div class="back-bar"></div><div class="search-bar"><input type="text" placeholder="Search subjects..." oninput="filterCards(this,'${sem}')"></div>`; }
+            html+=`<div class="subjects-grid" id="grid${sem}">`;
+            if(isSingleCard) { const sub=getAllSubjects(sem).find(s=>s.code===selectedCardCode); if(sub) html+=renderCard(sem,sub,true); }
+            else html+=renderAllCards(sem);
+            return html+='</div>';
         }
-        function getAllSubjects(sem) {
-            const d = SEMESTER_DATA[sem];
-            let all = [...(d.subjects||[])];
-            if (d.electives) Object.values(d.electives).forEach(arr => all.push(...arr));
-            return all;
-        }
-        function renderAllCards(sem) {
-            const d = SEMESTER_DATA[sem]; let html = '';
-            let staggerIndex = 0;
-            if(d.subjects) d.subjects.forEach(s=>{ html+=renderCard(sem,s,false,staggerIndex); staggerIndex++; });
-            if(d.electives) for(const [grp,subs] of Object.entries(d.electives)) {
-                html += `<div class="elective-group-label">${grp}</div>`;
-                subs.forEach(s=>{ html+=renderCard(sem,s,false,staggerIndex); staggerIndex++; });
-            }
-            return html;
-        }
-        function renderCard(sem, sub, isSelected, staggerIndex = 0) {
-            const categories = isLabSubject(sub.title) ? LAB_CATEGORIES : THEORY_CATEGORIES;
-            const cardClass = isSelected ? 'subject-card selected-card' : 'subject-card fade-in-up';
-            const staggerClass = !isSelected && staggerIndex < 16 ? ` stagger-${staggerIndex + 1}` : '';
-            const hiddenClass = selectedCardCode && !isSelected ? ' hidden-card' : '';
-            let html = `<div class="${cardClass}${staggerClass}${hiddenClass}" data-code="${sub.code}" data-sem="${sem}">
-                <div class="card-header">
-                    <div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div>
-                    <span class="card-chevron">▾</span>
-                </div>
+        function getAllSubjects(sem) { const d=SEMESTER_DATA[sem]; let all=[...(d.subjects||[])]; if(d.electives) Object.values(d.electives).forEach(a=>all.push(...a)); return all; }
+        function renderAllCards(sem) { const d=SEMESTER_DATA[sem]; let html='',si=0; if(d.subjects) d.subjects.forEach(s=>{ html+=renderCard(sem,s,false,si); si++; }); if(d.electives) for(const[g,ss] of Object.entries(d.electives)) { html+=`<div class="elective-group-label">${g}</div>`; ss.forEach(s=>{ html+=renderCard(sem,s,false,si); si++; }); } return html; }
+        function renderCard(sem,sub,isSelected,si=0) {
+            const cats=isLabSubject(sub.title)?LAB_CATEGORIES:THEORY_CATEGORIES;
+            const cc=isSelected?'subject-card selected-card':'subject-card fade-in-up';
+            const sc=!isSelected&&si<16?` stagger-${si+1}`:'';
+            const hc=selectedCardCode&&!isSelected?' hidden-card':'';
+            let h=`<div class="${cc}${sc}${hc}" data-code="${sub.code}" data-sem="${sem}">
+                <div class="card-header"><div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div><span class="card-chevron">▾</span></div>
                 <div class="card-expand"><div class="card-expand-inner">`;
-            categories.forEach(cat=>{
-                const notes = getNotes(sem, sub.code, cat.key);
-                html += `<div class="note-category"><div class="note-cat-title">${cat.label}</div>`;
-                if(notes.length===0) html += '<span class="no-files">Empty</span>';
-                else if(cat.key==='folder') {
-                    notes.forEach(n=>{
-                        const eid = extractFolderId(n.driveUrl);
-                        if(eid) html += `<iframe class="folder-embed" src="https://drive.google.com/embeddedfolderview?id=${eid}#list"></iframe>`;
-                    });
-                } else notes.forEach(n=>html += `<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)">${n.label||'File'}</a>`);
-                html += '</div>';
+            cats.forEach(c=>{
+                const n=getNotes(sem,sub.code,c.key);
+                h+=`<div class="note-category"><div class="note-cat-title">${c.label}</div>`;
+                if(!n.length) h+='<span class="no-files">Empty</span>';
+                else if(c.key==='folder') n.forEach(x=>{ const e=extractFolderId(x.driveUrl); if(e) h+=`<iframe class="folder-embed" src="https://drive.google.com/embeddedfolderview?id=${e}#list"></iframe>`; });
+                else n.forEach(x=>h+=`<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)">${x.label||'File'}</a>`);
+                h+='</div>';
             });
-            return html + '</div></div></div>';
+            return h+'</div></div></div>';
         }
         function attachCardListeners() {
-            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(card=>{
-                card.addEventListener('click', function(e) {
-                    if(e.target.closest('.file-link')||e.target.closest('iframe')||e.target.closest('button')) return;
-                    selectedCardCode = this.getAttribute('data-code');
-                    renderPanels();
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
+            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c=>{
+                c.addEventListener('click',function(e){ if(e.target.closest('.file-link')||e.target.closest('iframe')||e.target.closest('button'))return; selectedCardCode=this.getAttribute('data-code'); renderPanels(); window.scrollTo({top:0,behavior:'smooth'}); });
             });
-            document.querySelectorAll('.file-link[data-drive-url]').forEach(link=>{
-                link.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const pid = extractFileId(this.getAttribute('data-drive-url'));
-                    if(pid) {
-                        document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${pid}/preview`;
-                        document.getElementById('previewIframe').style.display='';
-                        document.getElementById('quickViewInput').style.display='none';
-                        document.getElementById('previewModalOverlay').style.display='flex';
-                    }
-                });
+            document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{
+                l.addEventListener('click',function(e){ e.stopPropagation(); const p=extractFileId(this.getAttribute('data-drive-url')); if(p){ document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${p}/preview`; document.getElementById('previewIframe').style.display=''; document.getElementById('quickViewInput').style.display='none'; openPreviewModal(); } });
             });
         }
-        window.filterCards = function(input, sem) {
-            const q = input.value.toLowerCase();
-            document.querySelectorAll(`#grid${sem} .subject-card:not(.selected-card)`).forEach(card=>{
-                card.style.display = (!q || card.querySelector('.card-title').textContent.toLowerCase().includes(q)) ? '' : 'none';
+        function attachTiltEffect() {
+            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c=>{
+                c.addEventListener('mousemove',function(e){ const r=this.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top,cx=r.width/2,cy=r.height/2; this.style.transform=`perspective(800px) rotateX(${(y-cy)/cy*-8}deg) rotateY(${(x-cx)/cx*8}deg) translateY(-6px)`; });
+                c.addEventListener('mouseleave',function(){ this.style.transform='perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)'; });
             });
-        };
+        }
+        window.filterCards=function(i,s){ const q=i.value.toLowerCase(); document.querySelectorAll(`#grid${s} .subject-card:not(.selected-card)`).forEach(c=>{ c.style.display=(!q||c.querySelector('.card-title').textContent.toLowerCase().includes(q))?'':'none'; }); };
 
-        function openAdminModal() {
-            document.getElementById('adminModalOverlay').style.display='flex';
-            populateAdminSemesters();
-            if(isAdmin) { document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); }
-            else { document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; }
-        }
-        function closeAdminModal() { document.getElementById('adminModalOverlay').style.display='none'; }
-        document.getElementById('adminUploadBtn').addEventListener('click', openAdminModal);
-        document.querySelectorAll('.modal-overlay').forEach(o=>{ o.addEventListener('click', function(e){ if(e.target===this){ this.style.display='none'; if(this.id==='previewModalOverlay') closePreview(); } }); });
+        document.addEventListener('keydown',function(e){ if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return; if(e.key>='3'&&e.key<='8'){ e.preventDefault(); currentSemester=e.key; selectedCardCode=null; renderAll(); showKcToast('Semester '+e.key); } if(e.key==='Escape'){ e.preventDefault(); if(document.getElementById('adminModalOverlay').classList.contains('open'))closeAdminModal(); else if(document.getElementById('previewModalOverlay').classList.contains('open'))closePreview(); else if(selectedCardCode){ showAllCards(); showKcToast('All Subjects'); } } });
 
-        function adminLogin() {
-            if(document.getElementById('adminPassword').value==='btadmin2024' && (githubToken=document.getElementById('githubToken').value.trim())) {
-                isAdmin = true;
-                document.getElementById('adminAuth').style.display='none';
-                document.getElementById('adminPanel').style.display='';
-                updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting();
-                showToast('Admin unlocked');
-            } else showToast('Wrong password or token');
-        }
+        function openAdminModal() { document.getElementById('adminModalOverlay').classList.add('open'); populateAdminSemesters(); if(isAdmin){ document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); } else { document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; } }
+        function closeAdminModal() { document.getElementById('adminModalOverlay').classList.remove('open'); }
+        function openPreviewModal() { document.getElementById('previewModalOverlay').classList.add('open'); }
+        function closePreview() { document.getElementById('previewModalOverlay').classList.remove('open'); document.getElementById('previewIframe').src=''; document.getElementById('previewIframe').style.display='none'; }
+        document.getElementById('adminUploadBtn').addEventListener('click',openAdminModal);
+        document.querySelectorAll('.modal-overlay').forEach(o=>{ o.addEventListener('click',function(e){ if(e.target===this){ this.classList.remove('open'); if(this.id==='previewModalOverlay')closePreview(); } }); });
+
+        function adminLogin() { if(document.getElementById('adminPassword').value==='btadmin2024'&&(githubToken=document.getElementById('githubToken').value.trim())){ isAdmin=true; document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); showToast('Admin unlocked'); } else showToast('Wrong password or token'); }
         function adminLogout() { isAdmin=false; document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; }
-        function populateAdminSemesters() {
-            const sel=document.getElementById('adminSemester'); sel.innerHTML='';
-            for(let s=3;s<=8;s++) { const o=document.createElement('option'); o.value=s; o.textContent='Semester '+s; sel.appendChild(o); }
-        }
-        function updateAdminSubjects() {
-            const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)];
-            const sel=document.getElementById('adminSubject'); sel.innerHTML='';
-            [...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(s=>{
-                const o=document.createElement('option'); o.value=s.code; o.textContent=s.code+' - '+s.title; o.dataset.title=s.title; sel.appendChild(o);
-            });
-        }
-        function updateAdminCategoryOptions() {
-            const sel=document.getElementById('adminCategory');
-            const opt=document.getElementById('adminSubject').selectedOptions[0];
-            const cats=isLabSubject(opt?opt.dataset.title||opt.textContent.split(' - ')[1]||'':'')?LAB_CATEGORIES:THEORY_CATEGORIES;
-            sel.innerHTML=''; cats.forEach(c=>{ const o=document.createElement('option'); o.value=c.key; o.textContent=c.label; sel.appendChild(o); });
-            refreshAdminExisting();
-        }
-        function refreshAdminExisting() {
-            const notes=getNotes(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);
-            const div=document.getElementById('adminExistingFiles'); div.innerHTML=notes.length?'':'No files yet.';
-            notes.forEach((n,i)=>{
-                const d=document.createElement('div');
-                d.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';
-                d.innerHTML=`<span>${n.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.6rem;">x</button>`;
-                d.querySelector('button').onclick=()=>{
-                    const key=getNotesKey(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);
-                    if(notesData[key]){notesData[key].splice(i,1);if(!notesData[key].length)delete notesData[key];saveLocal();refreshAdminExisting();renderPanels();showToast('Deleted');}
-                };
-                div.appendChild(d);
-            });
-        }
-        async function adminAddAndCommit() {
-            const sem=document.getElementById('adminSemester').value, code=document.getElementById('adminSubject').value;
-            const cat=document.getElementById('adminCategory').value, label=document.getElementById('adminLabel').value.trim();
-            const url=document.getElementById('adminDriveLink').value.trim();
-            if(!label||!url) return showToast('Fill all fields');
-            if(cat==='folder'&&!extractFolderId(url)) return showToast('Invalid folder link');
-            if(cat!=='folder'&&!extractFileId(url)) return showToast('Invalid file link');
-            const key=getNotesKey(sem,code,cat);
-            if(!notesData[key]) notesData[key]=[];
-            notesData[key].push({label, driveUrl:url, addedAt:Date.now()}); saveLocal();
-            try {
-                const content=JSON.stringify(notesData,null,2);
-                const base64=btoa(unescape(encodeURIComponent(content)));
-                const getRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});
-                const fi=await getRes.json();
-                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:base64,sha:fi.sha})});
-                showToast('Published!');
-            } catch(e) { showToast('Saved locally'); }
-            refreshAdminExisting(); renderPanels();
-            document.getElementById('adminLabel').value=''; document.getElementById('adminDriveLink').value='';
-        }
-        function exportJSON() {
-            const blob=new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'});
-            const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='notes-data.json'; a.click();
-        }
-        function importJSON(e) {
-            const f=e.target.files[0]; if(!f) return;
-            const r=new FileReader();
-            r.onload=ev=>{notesData=JSON.parse(ev.target.result);saveLocal();renderPanels();refreshAdminExisting();showToast('Imported');};
-            r.readAsText(f); e.target.value='';
-        }
+        function populateAdminSemesters() { const s=document.getElementById('adminSemester'); s.innerHTML=''; for(let i=3;i<=8;i++){ const o=document.createElement('option'); o.value=i; o.textContent='Semester '+i; s.appendChild(o); } }
+        function updateAdminSubjects() { const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject'); s.innerHTML=''; [...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{ const o=document.createElement('option'); o.value=x.code; o.textContent=x.code+' - '+x.title; o.dataset.title=x.title; s.appendChild(o); }); }
+        function updateAdminCategoryOptions() { const s=document.getElementById('adminCategory'),o=document.getElementById('adminSubject').selectedOptions[0],c=isLabSubject(o?o.dataset.title||o.textContent.split(' - ')[1]||'':'')?LAB_CATEGORIES:THEORY_CATEGORIES; s.innerHTML=''; c.forEach(x=>{ const e=document.createElement('option'); e.value=x.key; e.textContent=x.label; s.appendChild(e); }); refreshAdminExisting(); }
+        function refreshAdminExisting() { const n=getNotes(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles'); d.innerHTML=n.length?'':'No files yet.'; n.forEach((x,i)=>{ const e=document.createElement('div'); e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;'; e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.6rem;">x</button>`; e.querySelector('button').onclick=()=>{ const k=getNotesKey(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value); if(notesData[k]){notesData[k].splice(i,1);if(!notesData[k].length)delete notesData[k];saveLocal();refreshAdminExisting();renderPanels();showToast('Deleted');} }; d.appendChild(e); }); }
+        async function adminAddAndCommit() { const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value,cat=document.getElementById('adminCategory').value,l=document.getElementById('adminLabel').value.trim(),u=document.getElementById('adminDriveLink').value.trim(); if(!l||!u)return showToast('Fill all fields'); if(cat==='folder'&&!extractFolderId(u))return showToast('Invalid folder link'); if(cat!=='folder'&&!extractFileId(u))return showToast('Invalid file link'); const k=getNotesKey(s,c,cat); if(!notesData[k])notesData[k]=[]; notesData[k].push({label:l,driveUrl:u,addedAt:Date.now()}); saveLocal(); try{ const ct=JSON.stringify(notesData,null,2),b64=btoa(unescape(encodeURIComponent(ct))),gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}}),fi=await gr.json(); await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:b64,sha:fi.sha})}); showToast('Published!'); }catch(e){showToast('Saved locally');} refreshAdminExisting(); renderPanels(); document.getElementById('adminLabel').value=''; document.getElementById('adminDriveLink').value=''; }
+        function exportJSON() { const b=new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='notes-data.json'; a.click(); }
+        function importJSON(e) { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=ev=>{notesData=JSON.parse(ev.target.result);saveLocal();renderPanels();refreshAdminExisting();showToast('Imported');}; r.readAsText(f); e.target.value=''; }
 
-        document.getElementById('quickViewBtn').addEventListener('click',()=>{
-            document.getElementById('previewIframe').style.display='none';
-            document.getElementById('quickViewInput').style.display='';
-            document.getElementById('previewModalOverlay').style.display='flex';
-        });
-        function closePreview() {
-            document.getElementById('previewModalOverlay').style.display='none';
-            document.getElementById('previewIframe').src=''; document.getElementById('previewIframe').style.display='none';
-        }
-        window.quickPreview=function(){
-            const id=extractFileId(document.getElementById('quickDriveLink').value.trim());
-            if(id){
-                document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${id}/preview`;
-                document.getElementById('previewIframe').style.display='';
-                document.getElementById('quickViewInput').style.display='none';
-            } else showToast('Invalid link');
-        };
+        document.getElementById('quickViewBtn').addEventListener('click',()=>{ document.getElementById('previewIframe').style.display='none'; document.getElementById('quickViewInput').style.display=''; openPreviewModal(); });
+        window.quickPreview=function(){ const i=extractFileId(document.getElementById('quickDriveLink').value.trim()); if(i){ document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${i}/preview`; document.getElementById('previewIframe').style.display=''; document.getElementById('quickViewInput').style.display='none'; } else showToast('Invalid link'); };
 
-        document.getElementById('themeToggle').addEventListener('click',()=>{
-            document.body.classList.toggle('dark');
-            localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');
-        });
+        document.getElementById('themeToggle').addEventListener('click',()=>{ document.body.classList.toggle('dark'); localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light'); });
         (()=>{const t=localStorage.getItem('theme')||'light';document.body.classList.add(t);})();
         fetchLiveNotes();
     </script>
