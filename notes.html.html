@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BioTech Notes Portal | Sem 3-8 (Live Sync)</title>
+    <script>
+        // CHANGE THESE TWO LINES
+        const REPO_OWNER = 'mohit13022019';
+        const REPO_NAME = 'notes';
+    </script>
+    <style>
+        :root {
+            --bg: #f6f3ee;
+            --surface: #ffffff;
+            --surface-alt: #faf8f5;
+            --primary: #1a3c34;
+            --primary-light: #2d5a4f;
+            --accent: #c8944a;
+            --accent-light: #e0b96b;
+            --accent-pale: #fdf3e2;
+            --text: #2c3e50;
+            --text-light: #5a6c7d;
+            --text-muted: #8b9aaa;
+            --border: #e2dcd4;
+            --border-light: #f0ebe3;
+            --shadow-sm: 0 1px 3px rgba(26, 60, 52, 0.06);
+            --shadow-md: 0 4px 16px rgba(26, 60, 52, 0.10);
+            --shadow-lg: 0 12px 32px rgba(26, 60, 52, 0.14);
+            --shadow-xl: 0 20px 48px rgba(26, 60, 52, 0.18);
+            --radius-sm: 8px;
+            --radius: 14px;
+            --radius-lg: 20px;
+            --transition: 0.25s ease;
+        }
+        body.dark {
+            --bg: #1a1d20;
+            --surface: #24272b;
+            --surface-alt: #2a2e33;
+            --primary: #c8944a;
+            --accent: #c8944a;
+            --text: #e0e0e0;
+            --text-light: #b0b8c1;
+            --text-muted: #7a8490;
+            --border: #3a3f44;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); transition: background 0.3s, color 0.3s; }
+        .header { background: var(--primary); color: #fff; padding: 0 1.5rem; display: flex; align-items: center; justify-content: space-between; height: 60px; position: sticky; top: 0; z-index: 100; }
+        .logo { font-weight: bold; font-size: 1.2rem; }
+        .btn { background: var(--accent); color: #1a3c34; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; font-weight: 600; margin-left: 0.5rem; }
+        .btn-outline { background: transparent; border: 2px solid rgba(255,255,255,0.5); color: #fff; }
+        .semester-nav { display: flex; overflow-x: auto; background: var(--surface); padding: 0.5rem; gap: 0.3rem; position: sticky; top: 60px; z-index: 90; border-bottom: 1px solid var(--border); }
+        .sem-tab { padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; border: none; background: transparent; color: var(--text-light); font-weight: 600; white-space: nowrap; }
+        .sem-tab.active { background: var(--accent); color: #1a3c34; }
+        .sem-tab .badge { background: var(--accent-pale); padding: 0.1rem 0.5rem; border-radius: 10px; margin-left: 0.3rem; font-size: 0.7rem; }
+        .sem-tab.active .badge { background: rgba(26,60,52,0.3); }
+        .main-container { max-width: 1400px; margin: 0 auto; padding: 1rem; }
+        .section-title { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .section-subtitle { color: var(--text-muted); margin-bottom: 1rem; }
+        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 1rem; }
+        .subject-card { background: var(--surface); border-radius: var(--radius); border: 1px solid var(--border); overflow: hidden; cursor: pointer; transition: 0.2s; }
+        .subject-card:hover { box-shadow: var(--shadow-md); }
+        .subject-card.expanded { box-shadow: var(--shadow-lg); border-color: var(--accent); }
+        .card-header { padding: 1rem; display: flex; align-items: center; gap: 0.8rem; }
+        .card-icon { width: 40px; height: 40px; background: var(--accent-pale); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; flex-shrink: 0; }
+        .card-title { font-weight: 600; font-size: 0.9rem; }
+        .card-code { font-size: 0.7rem; color: var(--text-muted); }
+        .card-chevron { margin-left: auto; transition: 0.2s; }
+        .subject-card.expanded .card-chevron { transform: rotate(180deg); }
+        .card-type-badge { font-size: 0.6rem; padding: 0.2rem 0.5rem; border-radius: 10px; font-weight: 600; text-transform: uppercase; }
+        .badge-pc { background: #e8f5e9; color: #2e7d32; } .badge-bs { background: #e3f2fd; color: #1565c0; }
+        .badge-es { background: #fff3e0; color: #e65100; } .badge-hs { background: #fce4ec; color: #c62828; }
+        .badge-ae { background: #f3e5f5; color: #6a1b9a; } .badge-pe { background: #e8eaf6; color: #283593; }
+        .badge-oe { background: #e0f7fa; color: #00695c; } .badge-pw { background: #fff8e1; color: #f57f17; }
+        .card-expand { max-height: 0; overflow: hidden; transition: max-height 0.4s; background: var(--surface-alt); }
+        .subject-card.expanded .card-expand { max-height: 900px; border-top: 1px solid var(--border); }
+        .card-expand-inner { padding: 0 1rem 1rem; }
+        .note-category { margin-top: 0.8rem; }
+        .note-cat-title { font-weight: 700; font-size: 0.8rem; margin-bottom: 0.3rem; }
+        .file-link { display: inline-block; margin: 0.2rem; padding: 0.2rem 0.6rem; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; font-size: 0.75rem; text-decoration: none; color: var(--text); cursor: pointer; }
+        .file-link:hover { border-color: var(--accent); background: var(--accent-pale); }
+        .folder-embed { width: 100%; height: 250px; border: 1px solid var(--border); border-radius: 8px; margin-top: 0.3rem; }
+        .no-files { color: var(--text-muted); font-style: italic; font-size: 0.75rem; }
+        .elective-group-label { font-weight: 700; color: var(--accent); margin: 1rem 0 0.5rem; grid-column: 1/-1; border-bottom: 1px dashed var(--border); padding-bottom: 0.3rem; }
+        .search-bar-wrap { margin-bottom: 1rem; max-width: 400px; }
+        .search-bar-wrap input { width: 100%; padding: 0.5rem 1rem; border: 2px solid var(--border); border-radius: 20px; background: var(--surface); color: var(--text); }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; backdrop-filter: blur(4px); }
+        .modal { background: var(--surface); padding: 1.5rem; border-radius: 12px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .modal input, .modal select { width: 100%; padding: 0.5rem; margin: 0.3rem 0; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-alt); color: var(--text); }
+        .toast-container { position: fixed; bottom: 1rem; right: 1rem; z-index: 300; }
+        .toast { background: var(--primary); color: #fff; padding: 0.8rem 1.2rem; border-radius: 20px; margin-top: 0.5rem; font-size: 0.85rem; }
+    </style>
+</head>
+<body class="light">
+    <div class="header">
+        <div class="logo">BioTech Notes (Live Sync)</div>
+        <div>
+            <button class="btn btn-outline" id="quickViewBtn">Quick View</button>
+            <button class="btn" id="adminUploadBtn">Admin Upload</button>
+            <button class="btn" id="themeToggle" title="Toggle dark/light">&#9788;</button>
+        </div>
+    </div>
+
+    <div class="semester-nav" id="semesterNav"></div>
+    <div class="main-container" id="mainContainer"></div>
+
+    <!-- Admin Modal -->
+    <div class="modal-overlay" id="adminModalOverlay">
+        <div class="modal">
+            <h3>Admin Panel</h3>
+            <button onclick="document.getElementById('adminModalOverlay').style.display='none'" style="float:right; background:none; border:none; cursor:pointer; font-size:1.2rem;">x</button>
+            <div id="adminAuth">
+                <label>Password</label><input type="password" id="adminPassword" placeholder="btadmin2024"><br>
+                <label>GitHub Token</label><input type="password" id="githubToken" placeholder="ghp_..."><br>
+                <small style="color:var(--text-muted);">Token stored only in your browser.</small><br>
+                <button class="btn" onclick="adminLogin()" style="margin-top:0.5rem;">Login</button>
+            </div>
+            <div id="adminPanel" style="display:none;">
+                <p style="color:green;font-weight:600;">Authenticated</p>
+                <select id="adminSemester" onchange="updateAdminSubjects()"></select><br>
+                <select id="adminSubject" onchange="updateAdminCategoryOptions()"></select><br>
+                <select id="adminCategory"></select><br>
+                <input type="text" id="adminLabel" placeholder="File label"><br>
+                <input type="text" id="adminDriveLink" placeholder="Google Drive shareable link"><br>
+                <button class="btn" onclick="adminAddAndCommit()">Add & Publish</button>
+                <hr>
+                <p style="font-weight:700;">Existing files:</p>
+                <div id="adminExistingFiles" style="max-height:150px;overflow-y:auto;font-size:0.75rem;"></div>
+                <button class="btn" onclick="refreshAdminExisting()" style="font-size:0.7rem;">Refresh</button>
+                <hr>
+                <button class="btn" onclick="exportJSON()">Export JSON</button>
+                <button class="btn" onclick="document.getElementById('importFile').click()">Import</button>
+                <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
+                <button class="btn" onclick="adminLogout()" style="background:#fecaca;">Lock Panel</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick View Modal -->
+    <div class="modal-overlay" id="previewModalOverlay">
+        <div class="modal" style="max-width:90vw;width:1000px;">
+            <button onclick="closePreview()" style="float:right; background:none; border:none; cursor:pointer; font-size:1.2rem;">x</button>
+            <h3>File Preview</h3>
+            <div id="quickViewInput">
+                <input type="text" id="quickDriveLink" placeholder="Paste Google Drive link"><br>
+                <button class="btn" onclick="quickPreview()">Preview</button>
+            </div>
+            <iframe id="previewIframe" style="display:none; width:100%; height:70vh; border:none;"></iframe>
+        </div>
+    </div>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ============== SEMESTER DATA ==============
+        const SEMESTER_DATA = {
+            3:{name:'III Semester',subjects:[
+                {code:'23MA3BSTFN',title:'Transform Calculus, Fourier Series and Numerical Techniques',type:'BS',icon:'M'},
+                {code:'23BT3ESPPC',title:'Process Principles and Calculations',type:'ES',icon:'P'},
+                {code:'23BT3PCFME',title:'Fluid Mechanics',type:'PC',icon:'F'},
+                {code:'23BT3PCCMB',title:'Cell and Molecular Biology',type:'PC',icon:'C'},
+                {code:'23BT3PCMBG',title:'Microbiology',type:'PC',icon:'M'},
+                {code:'23BT3PCBBM',title:'Basics of Biomolecules',type:'PC',icon:'B'},
+                {code:'22MA3HSUHV',title:'Universal Human Values',type:'HS',icon:'H'},
+                {code:'23BT3AEFBL',title:'Fundamentals of Biotechnology Lab',type:'AE',icon:'L'},
+                {code:'23BT3PCMBL',title:'Microbiology Lab',type:'PC',icon:'L'},
+                {code:'23BT3PCFML',title:'Fluid Mechanics Lab',type:'PC',icon:'L'}
+            ]},
+            4:{name:'IV Semester',subjects:[
+                {code:'23MA4BSBDE',title:'Biostatistics and Design of Experiments',type:'BS',icon:'S'},
+                {code:'23BT4ESPET',title:'Process Engineering Thermodynamics',type:'ES',icon:'T'},
+                {code:'23BT4PCBAB',title:'Biochemistry and Bioenergetics',type:'PC',icon:'B'},
+                {code:'23BT4PCGEN',title:'Genetic Engineering',type:'PC',icon:'G'},
+                {code:'23BT4PCBCA',title:'Basics of Computer Applications',type:'PC',icon:'C'},
+                {code:'23BT4PCHMT',title:'Heat and Mass Transfer',type:'PC',icon:'H'},
+                {code:'23BT4PCBIE',title:'Bioinspired Engineering',type:'PC',icon:'B'},
+                {code:'23BT4AECBL',title:'Computational Biology Lab',type:'AE',icon:'L'},
+                {code:'23BT4PCBCL',title:'Biochemistry Lab',type:'PC',icon:'L'},
+                {code:'23BT4PCGEL',title:'Genetic Engineering Lab',type:'PC',icon:'L'}
+            ]},
+            5:{name:'V Semester',subjects:[
+                {code:'23BT5PCREN',title:'Reaction Engineering',type:'PC',icon:'R'},
+                {code:'23BT5PCBIN',title:'Bioinformatics',type:'PC',icon:'B'},
+                {code:'23BT5PCBAT',title:'Bioanalytical Techniques',type:'PC',icon:'A'},
+                {code:'23BT5PCIMM',title:'Immunotechnology',type:'PC',icon:'I'},
+                {code:'23BT5HSEVS',title:'Environmental Studies',type:'HS',icon:'E'},
+                {code:'23BT5PCPW-1',title:'Project-1',type:'PW',icon:'P'},
+                {code:'23BT5PCBIL',title:'Bioinformatics Lab',type:'PC',icon:'L'},
+                {code:'23BT5PCBTL',title:'Bioanalytical Techniques Lab',type:'PC',icon:'L'},
+                {code:'23BTA5ERMI',title:'Research Methodology and IPR',type:'AE',icon:'R'}
+            ],electives:{'PE-1 (Professional Elective-1)':[
+                {code:'23BT5PEMTE',title:'Metabolic Engineering',type:'PE',icon:'M'},
+                {code:'23BT5PESTN',title:'Signal Transduction',type:'PE',icon:'S'},
+                {code:'23BT5PEMBT',title:'Microbial Biotechnology',type:'PE',icon:'M'},
+                {code:'23BT5PEFMB',title:'Food Microbiology',type:'PE',icon:'F'},
+                {code:'23BT5PEVCI',title:'Vaccines and Cancer Immunotherapy',type:'PE',icon:'V'}
+            ]}},
+            6:{name:'VI Semester',subjects:[
+                {code:'23BT6PCGAP',title:'Genomics and Proteomics',type:'PC',icon:'G'},
+                {code:'23BT6PCETK',title:'Enzyme Technology and Kinetics',type:'PC',icon:'E'},
+                {code:'23BT6HSPMF',title:'Project Management and Finance',type:'HS',icon:'P'},
+                {code:'23BT6PCBPT',title:'Bioprocess Technology',type:'PC',icon:'B'},
+                {code:'23BT6PCETL',title:'Enzyme Technology and Kinetics Lab',type:'PC',icon:'L'},
+                {code:'23BT6PCBPL',title:'Bioprocess Technology Lab',type:'PC',icon:'L'},
+                {code:'23BT6PCPW-1',title:'Project Work-1',type:'PW',icon:'P'},
+                {code:'23BT6AEISD',title:'Industry Skill Development',type:'AE',icon:'I'}
+            ],electives:{'PE-2 (Professional Elective-2)':[
+                {code:'23BT6PESYB',title:'Systems Biology',type:'PE',icon:'S'},
+                {code:'23BT6PETAP',title:'Toxicology & Pharmacology',type:'PE',icon:'T'},
+                {code:'23BT6PEPBT',title:'Plant Biotechnology',type:'PE',icon:'P'},
+                {code:'23BT6PEAFC',title:'Advances in Food Chemistry',type:'PE',icon:'F'},
+                {code:'23BT6PEBIM',title:'Biomaterials',type:'PE',icon:'B'}
+            ],'OE-1 (Open Elective-1)':[
+                {code:'23BT6OEIMA',title:'Instrumental Methods of Analysis',type:'OE',icon:'I'},
+                {code:'23BT6OEBBI',title:'Biosensors & Bioinstrumentation',type:'OE',icon:'B'},
+                {code:'23BT6OEBTE',title:'Battery Technology',type:'OE',icon:'B'}
+            ]}},
+            7:{name:'VII Semester',subjects:[
+                {code:'23BT7PCEQD',title:'Bioprocess Equipment Design and CAED',type:'PC',icon:'E'},
+                {code:'23BT7PCEQL',title:'Bioprocess Equipment Design and CAED Lab',type:'PC',icon:'L'},
+                {code:'23BT7PCPW-3',title:'Project-3',type:'PW',icon:'P'},
+                {code:'25MA7HSIKL',title:'Indian Knowledge Systems',type:'HS',icon:'K'}
+            ],electives:{'PE-3 (Professional Elective-3)':[
+                {code:'23BT7PEGIN',title:'Genome Informatics',type:'PE',icon:'G'},
+                {code:'23BT7PEBNB',title:'Biologics & Biopharmaceuticals',type:'PE',icon:'B'},
+                {code:'23BT7PEABT',title:'Animal Biotechnology',type:'PE',icon:'A'},
+                {code:'23BT7PEFPC',title:'Food Processing and Quality Control',type:'PE',icon:'F'},
+                {code:'23BT7PETEN',title:'Tissue Engineering',type:'PE',icon:'T'}
+            ],'OE-2 (Open Elective-2)':[
+                {code:'23BT7OEIPR',title:'IPR in Engineering',type:'OE',icon:'I'},
+                {code:'23BT7OEEEM',title:'Ecology and Environmental Management',type:'OE',icon:'E'},
+                {code:'23BT7OESEN',title:'Sustainability Engineering',type:'OE',icon:'S'}
+            ]}},
+            8:{name:'VIII Semester',subjects:[
+                {code:'23BT8SRIN',title:'Internship-Based Seminar',type:'PW',icon:'S'}
+            ],electives:{'PE-4 (Professional Elective-4)':[
+                {code:'23BT8PEBDA',title:'Biological Data Analytics',type:'PE',icon:'D'},
+                {code:'23BT8PEDRD',title:'Drug Discovery',type:'PE',icon:'D'},
+                {code:'23BT8PEABP',title:'Advanced BT Processes and Products',type:'PE',icon:'P'},
+                {code:'23BT8PEFWM',title:'Food Waste Management',type:'PE',icon:'W'},
+                {code:'23BT8PENAT',title:'Nanotechnology',type:'PE',icon:'N'}
+            ],'OE-3 (Open Elective-3)':[
+                {code:'23BT8OEFRS',title:'Forensic Science',type:'OE',icon:'F'},
+                {code:'23BT8OEHAN',title:'Health and Nutrition',type:'OE',icon:'H'}
+            ]}}
+        };
+
+        // Full categories for theory subjects
+        const THEORY_CATEGORIES = [
+            {key:'unit1',label:'Unit 1'},{key:'unit2',label:'Unit 2'},{key:'unit3',label:'Unit 3'},
+            {key:'unit4',label:'Unit 4'},{key:'unit5',label:'Unit 5'},{key:'cie1',label:'CIE 1'},
+            {key:'cie2',label:'CIE 2'},{key:'cie3',label:'CIE 3'},{key:'endsem',label:'Endsem'},
+            {key:'textbook',label:'Textbook'},{key:'folder',label:'Folder Embed'}
+        ];
+
+        // Reduced categories for lab subjects
+        const LAB_CATEGORIES = [
+            {key:'labmanual',label:'Lab Manual'},
+            {key:'folder',label:'Folder Embed'}
+        ];
+
+        function isLabSubject(title) {
+            return title.toLowerCase().includes('lab');
+        }
+
+        function getCategoriesForSubject(title) {
+            return isLabSubject(title) ? LAB_CATEGORIES : THEORY_CATEGORIES;
+        }
+
+        // Also use lab categories for Project and Seminar type subjects
+        function getCategoriesForCode(type) {
+            if (type === 'PW') return LAB_CATEGORIES;
+            return THEORY_CATEGORIES;
+        }
+
+        // ============== GLOBAL STATE ==============
+        let notesData = {};
+        let currentSemester = '3';
+        let isAdmin = false;
+        let githubToken = '';
+
+        // ============== LOAD NOTES ==============
+        async function fetchLiveNotes() {
+            try {
+                const res = await fetch('./notes-data.json');
+                if (res.ok) { notesData = await res.json(); showToast('Notes loaded from repository'); }
+                else { notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); showToast('Offline mode'); }
+            } catch(e) {
+                notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}');
+                showToast('Offline mode');
+            }
+            renderAll();
+        }
+
+        function saveLocal() { localStorage.setItem('bt_notes', JSON.stringify(notesData)); }
+
+        function getNotesKey(sem,code,cat) { return `${sem}|${code}|${cat}`; }
+        function getNotes(sem,code,cat) { return notesData[getNotesKey(sem,code,cat)] || []; }
+
+        function extractFileId(url) {
+            const m = url.match(/\/d\/([a-zA-Z0-9_-]+)/) || url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+            return m ? m[1] : null;
+        }
+        function extractFolderId(url) {
+            const m = url.match(/\/folders\/([a-zA-Z0-9_-]+)/) || url.match(/\/drive\/folders\/([a-zA-Z0-9_-]+)/);
+            return m ? m[1] : null;
+        }
+
+        function showToast(msg, type='') {
+            const c = document.getElementById('toastContainer');
+            const t = document.createElement('div'); t.className='toast '+type; t.textContent=msg;
+            c.appendChild(t); setTimeout(()=>t.remove(), 3000);
+        }
+
+        // ============== RENDERING ==============
+        function renderAll() { renderTabs(); renderPanels(); }
+        function renderTabs() {
+            const nav = document.getElementById('semesterNav'); nav.innerHTML='';
+            for(let s=3; s<=8; s++) {
+                const btn = document.createElement('button');
+                btn.className = 'sem-tab' + (s.toString()===currentSemester?' active':'');
+                btn.innerHTML = `Sem ${s} <span class="badge">${countSubjects(s)}</span>`;
+                btn.onclick = ()=>{ currentSemester=s.toString(); renderAll(); };
+                nav.appendChild(btn);
+            }
+        }
+        function countSubjects(s) {
+            const d = SEMESTER_DATA[s];
+            return (d.subjects?.length||0) + (d.electives ? Object.values(d.electives).flat().length : 0);
+        }
+        function renderPanels() {
+            const mc = document.getElementById('mainContainer'); mc.innerHTML='';
+            for(let s=3; s<=8; s++) {
+                const panel = document.createElement('div');
+                panel.className = 'semester-panel';
+                panel.style.display = s.toString()===currentSemester?'':'none';
+                panel.id = 'semPanel'+s;
+                panel.innerHTML = renderSemesterContent(s);
+                mc.appendChild(panel);
+            }
+            attachCardListeners();
+        }
+        function renderSemesterContent(sem) {
+            const d = SEMESTER_DATA[sem];
+            let html = `<h2 class="section-title">${d.name}</h2><p class="section-subtitle">Core and elective subjects</p>
+            <div class="search-bar-wrap"><input type="text" placeholder="Search subjects..." oninput="filterCards(this,'semPanel${sem}')"></div>
+            <div class="subjects-grid">`;
+            if(d.subjects) d.subjects.forEach(s=>html+=renderCard(sem,s));
+            if(d.electives) {
+                for(const [grp,subs] of Object.entries(d.electives)) {
+                    html += `<div class="elective-group-label">${grp}</div>`;
+                    subs.forEach(s=>html+=renderCard(sem,s));
+                }
+            }
+            html += '</div>'; return html;
+        }
+        function renderCard(sem, sub) {
+            const tc = {PC:'badge-pc',BS:'badge-bs',ES:'badge-es',HS:'badge-hs',AE:'badge-ae',PE:'badge-pe',OE:'badge-oe',PW:'badge-pw'}[sub.type]||'badge-pc';
+            const categories = isLabSubject(sub.title) ? LAB_CATEGORIES : THEORY_CATEGORIES;
+            let html = `<div class="subject-card" data-code="${sub.code}" data-sem="${sem}">
+                <div class="card-header"><div class="card-icon">${sub.icon||'S'}</div>
+                <div><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div>
+                <span class="card-type-badge ${tc}">${sub.type}</span>
+                <span class="card-chevron">&#9660;</span></div>
+                <div class="card-expand"><div class="card-expand-inner">`;
+            categories.forEach(cat=>{
+                const notes = getNotes(sem, sub.code, cat.key);
+                html += `<div class="note-category"><div class="note-cat-title">${cat.label}</div>`;
+                if(notes.length===0) html += '<span class="no-files">No files</span>';
+                else if(cat.key==='folder') {
+                    notes.forEach(n=>{
+                        const eid = extractFolderId(n.driveUrl);
+                        if(eid) html += `<iframe class="folder-embed" src="https://drive.google.com/embeddedfolderview?id=${eid}#list"></iframe>`;
+                        else html += '<span class="no-files">Invalid folder link</span>';
+                    });
+                } else {
+                    notes.forEach(n=>html += `<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)">[File] ${n.label||'File'}</a>`);
+                }
+                html += '</div>';
+            });
+            html += '</div></div></div>';
+            return html;
+        }
+                function attachCardListeners() {
+                document.querySelectorAll('.subject-card').forEach(card=>{
+                card.addEventListener('click', function(e) {
+                    if(e.target.closest('.file-link')||e.target.closest('iframe')||e.target.closest('button')) return;
+                    // Close all other cards first
+                    document.querySelectorAll('.subject-card').forEach(c => {
+                        if (c !== this) c.classList.remove('expanded');
+                    });
+                    // Toggle this card
+                    this.classList.toggle('expanded');
+                });
+            });
+            document.querySelectorAll('.file-link[data-drive-url]').forEach(link=>{
+                link.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const url = this.getAttribute('data-drive-url');
+                    const pid = extractFileId(url);
+                    if(pid) {
+                        document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${pid}/preview`;
+                        document.getElementById('previewIframe').style.display='';
+                        document.getElementById('quickViewInput').style.display='none';
+                        document.getElementById('previewModalOverlay').style.display='flex';
+                    }
+                });
+            });
+        }
+        window.filterCards = function(input, panelId) {
+            const q = input.value.toLowerCase();
+            document.querySelectorAll(`#${panelId} .subject-card`).forEach(card=>{
+                const t = (card.querySelector('.card-title')?.textContent||'').toLowerCase();
+                card.style.display = (!q || t.includes(q)) ? '' : 'none';
+            });
+        };
+
+        // ============== ADMIN ==============
+        document.getElementById('adminUploadBtn').addEventListener('click', ()=>{
+            document.getElementById('adminModalOverlay').style.display='flex';
+            populateAdminSemesters();
+            if(isAdmin) { document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); }
+            else { document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; }
+        });
+
+        function adminLogin() {
+            const pw = document.getElementById('adminPassword').value;
+            githubToken = document.getElementById('githubToken').value.trim();
+            if(pw==='btadmin2024' && githubToken) {
+                isAdmin = true;
+                document.getElementById('adminAuth').style.display='none';
+                document.getElementById('adminPanel').style.display='';
+                populateAdminSemesters(); updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting();
+                showToast('Admin unlocked – live sync active');
+            } else showToast('Wrong password or missing token');
+        }
+        function adminLogout() { isAdmin=false; document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; showToast('Locked'); }
+
+        function populateAdminSemesters() {
+            const sel = document.getElementById('adminSemester'); sel.innerHTML='';
+            for(let s=3;s<=8;s++) { const o = document.createElement('option'); o.value=s; o.textContent='Semester '+s; sel.appendChild(o); }
+            sel.value = currentSemester;
+        }
+        function updateAdminSubjects() {
+            const sem = document.getElementById('adminSemester').value;
+            const sel = document.getElementById('adminSubject'); sel.innerHTML='';
+            const d = SEMESTER_DATA[parseInt(sem)];
+            const all = [...(d.subjects||[])];
+            if(d.electives) Object.values(d.electives).forEach(a=>all.push(...a));
+            all.forEach(s=>{ const o=document.createElement('option'); o.value=s.code; o.textContent=s.code+' - '+s.title; o.dataset.title = s.title; sel.appendChild(o); });
+            updateAdminCategoryOptions();
+        }
+        function updateAdminCategoryOptions() {
+            const sel = document.getElementById('adminCategory');
+            const subjectSel = document.getElementById('adminSubject');
+            const selectedOption = subjectSel.options[subjectSel.selectedIndex];
+            const title = selectedOption ? selectedOption.dataset.title || selectedOption.textContent.split(' - ')[1] || '' : '';
+            const categories = isLabSubject(title) ? LAB_CATEGORIES : THEORY_CATEGORIES;
+            sel.innerHTML = '';
+            categories.forEach(cat => {
+                const o = document.createElement('option');
+                o.value = cat.key;
+                o.textContent = cat.label;
+                sel.appendChild(o);
+            });
+            refreshAdminExisting();
+        }
+        function refreshAdminExisting() {
+            const sem = document.getElementById('adminSemester').value;
+            const code = document.getElementById('adminSubject').value;
+            const cat = document.getElementById('adminCategory').value;
+            const div = document.getElementById('adminExistingFiles');
+            const notes = getNotes(sem,code,cat);
+            div.innerHTML = notes.length ? '' : 'No files yet.';
+            notes.forEach((n,i)=>{
+                div.innerHTML += `<div>[${cat==='folder'?'Folder':'File'}] ${n.label} <button onclick="removeNoteAndRefresh('${sem}','${code}','${cat}',${i})" style="background:red;color:#fff;border:none;border-radius:50%;cursor:pointer;">x</button></div>`;
+            });
+        }
+        function removeNoteAndRefresh(sem,code,cat,idx) {
+            const key = getNotesKey(sem,code,cat);
+            if(notesData[key]) { notesData[key].splice(idx,1); if(!notesData[key].length) delete notesData[key]; saveLocal(); refreshAdminExisting(); renderPanels(); }
+        }
+
+        async function adminAddAndCommit() {
+            const sem = document.getElementById('adminSemester').value;
+            const code = document.getElementById('adminSubject').value;
+            const cat = document.getElementById('adminCategory').value;
+            const label = document.getElementById('adminLabel').value.trim();
+            const url = document.getElementById('adminDriveLink').value.trim();
+            if(!label||!url) return showToast('Fill all fields');
+            if(cat==='folder' && !extractFolderId(url)) return showToast('Invalid folder link');
+            if(cat!=='folder' && !extractFileId(url)) return showToast('Invalid file link');
+            const key = getNotesKey(sem,code,cat);
+            if(!notesData[key]) notesData[key] = [];
+            notesData[key].push({label, driveUrl:url, addedAt:Date.now()});
+            saveLocal();
+            try {
+                const content = JSON.stringify(notesData, null, 2);
+                const base64 = btoa(unescape(encodeURIComponent(content)));
+                const getRes = await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`, {
+                    headers: { Authorization: `token ${githubToken}` }
+                });
+                const fi = await getRes.json();
+                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`, {
+                    method: 'PUT',
+                    headers: { Authorization: `token ${githubToken}`, 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message: 'Update notes', content: base64, sha: fi.sha })
+                });
+                showToast('Published! Everyone sees it now.');
+            } catch(e) { showToast('GitHub sync failed – check token/repo name. Saved locally.'); }
+            refreshAdminExisting(); renderPanels();
+        }
+
+        function exportJSON() {
+            const blob = new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='notes-data.json'; a.click();
+        }
+        function importJSON(e) {
+            const f = e.target.files[0]; if(!f) return;
+            const r = new FileReader();
+            r.onload = ev => { notesData = JSON.parse(ev.target.result); saveLocal(); renderPanels(); refreshAdminExisting(); showToast('Imported locally'); };
+            r.readAsText(f); e.target.value='';
+        }
+
+        // ============== PREVIEW ==============
+        document.getElementById('quickViewBtn').addEventListener('click', ()=>{
+            document.getElementById('previewIframe').style.display='none';
+            document.getElementById('quickViewInput').style.display='';
+            document.getElementById('previewModalOverlay').style.display='flex';
+        });
+        function closePreview() {
+            document.getElementById('previewModalOverlay').style.display='none';
+            document.getElementById('previewIframe').src='';
+            document.getElementById('previewIframe').style.display='none';
+        }
+        window.quickPreview = function() {
+            const url = document.getElementById('quickDriveLink').value.trim();
+            const id = extractFileId(url);
+            if(id) {
+                document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${id}/preview`;
+                document.getElementById('previewIframe').style.display='';
+                document.getElementById('quickViewInput').style.display='none';
+            } else showToast('Invalid file link');
+        };
+
+        // Theme toggle
+        document.getElementById('themeToggle').addEventListener('click', ()=>{
+            document.body.classList.toggle('dark');
+            document.getElementById('themeToggle').innerHTML = document.body.classList.contains('dark') ? '&#9789;' : '&#9788;';
+            localStorage.setItem('theme', document.body.classList.contains('dark')?'dark':'light');
+        });
+        (()=>{ const t = localStorage.getItem('theme')||'light'; document.body.classList.add(t); document.getElementById('themeToggle').innerHTML = t==='dark'?'&#9789;':'&#9788;'; })();
+
+        // Close modals
+        document.querySelectorAll('.modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', function(e) { if(e.target === this) { this.style.display='none'; closePreview(); } });
+        });
+
+        // Start
+        fetchLiveNotes();
+    </script>
+</body>
+</html>
