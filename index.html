@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BioTech Notes Portal | Sem 3-8</title>
+    <title>Synapse | Sem 3-8</title>
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
@@ -203,7 +203,7 @@
 
     <header class="header">
         <div class="header-inner">
-            <div class="logo" onclick="clearGlobalSearch(); showAllCards()" title="Back to all subjects (Esc)">BioTech Notes</div>
+            <div class="logo" onclick="clearGlobalSearch(); showAllCards()" title="Back to all subjects (Esc)">Synapse</div>
             <div class="header-actions">
                 <button class="btn btn-ghost btn-sm" onclick="toggleReadingMode()">Reading Mode</button>
                 <button class="btn btn-ghost" id="quickViewBtn">Quick View</button>
@@ -283,7 +283,6 @@
         function showKcToast(msg) { const el=document.getElementById('kcToast'); el.textContent=msg; el.classList.add('show'); setTimeout(()=>el.classList.remove('show'),800); }
         function showAllCards() { selectedCardCode = null; openGroups = {}; renderAll(); }
 
-        // Smooth counter animation
         function animateValue(el, start, end, duration) {
             if (start === end) { el.textContent = end; return; }
             const range = end - start;
@@ -332,7 +331,6 @@
             }
         }
 
-        // Global search functions
         function applyGlobalSearch() {
             globalFilter = document.getElementById('globalSearchInput').value.trim().toLowerCase();
             selectedCardCode = null;
@@ -427,7 +425,6 @@
         function renderCard(sem, sub, isSelected, si=0) {
             const individualCats = isLabSubject(sub.title) ? LAB_INDIVIDUAL : INDIVIDUAL_CATEGORIES;
             const groupedCats = isLabSubject(sub.title) ? [] : GROUPED_CATEGORIES;
-            // Always show all categories (no filter)
             const cc = isSelected ? 'subject-card selected-card' : 'subject-card fade-in-up';
             const sc = !isSelected && si < 16 ? ` stagger-${si+1}` : '';
             const hc = selectedCardCode && !isSelected ? ' hidden-card' : '';
