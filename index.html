@@ -1,9 +1,14 @@
+Here's your Synapse portal with the three additions (custom favicon, animated loading mascot, WhatsApp share button) and the sort dropdown removed as requested.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse | Sem 3-8</title>
+    <!-- Custom Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
@@ -70,7 +75,7 @@
         }
 
         @media print {
-            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .particle-canvas, .modal-overlay, .toast-container, .card-chevron, .back-to-top, .sparkle-container, .global-search-wrap, .sort-select { display: none !important; }
+            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .particle-canvas, .modal-overlay, .toast-container, .card-chevron, .back-to-top, .sparkle-container, .global-search-wrap, .loading-mascot { display: none !important; }
             body { background: white !important; color: #000 !important; font-size: 11pt; }
             .main-container { padding: 0 !important; max-width: 100% !important; }
             .subjects-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
@@ -94,24 +99,42 @@
         .sparkle { position: absolute; width: 6px; height: 6px; background: var(--accent); border-radius: 50%; animation: sparkleFade 0.6s ease-out forwards; pointer-events: none; }
         @keyframes sparkleFade { 0% { opacity: 1; transform: scale(1) translate(0,0); } 100% { opacity: 0; transform: scale(0) translate(var(--sx), var(--sy)); } }
 
+        /* Animated Loading Mascot */
+        .loading-mascot {
+            position: fixed; bottom: 2rem; left: 2rem; z-index: 99;
+            width: 50px; height: 50px; display: flex; align-items: center; justify-content: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s;
+        }
+        .loading-mascot.visible { opacity: 1; }
+        .mascot-neuron {
+            width: 30px; height: 30px; background: var(--accent);
+            border-radius: 50%; position: relative;
+            animation: neuronPulse 1.5s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+        .mascot-neuron::before, .mascot-neuron::after {
+            content: ''; position: absolute; background: var(--accent-light);
+            border-radius: 50%; animation: dendriteFloat 2s ease-in-out infinite;
+        }
+        .mascot-neuron::before { width: 8px; height: 8px; top: -14px; left: 4px; animation-delay: 0s; }
+        .mascot-neuron::after { width: 6px; height: 6px; bottom: -12px; right: 3px; animation-delay: 0.8s; }
+        @keyframes neuronPulse {
+            0%, 100% { transform: scale(1); opacity: 0.9; }
+            50% { transform: scale(1.2); opacity: 1; }
+        }
+        @keyframes dendriteFloat {
+            0%, 100% { transform: translateY(0); opacity: 0.7; }
+            50% { transform: translateY(-6px); opacity: 1; }
+        }
+
         .header { background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%); border-bottom: 1px solid var(--glass-border); padding: 0 2rem; position: sticky; top: 0; z-index: 100; }
         .header-inner { max-width: 1400px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 1.5rem; position: relative; }
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: 700;
-            background: var(--gradient-logo);
-            background-size: 300% 300%;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            cursor: pointer;
-            white-space: nowrap;
-            animation: gradientShift 6s ease infinite;
-            margin: 0 auto;
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
+            font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700;
+            background: var(--gradient-logo); background-size: 300% 300%;
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            cursor: pointer; white-space: nowrap; animation: gradientShift 6s ease infinite;
+            margin: 0 auto; position: absolute; left: 50%; transform: translateX(-50%);
         }
         @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
         .logo:hover { transform: translateX(-50%) scale(1.03); }
@@ -122,22 +145,17 @@
             font-family: 'Inter', sans-serif; white-space: nowrap; position: relative; overflow: hidden;
         }
         .btn:active { transform: scale(0.95); }
-        .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s; }
-        .btn:hover::after { opacity: 1; }
-        .btn-ghost { background: rgba(255,255,255,0.1); color: var(--text); border: 1.5px solid var(--glass-border); backdrop-filter: blur(10px); }
-        .btn-ghost:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: var(--shadow); }
-        .btn-accent { background: var(--gradient-accent); color: #1b3b2e; font-weight: 700; box-shadow: 0 4px 20px rgba(200,148,74,0.3); }
-        .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,148,74,0.4); }
+        .btn::after { content: ''; position: absolute; inset: 0; background: rgba(255,255,255,0.2); opacity: 0; transition: opacity 0.3s; } .btn:hover::after { opacity: 1; }
+        .btn-ghost { background: rgba(255,255,255,0.1); color: var(--text); border: 1.5px solid var(--glass-border); backdrop-filter: blur(10px); } .btn-ghost:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); box-shadow: var(--shadow); }
+        .btn-accent { background: var(--gradient-accent); color: #1b3b2e; font-weight: 700; box-shadow: 0 4px 20px rgba(200,148,74,0.3); } .btn-accent:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,148,74,0.4); }
         .btn-back { background: var(--glass-bg); backdrop-filter: blur(10px); color: var(--primary); border: 1.5px solid var(--glass-border); font-weight: 600; }
-        .btn-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--glass-border); color: var(--text); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); backdrop-filter: blur(10px); }
-        .btn-icon:hover { background: rgba(255,255,255,0.2); transform: rotate(15deg); }
+        .btn-icon { width: 38px; height: 38px; border-radius: 50%; background: rgba(255,255,255,0.1); border: 1.5px solid var(--glass-border); color: var(--text); cursor: pointer; font-size: 1.1rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); backdrop-filter: blur(10px); } .btn-icon:hover { background: rgba(255,255,255,0.2); transform: rotate(15deg); }
         .btn-sm { padding: 0.35rem 0.8rem; font-size: 0.72rem; }
 
         .global-search-wrap {
             background: var(--glass-bg); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--glass-border);
-            padding: 0.6rem 1.5rem;
-            position: sticky; top: 72px; z-index: 89;
+            padding: 0.6rem 1.5rem; position: sticky; top: 72px; z-index: 89;
             display: flex; align-items: center; justify-content: center;
         }
         .global-search-wrap input {
@@ -149,15 +167,8 @@
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
         }
         body.dark .global-search-wrap input { box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
-        .global-search-wrap input:focus {
-            border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow);
-        }
-        .global-search-wrap .clear-btn {
-            margin-left: -40px; background: none; border: none;
-            color: var(--text-muted); cursor: pointer; font-size: 1.1rem;
-            transition: var(--transition);
-        }
-        .global-search-wrap .clear-btn:hover { color: var(--text); }
+        .global-search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .global-search-wrap .clear-btn { margin-left: -40px; background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.1rem; transition: var(--transition); } .global-search-wrap .clear-btn:hover { color: var(--text); }
 
         .semester-nav {
             background: var(--glass-bg); backdrop-filter: blur(20px) saturate(180%);
@@ -174,49 +185,22 @@
             font-size: 0.82rem; cursor: pointer; white-space: nowrap; transition: var(--transition);
         }
         .sem-tab:hover { background: rgba(255,255,255,0.2); color: var(--text); }
-        .sem-tab.active {
-            background: var(--gradient-2); color: #fff;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.25);
-            transform: translateY(-2px);
-        }
+        .sem-tab.active { background: var(--gradient-2); color: #fff; box-shadow: 0 6px 24px rgba(0,0,0,0.25); transform: translateY(-2px); }
         .sem-tab .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.15rem 0.5rem; border-radius: 15px; margin-left: 0.4rem; font-size: 0.68rem; font-weight: 500; }
 
         .main-container { max-width: 1400px; margin: 0 auto; padding: 2rem 2rem 3rem; position: relative; z-index: 1; }
 
-        .semester-panel { animation: crossfadeIn 0.4s ease forwards; }
-        @keyframes crossfadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-        .fade-in-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        .semester-panel { animation: crossfadeIn 0.4s ease forwards; } @keyframes crossfadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+        .fade-in-up { animation: fadeInUp 0.6s ease forwards; opacity: 0; } @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         .stagger-1{animation-delay:0.05s}.stagger-2{animation-delay:0.1s}.stagger-3{animation-delay:0.15s}.stagger-4{animation-delay:0.2s}.stagger-5{animation-delay:0.25s}.stagger-6{animation-delay:0.3s}.stagger-7{animation-delay:0.35s}.stagger-8{animation-delay:0.4s}.stagger-9{animation-delay:0.45s}.stagger-10{animation-delay:0.5s}.stagger-11{animation-delay:0.55s}.stagger-12{animation-delay:0.6s}.stagger-13{animation-delay:0.65s}.stagger-14{animation-delay:0.7s}.stagger-15{animation-delay:0.75s}.stagger-16{animation-delay:0.8s}
 
         .semester-header { margin-bottom: 2rem; text-align: center; }
-        .semester-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
-            position: relative;
-            display: inline-block;
-        }
-        .semester-title::after {
-            content: '';
-            position: absolute;
-            bottom: -8px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background: var(--gradient-accent);
-            border-radius: 2px;
-        }
+        .semester-title { font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700; color: var(--primary); margin-bottom: 0.5rem; letter-spacing: -0.5px; position: relative; display: inline-block; }
+        .semester-title::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 60px; height: 3px; background: var(--gradient-accent); border-radius: 2px; }
         .semester-subtitle { color: var(--text-muted); font-size: 1rem; }
-        .back-bar { margin-bottom: 1.5rem; display: none; justify-content: center; gap: 0.5rem; }
-        .back-bar.visible { display: flex; }
+        .back-bar { margin-bottom: 1.5rem; display: none; justify-content: center; gap: 0.5rem; } .back-bar.visible { display: flex; }
 
-        .search-sort-row { display: flex; align-items: center; justify-content: center; gap: 0.7rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
-        .search-bar { max-width: 420px; position: relative; flex: 1; min-width: 200px; }
+        .search-bar { max-width: 420px; margin: 0 auto 1.5rem; position: relative; }
         .search-bar input {
             width: 100%; padding: 0.75rem 1.2rem; border: 2px solid var(--glass-border);
             border-radius: 50px; font-size: 0.88rem; background: var(--glass-bg);
@@ -227,65 +211,19 @@
         body.dark .search-bar input { box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
         .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); background: var(--surface); }
 
-        .sort-select {
-            padding: 0.75rem 1rem; border: 2px solid var(--glass-border);
-            border-radius: 50px; font-size: 0.82rem; background: var(--glass-bg);
-            backdrop-filter: blur(10px); color: var(--text); outline: none;
-            cursor: pointer; transition: var(--transition); font-family: 'Inter', sans-serif;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.04);
-        }
-        body.dark .sort-select { box-shadow: inset 0 2px 4px rgba(0,0,0,0.3); }
-        .sort-select:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
-
         .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 1.5rem; perspective: 1000px; }
-        .elective-group-label {
-            grid-column: 1/-1; font-family: 'Playfair Display', serif;
-            font-size: 1.2rem; font-weight: 600; color: var(--accent);
-            margin: 2rem 0 0.5rem; padding-bottom: 0.5rem;
-            border-bottom: 2px solid;
-            border-image: var(--gradient-accent) 1;
-            text-align: center;
-        }
+        .elective-group-label { grid-column: 1/-1; font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 600; color: var(--accent); margin: 2rem 0 0.5rem; padding-bottom: 0.5rem; border-bottom: 2px solid; border-image: var(--gradient-accent) 1; text-align: center; }
 
-        .subject-card {
-            background: var(--glass-bg); backdrop-filter: blur(16px) saturate(180%);
-            -webkit-backdrop-filter: blur(16px) saturate(180%);
-            border-radius: var(--radius-lg); border: 1px solid var(--glass-border);
-            overflow: hidden; cursor: pointer;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 24px rgba(26,60,46,0.08);
-            transform-style: preserve-3d; will-change: transform; position: relative;
-        }
+        .subject-card { background: var(--glass-bg); backdrop-filter: blur(16px) saturate(180%); -webkit-backdrop-filter: blur(16px) saturate(180%); border-radius: var(--radius-lg); border: 1px solid var(--glass-border); overflow: hidden; cursor: pointer; transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 4px 24px rgba(26,60,46,0.08); transform-style: preserve-3d; will-change: transform; position: relative; }
         body.dark .subject-card { box-shadow: 0 4px 24px rgba(0,0,0,0.3); }
-        .subject-card:hover {
-            box-shadow: 0 16px 48px rgba(26,60,46,0.16), 0 0 0 2px var(--accent-glow);
-            border-color: var(--accent); background: var(--surface);
-        }
+        .subject-card:hover { box-shadow: 0 16px 48px rgba(26,60,46,0.16), 0 0 0 2px var(--accent-glow); border-color: var(--accent); background: var(--surface); }
         body.dark .subject-card:hover { box-shadow: 0 16px 48px rgba(0,0,0,0.5), 0 0 0 2px var(--accent-glow); }
         .subject-card.hidden-card { display: none; }
-        .subject-card.selected-card {
-            grid-column: 1/-1; max-width: 100%;
-            box-shadow: 0 24px 64px rgba(26,60,46,0.2), 0 0 0 2px var(--accent);
-            border-color: var(--accent); background: var(--surface);
-            cursor: default; transform: none !important;
-        }
+        .subject-card.selected-card { grid-column: 1/-1; max-width: 100%; box-shadow: 0 24px 64px rgba(26,60,46,0.2), 0 0 0 2px var(--accent); border-color: var(--accent); background: var(--surface); cursor: default; transform: none !important; }
         body.dark .subject-card.selected-card { box-shadow: 0 24px 64px rgba(0,0,0,0.6), 0 0 0 2px var(--accent); }
-        .subject-card::before {
-            content: ''; position: absolute; top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.05) 100%);
-            pointer-events: none; z-index: 1;
-        }
-        body.dark .subject-card::before {
-            background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.02) 100%);
-        }
-        .subject-card::after {
-            content: ''; position: absolute; top: 0; left: -100%;
-            width: 60%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
-            pointer-events: none; z-index: 2; transition: left 0.6s ease;
-        }
-        .subject-card:hover::after { left: 120%; }
+        .subject-card::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(135deg, rgba(255,255,255,0.15) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.05) 100%); pointer-events: none; z-index: 1; }
+        body.dark .subject-card::before { background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 30%, transparent 70%, rgba(255,255,255,0.02) 100%); }
+        .subject-card::after { content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent); pointer-events: none; z-index: 2; transition: left 0.6s ease; } .subject-card:hover::after { left: 120%; }
 
         .card-header { padding: 1.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; position: relative; z-index: 3; }
         .card-header-left { flex: 1; min-width: 0; }
@@ -294,12 +232,7 @@
         .card-chevron { color: var(--text-muted); transition: var(--transition); font-size: 0.7rem; flex-shrink: 0; }
         .selected-card .card-chevron { transform: rotate(180deg); color: var(--accent); }
 
-        .card-expand {
-            max-height: 0; overflow: hidden;
-            transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1.1);
-            background: var(--surface-alt); backdrop-filter: blur(10px);
-            position: relative; z-index: 3;
-        }
+        .card-expand { max-height: 0; overflow: hidden; transition: max-height 0.6s cubic-bezier(0.4, 0, 0.2, 1.1); background: var(--surface-alt); backdrop-filter: blur(10px); position: relative; z-index: 3; }
         .selected-card .card-expand { max-height: 2000px; border-top: 1px solid var(--glass-border); }
         .card-expand-inner { padding: 1.2rem 1.5rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.8rem; }
 
@@ -318,19 +251,16 @@
         .file-link { display: flex; align-items: center; gap: 0.35rem; padding: 0.35rem 0.6rem; margin: 0.15rem 0; background: var(--surface); border-radius: 8px; font-size: 0.72rem; color: var(--text); text-decoration: none; cursor: pointer; transition: var(--transition); font-weight: 500; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent; }
         .file-link:hover { background: var(--accent-pale); color: var(--primary); border-color: var(--accent); transform: translateX(3px); }
         .file-icon { font-size: 0.85rem; flex-shrink: 0; }
-        .file-download-btn, .file-copy-btn { margin-left: 0.25rem; background: var(--accent); color: #1b3b2e; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
-        .file-download-btn:hover, .file-copy-btn:hover { background: var(--accent-light); transform: scale(1.15); }
+        .file-download-btn, .file-copy-btn, .file-whatsapp-btn { margin-left: 0.25rem; background: var(--accent); color: #1b3b2e; border: none; border-radius: 50%; width: 24px; height: 24px; cursor: pointer; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0; }
+        .file-download-btn:hover, .file-copy-btn:hover, .file-whatsapp-btn:hover { background: var(--accent-light); transform: scale(1.15); }
         .file-copy-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text); }
         .file-copy-btn:hover { background: var(--accent-pale); color: var(--primary); }
+        .file-whatsapp-btn { background: #25D366; color: #fff; }
+        .file-whatsapp-btn:hover { background: #1ebe57; }
         .folder-embed { width: 100%; height: 200px; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); margin-top: 0.3rem; }
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.65rem; opacity: 0.7; }
         .sub-cat-title { font-weight: 600; font-size: 0.65rem; color: var(--text-secondary); margin-bottom: 0.2rem; text-transform: uppercase; letter-spacing: 0.3px; }
-        .new-badge {
-            display: inline-block; background: var(--accent); color: #1b3b2e;
-            padding: 0.1rem 0.4rem; border-radius: 8px; font-size: 0.55rem;
-            font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
-            animation: newPulse 2s ease infinite; margin-left: 0.3rem;
-        }
+        .new-badge { display: inline-block; background: var(--accent); color: #1b3b2e; padding: 0.1rem 0.4rem; border-radius: 8px; font-size: 0.55rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px; animation: newPulse 2s ease infinite; margin-left: 0.3rem; }
         @keyframes newPulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
         .back-to-top { position: fixed; bottom: 2rem; right: 2rem; width: 44px; height: 44px; border-radius: 50%; background: var(--gradient-accent); color: #1b3b2e; border: none; cursor: pointer; font-size: 1.2rem; z-index: 99; box-shadow: var(--shadow-lg); transition: var(--transition); opacity: 0; pointer-events: none; transform: translateY(10px); display: flex; align-items: center; justify-content: center; } .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); } .back-to-top:hover { transform: translateY(-3px); box-shadow: var(--shadow-xl); }
@@ -346,15 +276,19 @@
         .toast-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.5rem; } .toast { background: var(--gradient-2); color: #fff; padding: 0.7rem 1.2rem; border-radius: 50px; font-size: 0.8rem; font-weight: 600; box-shadow: var(--shadow-lg); animation: toastIn 0.4s ease; backdrop-filter: blur(10px); } @keyframes toastIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
         .kc-toast { position: fixed; bottom: 50%; left: 50%; transform: translate(-50%,50%); background: var(--gradient-2); color: #fff; padding: 1.5rem 2.5rem; border-radius: 20px; font-size: 1.5rem; font-weight: 700; z-index: 400; pointer-events: none; opacity: 0; transition: opacity 0.15s ease; box-shadow: var(--shadow-xl); font-family: 'Playfair Display', serif; } .kc-toast.show { opacity: 1; }
 
-        @media (max-width: 768px) {
-            .header { padding: 0 1rem; } .header-inner { height: 60px; } .logo { font-size: 1.5rem; position: static; transform: none; margin: 0 auto; } .logo:hover { transform: scale(1.03); } .header-actions { margin-left: 0; gap: 0.3rem; } .btn { padding: 0.4rem 0.9rem; font-size: 0.7rem; } .main-container { padding: 1rem 1rem 5rem; } .semester-title { font-size: 2rem; } .subjects-grid { grid-template-columns: 1fr; gap: 1rem; } .semester-nav { padding: 0.4rem 0.6rem; top: 120px; } .sem-tab { padding: 0.45rem 0.8rem; font-size: 0.7rem; } .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); } .search-bar { max-width: 100%; } .mobile-nav { display: block; } .subject-card:hover { transform: none !important; } .subject-card::after { display: none; } .global-search-wrap { padding: 0.4rem 0.8rem; } .card-header { padding: 1.2rem; } .card-title { font-size: 0.95rem; }
-        }
+        @media (max-width: 768px) { .header { padding: 0 1rem; } .header-inner { height: 60px; } .logo { font-size: 1.5rem; position: static; transform: none; margin: 0 auto; } .logo:hover { transform: scale(1.03); } .header-actions { margin-left: 0; gap: 0.3rem; } .btn { padding: 0.4rem 0.9rem; font-size: 0.7rem; } .main-container { padding: 1rem 1rem 5rem; } .semester-title { font-size: 2rem; } .subjects-grid { grid-template-columns: 1fr; gap: 1rem; } .semester-nav { padding: 0.4rem 0.6rem; top: 120px; } .sem-tab { padding: 0.45rem 0.8rem; font-size: 0.7rem; } .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); } .search-bar { max-width: 100%; } .mobile-nav { display: block; } .subject-card:hover { transform: none !important; } .subject-card::after { display: none; } .global-search-wrap { padding: 0.4rem 0.8rem; } .card-header { padding: 1.2rem; } .card-title { font-size: 0.95rem; } .loading-mascot { bottom: 5rem; left: 1rem; } }
     </style>
 </head>
 <body class="light">
     <canvas class="particle-canvas" id="particleCanvas"></canvas>
     <div class="sparkle-container" id="sparkleContainer"></div>
     <div class="kc-toast" id="kcToast"></div>
+
+    <!-- Animated Loading Mascot -->
+    <div class="loading-mascot" id="loadingMascot">
+        <div class="mascot-neuron"></div>
+    </div>
+
     <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
     <header class="header">
@@ -369,7 +303,6 @@
         </div>
     </header>
 
-    <!-- Global Search Bar -->
     <div class="global-search-wrap">
         <input type="text" id="globalSearchInput" placeholder="Search across all semesters..." oninput="applyGlobalSearch()">
         <button class="clear-btn" onclick="clearGlobalSearch()" title="Clear search">✕</button>
@@ -425,12 +358,19 @@
         function isLabSubject(title) { return title.toLowerCase().includes('lab'); }
 
         let notesData = {}, currentSemester = '3', selectedCardCode = null, isAdmin = false, githubToken = '', openGroups = {};
-        let globalFilter = '', sortOrder = 'name';
+        let globalFilter = '';
+
+        function showLoadingMascot() { document.getElementById('loadingMascot').classList.add('visible'); }
+        function hideLoadingMascot() { document.getElementById('loadingMascot').classList.remove('visible'); }
 
         function updateBackToTop() { document.getElementById('backToTop').classList.toggle('visible', window.scrollY > 500); }
         window.addEventListener('scroll', updateBackToTop, {passive: true});
 
-        async function fetchLiveNotes() { try { const res = await fetch('./notes-data.json'); if (res.ok) notesData = await res.json(); else notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); } catch(e) { notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); } setTimeout(() => { const skel = document.getElementById('loadingSkeleton'); if (skel) skel.style.display = 'none'; renderAll(); }, 800); }
+        async function fetchLiveNotes() {
+            showLoadingMascot();
+            try { const res = await fetch('./notes-data.json'); if (res.ok) notesData = await res.json(); else notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); } catch(e) { notesData = JSON.parse(localStorage.getItem('bt_notes')||'{}'); }
+            setTimeout(() => { const skel = document.getElementById('loadingSkeleton'); if (skel) skel.style.display = 'none'; hideLoadingMascot(); renderAll(); }, 800);
+        }
         function saveLocal() { localStorage.setItem('bt_notes', JSON.stringify(notesData)); }
         function getNotesKey(sem,code,cat) { return `${sem}|${code}|${cat}`; }
         function getNotes(sem,code,cat) { return notesData[getNotesKey(sem,code,cat)] || []; }
@@ -443,223 +383,72 @@
         function renderAll() { renderTabs(); renderMobileNav(); renderPanels(); }
         function renderTabs() {
             const nav = document.getElementById('semesterNav'); nav.innerHTML = '';
-            for(let s=3; s<=8; s++) {
-                const btn = document.createElement('button');
-                btn.className = 'sem-tab' + (s.toString()===currentSemester && !globalFilter ? ' active' : '');
-                const d = SEMESTER_DATA[s];
-                const total = (d.subjects?.length||0) + (d.electives ? Object.values(d.electives).flat().length : 0);
-                btn.innerHTML = `Sem ${s} <span class="badge">${total}</span>`;
-                btn.onclick = () => { clearGlobalSearch(); currentSemester = s.toString(); selectedCardCode = null; openGroups = {}; renderAll(); };
-                nav.appendChild(btn);
-            }
+            for(let s=3; s<=8; s++) { const btn=document.createElement('button'); btn.className='sem-tab'+(s.toString()===currentSemester && !globalFilter ? ' active':''); const d=SEMESTER_DATA[s]; const total=(d.subjects?.length||0)+(d.electives?Object.values(d.electives).flat().length:0); btn.innerHTML=`Sem ${s} <span class="badge">${total}</span>`; btn.onclick=()=>{ clearGlobalSearch(); currentSemester=s.toString(); selectedCardCode=null; openGroups={}; renderAll(); }; nav.appendChild(btn); }
         }
-        function renderMobileNav() {
-            const nav = document.getElementById('mobileNavInner'); nav.innerHTML = '';
-            for(let s=3; s<=8; s++) {
-                const btn = document.createElement('button');
-                btn.className = 'mobile-nav-btn' + (s.toString()===currentSemester && !globalFilter ? ' active' : '');
-                btn.innerHTML = `<span class="nav-icon">${s}</span>Sem ${s}`;
-                btn.onclick = () => { clearGlobalSearch(); currentSemester = s.toString(); selectedCardCode = null; renderAll(); };
-                nav.appendChild(btn);
-            }
-        }
-
-        function applyGlobalSearch() { globalFilter = document.getElementById('globalSearchInput').value.trim().toLowerCase(); selectedCardCode = null; renderAll(); }
-        function clearGlobalSearch() { document.getElementById('globalSearchInput').value = ''; globalFilter = ''; selectedCardCode = null; renderAll(); }
+        function renderMobileNav() { const nav=document.getElementById('mobileNavInner'); nav.innerHTML=''; for(let s=3; s<=8; s++) { const btn=document.createElement('button'); btn.className='mobile-nav-btn'+(s.toString()===currentSemester && !globalFilter ? ' active':''); btn.innerHTML=`<span class="nav-icon">${s}</span>Sem ${s}`; btn.onclick=()=>{ clearGlobalSearch(); currentSemester=s.toString(); selectedCardCode=null; renderAll(); }; nav.appendChild(btn); } }
+        function applyGlobalSearch() { globalFilter=document.getElementById('globalSearchInput').value.trim().toLowerCase(); selectedCardCode=null; renderAll(); }
+        function clearGlobalSearch() { document.getElementById('globalSearchInput').value=''; globalFilter=''; selectedCardCode=null; renderAll(); }
         window.clearGlobalSearch = clearGlobalSearch;
 
         function getGroupOpenKey(sem, code, groupKey) { return `${sem}|${code}|${groupKey}`; }
         function isGroupOpen(sem, code, groupKey) { return openGroups[getGroupOpenKey(sem, code, groupKey)] || false; }
         function toggleGroup(sem, code, groupKey) { const key = getGroupOpenKey(sem, code, groupKey); openGroups[key] = !openGroups[key]; renderPanels(); }
 
-        function getAllSubjectsFlat() {
-            const all = [];
-            for (let sem = 3; sem <= 8; sem++) {
-                const data = SEMESTER_DATA[sem];
-                const subs = [...(data.subjects||[])];
-                if (data.electives) Object.values(data.electives).forEach(arr => subs.push(...arr));
-                subs.forEach(s => all.push({ ...s, semester: sem, semesterName: data.name }));
-            }
-            return all;
-        }
+        function getAllSubjectsFlat() { const all=[]; for(let sem=3; sem<=8; sem++){ const data=SEMESTER_DATA[sem]; const subs=[...(data.subjects||[])]; if(data.electives) Object.values(data.electives).forEach(arr=>subs.push(...arr)); subs.forEach(s=>all.push({...s,semester:sem,semesterName:data.name})); } return all; }
 
-        function renderPanels() {
-            const mc = document.getElementById('mainContainer');
-            const skel = document.getElementById('loadingSkeleton');
-            if (skel) skel.style.display = 'none';
-            mc.innerHTML = '';
+        function renderPanels() { const mc=document.getElementById('mainContainer'); const skel=document.getElementById('loadingSkeleton'); if(skel) skel.style.display='none'; mc.innerHTML=''; if(globalFilter){ const allSubjects=getAllSubjectsFlat(); const filtered=allSubjects.filter(s=>s.title.toLowerCase().includes(globalFilter)||s.code.toLowerCase().includes(globalFilter)); if(filtered.length===0){ mc.innerHTML=`<div class="semester-panel"><div class="semester-header"><h2 class="semester-title">Search Results</h2><p class="semester-subtitle">No subjects match "${globalFilter}"</p></div></div>`; return; } const grouped={}; filtered.forEach(s=>{if(!grouped[s.semester]) grouped[s.semester]={name:s.semesterName,subjects:[]}; grouped[s.semester].subjects.push(s);}); let html='<div class="semester-panel"><div class="semester-header"><h2 class="semester-title">Search Results</h2><p class="semester-subtitle">Found across all semesters</p></div>'; for(const sem of Object.keys(grouped).sort()){ html+=`<div class="elective-group-label">${grouped[sem].name}</div><div class="subjects-grid">`; grouped[sem].subjects.forEach((s,i)=>{html+=renderCard(s.semester,{code:s.code,title:s.title},false,i);}); html+='</div>'; } mc.innerHTML=html+'</div>'; attachCardListeners(); attachTiltEffect(); return; } for(let s=3; s<=8; s++){ const panel=document.createElement('div'); panel.className='semester-panel'; panel.style.display=s.toString()===currentSemester?'':'none'; const isSingleCard=selectedCardCode && s.toString()===currentSemester; panel.innerHTML=renderSemesterContent(s,isSingleCard); mc.appendChild(panel); } attachCardListeners(); attachGroupListeners(); attachTiltEffect(); }
 
-            if (globalFilter) {
-                const allSubjects = getAllSubjectsFlat();
-                const filtered = allSubjects.filter(s => s.title.toLowerCase().includes(globalFilter) || s.code.toLowerCase().includes(globalFilter));
-                if (filtered.length === 0) { mc.innerHTML = `<div class="semester-panel"><div class="semester-header"><h2 class="semester-title">Search Results</h2><p class="semester-subtitle">No subjects match "${globalFilter}"</p></div></div>`; return; }
-                const grouped = {};
-                filtered.forEach(s => { if (!grouped[s.semester]) grouped[s.semester] = { name: s.semesterName, subjects: [] }; grouped[s.semester].subjects.push(s); });
-                let html = '<div class="semester-panel"><div class="semester-header"><h2 class="semester-title">Search Results</h2><p class="semester-subtitle">Found across all semesters</p></div>';
-                for (const sem of Object.keys(grouped).sort()) { html += `<div class="elective-group-label">${grouped[sem].name}</div>`; html += '<div class="subjects-grid">'; grouped[sem].subjects.forEach((s, i) => { html += renderCard(s.semester, {code: s.code, title: s.title}, false, i); }); html += '</div>'; }
-                mc.innerHTML = html + '</div>'; attachCardListeners(); attachTiltEffect(); return;
-            }
-
-            for(let s=3; s<=8; s++) {
-                const panel = document.createElement('div');
-                panel.className = 'semester-panel';
-                panel.style.display = s.toString()===currentSemester ? '' : 'none';
-                const isSingleCard = selectedCardCode && s.toString()===currentSemester;
-                panel.innerHTML = renderSemesterContent(s, isSingleCard);
-                mc.appendChild(panel);
-            }
-            attachCardListeners(); attachGroupListeners(); attachTiltEffect();
-        }
-
-        function renderSemesterContent(sem, isSingleCard) {
-            let html = `<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`;
-            if (!isSingleCard) html += `<p class="semester-subtitle">Click any subject to focus</p>`;
-            html += `</div>`;
-            if (isSingleCard) {
-                html += `<div class="back-bar visible"><button class="btn btn-back" onclick="showAllCards()">← Back (Esc)</button><button class="btn btn-ghost btn-sm" onclick="toggleReadingMode()">Reading Mode</button></div>`;
-            } else {
-                html += `<div class="search-sort-row">
-                    <div class="search-bar"><input type="text" placeholder="Search within semester..." oninput="filterCards(this,'${sem}')"></div>
-                    <select class="sort-select" onchange="setSort(this.value)">
-                        <option value="name">Sort by Name</option>
-                        <option value="code">Sort by Code</option>
-                    </select>
-                </div>`;
-            }
-            html += `<div class="subjects-grid" id="grid${sem}">`;
-            if (isSingleCard) { const sub = getAllSubjects(sem).find(s => s.code === selectedCardCode); if (sub) html += renderCard(sem, sub, true); }
-            else html += renderAllCards(sem);
-            return html + '</div>';
-        }
-
-        window.setSort = function(val) { sortOrder = val; renderPanels(); };
-
-        function getAllSubjects(sem) {
-            const d = SEMESTER_DATA[sem];
-            let all = [...(d.subjects||[])];
-            if(d.electives) Object.values(d.electives).forEach(a => all.push(...a));
-            if (sortOrder === 'code') all.sort((a,b) => a.code.localeCompare(b.code));
-            else all.sort((a,b) => a.title.localeCompare(b.title));
-            return all;
-        }
-        function renderAllCards(sem) { const d = SEMESTER_DATA[sem]; let html = '', si = 0; const subs = getAllSubjects(sem);
-            if(d.subjects) d.subjects.forEach(s => { html += renderCard(sem, s, false, si); si++; });
-            if(d.electives) for(const[g,ss] of Object.entries(d.electives)) { html += `<div class="elective-group-label">${g}</div>`; ss.forEach(s => { html += renderCard(sem, s, false, si); si++; }); }
-            return html;
-        }
+        function renderSemesterContent(sem, isSingleCard) { let html=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`; if(!isSingleCard) html+=`<p class="semester-subtitle">Click any subject to focus</p>`; html+=`</div>`; if(isSingleCard){ html+=`<div class="back-bar visible"><button class="btn btn-back" onclick="showAllCards()">← Back (Esc)</button><button class="btn btn-ghost btn-sm" onclick="toggleReadingMode()">Reading Mode</button></div>`; } else { html+=`<div class="search-bar"><input type="text" placeholder="Search within semester..." oninput="filterCards(this,'${sem}')"></div>`; } html+=`<div class="subjects-grid" id="grid${sem}">`; if(isSingleCard){ const sub=getAllSubjects(sem).find(s=>s.code===selectedCardCode); if(sub) html+=renderCard(sem,sub,true); } else html+=renderAllCards(sem); return html+'</div>'; }
+        function getAllSubjects(sem) { const d=SEMESTER_DATA[sem]; let all=[...(d.subjects||[])]; if(d.electives) Object.values(d.electives).forEach(a=>all.push(...a)); return all; }
+        function renderAllCards(sem) { const d=SEMESTER_DATA[sem]; let html='',si=0; if(d.subjects) d.subjects.forEach(s=>{html+=renderCard(sem,s,false,si);si++;}); if(d.electives) for(const[g,ss] of Object.entries(d.electives)){html+=`<div class="elective-group-label">${g}</div>`; ss.forEach(s=>{html+=renderCard(sem,s,false,si);si++;});} return html; }
 
         function renderCard(sem, sub, isSelected, si=0) {
             const individualCats = isLabSubject(sub.title) ? LAB_INDIVIDUAL : INDIVIDUAL_CATEGORIES;
             const groupedCats = isLabSubject(sub.title) ? [] : GROUPED_CATEGORIES;
-            const cc = isSelected ? 'subject-card selected-card' : 'subject-card fade-in-up';
-            const sc = !isSelected && si < 16 ? ` stagger-${si+1}` : '';
-            const hc = selectedCardCode && !isSelected ? ' hidden-card' : '';
-            let h = `<div class="${cc}${sc}${hc}" data-code="${sub.code}" data-sem="${sem}">
-                <div class="card-header"><div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div><span class="card-chevron">▾</span></div>
-                <div class="card-expand"><div class="card-expand-inner">`;
-            individualCats.forEach(c => {
-                const notes = getNotes(sem, sub.code, c.key);
-                h += renderCategoryBox(c.label, notes);
-            });
-            groupedCats.forEach(group => {
-                const open = isGroupOpen(sem, sub.code, group.groupKey);
-                const allNotes = group.subCategories.flatMap(sc => getNotes(sem, sub.code, sc.key));
-                const hasContent = allNotes.length > 0;
-                h += `<div class="grouped-section${open ? ' open' : ''}" data-group="${group.groupKey}">
-                    <div class="grouped-section-header" onclick="event.stopPropagation();toggleGroup('${sem}','${sub.code}','${group.groupKey}')">
-                        <span>${group.groupLabel} ${hasContent ? '('+allNotes.length+')' : ''}</span>
-                        <span class="grouped-section-chevron">▾</span>
-                    </div>
-                    <div class="grouped-section-body"><div class="grouped-section-body-inner">`;
-                group.subCategories.forEach(sc => {
-                    const notes = getNotes(sem, sub.code, sc.key);
-                    h += `<div class="sub-cat-title">${sc.label}</div>`;
-                    if (notes.length === 0) h += '<span class="no-files">Nothing yet</span>';
-                    else notes.forEach(n => {
-                        const icon = getFileIcon(n.driveUrl);
-                        const dl = getDirectDownloadUrl(n.driveUrl);
-                        const newBadge = isNew(n.addedAt||0) ? '<span class="new-badge">New</span>' : '';
-                        h += `<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${n.label||'File'}${newBadge}
-                        <button class="file-copy-btn" onclick="event.stopPropagation();event.preventDefault();copyToClipboard('${n.driveUrl.replace(/'/g,"\\'")}')" title="Copy link">📋</button>
-                        <button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(n.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;
-                    });
-                });
-                h += `</div></div></div>`;
-            });
-            h += '</div></div></div>';
-            return h;
-        }
+            const cc=isSelected?'subject-card selected-card':'subject-card fade-in-up'; const sc=!isSelected&&si<16?` stagger-${si+1}`:''; const hc=selectedCardCode&&!isSelected?' hidden-card':'';
+            let h=`<div class="${cc}${sc}${hc}" data-code="${sub.code}" data-sem="${sem}"><div class="card-header"><div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div><span class="card-chevron">▾</span></div><div class="card-expand"><div class="card-expand-inner">`;
+            individualCats.forEach(c=>{const notes=getNotes(sem,sub.code,c.key);h+=renderCategoryBox(c.label,notes);});
+            groupedCats.forEach(group=>{const open=isGroupOpen(sem,sub.code,group.groupKey);const allNotes=group.subCategories.flatMap(sc=>getNotes(sem,sub.code,sc.key));const hasContent=allNotes.length>0;h+=`<div class="grouped-section${open?' open':''}" data-group="${group.groupKey}"><div class="grouped-section-header" onclick="event.stopPropagation();toggleGroup('${sem}','${sub.code}','${group.groupKey}')"><span>${group.groupLabel} ${hasContent?'('+allNotes.length+')':''}</span><span class="grouped-section-chevron">▾</span></div><div class="grouped-section-body"><div class="grouped-section-body-inner">`;group.subCategories.forEach(sc=>{const notes=getNotes(sem,sub.code,sc.key);h+=`<div class="sub-cat-title">${sc.label}</div>`;if(notes.length===0)h+='<span class="no-files">Nothing yet</span>';else notes.forEach(n=>{const icon=getFileIcon(n.driveUrl);const dl=getDirectDownloadUrl(n.driveUrl);const newBadge=isNew(n.addedAt||0)?'<span class="new-badge">New</span>':'';h+=`<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${n.label||'File'}${newBadge}<button class="file-copy-btn" onclick="event.stopPropagation();event.preventDefault();copyToClipboard('${n.driveUrl.replace(/'/g,"\\'")}')" title="Copy link">📋</button><button class="file-whatsapp-btn" onclick="event.stopPropagation();event.preventDefault();shareWhatsApp('${n.driveUrl.replace(/'/g,"\\'")}','${(n.label||'File').replace(/'/g,"\\'")}')" title="Share on WhatsApp">💬</button><button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(n.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;});});h+=`</div></div></div>`;});h+='</div></div></div>';return h;}
+        function renderCategoryBox(label, notes) {let h=`<div class="note-category"><div class="note-cat-title">${label}</div>`;if(notes.length===0)h+='<span class="no-files">Nothing yet</span>';else notes.forEach(n=>{const icon=getFileIcon(n.driveUrl);const dl=getDirectDownloadUrl(n.driveUrl);const newBadge=isNew(n.addedAt||0)?'<span class="new-badge">New</span>':'';h+=`<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${n.label||'File'}${newBadge}<button class="file-copy-btn" onclick="event.stopPropagation();event.preventDefault();copyToClipboard('${n.driveUrl.replace(/'/g,"\\'")}')" title="Copy link">📋</button><button class="file-whatsapp-btn" onclick="event.stopPropagation();event.preventDefault();shareWhatsApp('${n.driveUrl.replace(/'/g,"\\'")}','${(n.label||'File').replace(/'/g,"\\'")}')" title="Share on WhatsApp">💬</button><button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(n.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;});return h+'</div>';}
 
-        function renderCategoryBox(label, notes) {
-            let h = `<div class="note-category"><div class="note-cat-title">${label}</div>`;
-            if (notes.length === 0) h += '<span class="no-files">Nothing yet</span>';
-            else notes.forEach(n => {
-                const icon = getFileIcon(n.driveUrl);
-                const dl = getDirectDownloadUrl(n.driveUrl);
-                const newBadge = isNew(n.addedAt||0) ? '<span class="new-badge">New</span>' : '';
-                h += `<a class="file-link" data-drive-url="${n.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${n.label||'File'}${newBadge}
-                <button class="file-copy-btn" onclick="event.stopPropagation();event.preventDefault();copyToClipboard('${n.driveUrl.replace(/'/g,"\\'")}')" title="Copy link">📋</button>
-                <button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(n.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;
-            });
-            return h + '</div>';
-        }
-
-        window.copyToClipboard = function(text) { navigator.clipboard.writeText(text).then(() => showToast('Link copied!')).catch(() => showToast('Failed to copy')); };
-        window.downloadFile = function(url, name) { const a = document.createElement('a'); a.href = url; a.download = name; document.body.appendChild(a); a.click(); document.body.removeChild(a); showToast('Downloading...'); };
+        window.copyToClipboard = function(text) { navigator.clipboard.writeText(text).then(()=>showToast('Link copied!')).catch(()=>showToast('Failed to copy')); };
+        window.shareWhatsApp = function(url, label) { const text = encodeURIComponent(`📚 ${label}\n${url}`); window.open(`https://wa.me/?text=${text}`, '_blank'); };
+        window.downloadFile = function(url, name) { const a=document.createElement('a');a.href=url;a.download=name;document.body.appendChild(a);a.click();document.body.removeChild(a);showToast('Downloading...'); };
         window.toggleGroup = toggleGroup;
 
-        function attachCardListeners() {
-            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c => {
-                c.addEventListener('click', function(e) {
-                    if (e.target.closest('.file-link') || e.target.closest('iframe') || e.target.closest('button') || e.target.closest('.grouped-section-header')) return;
-                    selectedCardCode = this.getAttribute('data-code'); renderPanels(); window.scrollTo({ top: 0, behavior: 'smooth' });
-                });
-            });
-            document.querySelectorAll('.file-link[data-drive-url]').forEach(l => {
-                l.addEventListener('click', function(e) { if (e.target.closest('button')) return; e.stopPropagation(); const p = extractFileId(this.getAttribute('data-drive-url')); if (p) { document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${p}/preview`; document.getElementById('previewIframe').style.display = ''; document.getElementById('quickViewInput').style.display = 'none'; openPreviewModal(); } });
-            });
-        }
-        function attachGroupListeners() { /* handled inline */ }
-        function attachTiltEffect() {
-            document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c => {
-                c.addEventListener('mousemove', function(e) { const r = this.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top; const cx = r.width / 2, cy = r.height / 2; this.style.transform = `perspective(800px) rotateX(${(y-cy)/cy*-8}deg) rotateY(${(x-cx)/cx*8}deg) translateY(-6px)`; });
-                c.addEventListener('mouseleave', function() { this.style.transform = 'perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)'; });
-            });
-        }
-        window.filterCards = function(input, sem) { const q = input.value.toLowerCase(); document.querySelectorAll(`#grid${sem} .subject-card:not(.selected-card)`).forEach(c => { c.style.display = (!q || c.querySelector('.card-title').textContent.toLowerCase().includes(q)) ? '' : 'none'; }); };
+        function attachCardListeners() { document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c=>{c.addEventListener('click',function(e){if(e.target.closest('.file-link')||e.target.closest('iframe')||e.target.closest('button')||e.target.closest('.grouped-section-header'))return;selectedCardCode=this.getAttribute('data-code');renderPanels();window.scrollTo({top:0,behavior:'smooth'});});});document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{l.addEventListener('click',function(e){if(e.target.closest('button'))return;e.stopPropagation();const p=extractFileId(this.getAttribute('data-drive-url'));if(p){document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${p}/preview`;document.getElementById('previewIframe').style.display='';document.getElementById('quickViewInput').style.display='none';openPreviewModal();}});});}
+        function attachGroupListeners(){}
+        function attachTiltEffect(){document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c=>{c.addEventListener('mousemove',function(e){const r=this.getBoundingClientRect(),x=e.clientX-r.left,y=e.clientY-r.top;const cx=r.width/2,cy=r.height/2;this.style.transform=`perspective(800px) rotateX(${(y-cy)/cy*-8}deg) rotateY(${(x-cx)/cx*8}deg) translateY(-6px)`;});c.addEventListener('mouseleave',function(){this.style.transform='perspective(800px) rotateX(0deg) rotateY(0deg) translateY(0px)';});});}
+        window.filterCards=function(input,sem){const q=input.value.toLowerCase();document.querySelectorAll(`#grid${sem} .subject-card:not(.selected-card)`).forEach(c=>{c.style.display=(!q||c.querySelector('.card-title').textContent.toLowerCase().includes(q))?'':'none';});};
 
-        document.addEventListener('keydown', function(e) {
-            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.tagName === 'SELECT') return;
-            if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'D') { e.preventDefault(); document.getElementById('themeToggle').click(); return; }
-            if (e.key >= '3' && e.key <= '8') { e.preventDefault(); clearGlobalSearch(); currentSemester = e.key; selectedCardCode = null; openGroups = {}; renderAll(); showKcToast('Semester ' + e.key); }
-            if (e.key === 'Escape') { e.preventDefault(); if (document.getElementById('adminModalOverlay').classList.contains('open')) closeAdminModal(); else if (document.getElementById('previewModalOverlay').classList.contains('open')) closePreview(); else if (selectedCardCode) { showAllCards(); showKcToast('All Subjects'); } }
-        });
+        document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key==='D'){e.preventDefault();document.getElementById('themeToggle').click();return;}if(e.key>='3'&&e.key<='8'){e.preventDefault();clearGlobalSearch();currentSemester=e.key;selectedCardCode=null;openGroups={};renderAll();showKcToast('Semester '+e.key);}if(e.key==='Escape'){e.preventDefault();if(document.getElementById('adminModalOverlay').classList.contains('open'))closeAdminModal();else if(document.getElementById('previewModalOverlay').classList.contains('open'))closePreview();else if(selectedCardCode){showAllCards();showKcToast('All Subjects');}}});
 
-        function openAdminModal() { document.getElementById('adminModalOverlay').classList.add('open'); populateAdminSemesters(); if(isAdmin){ document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); } else { document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; } }
-        function closeAdminModal() { document.getElementById('adminModalOverlay').classList.remove('open'); }
-        function openPreviewModal() { document.getElementById('previewModalOverlay').classList.add('open'); }
-        function closePreview() { document.getElementById('previewModalOverlay').classList.remove('open'); document.getElementById('previewIframe').src=''; document.getElementById('previewIframe').style.display='none'; }
-        document.getElementById('adminUploadBtn').addEventListener('click', openAdminModal);
-        document.querySelectorAll('.modal-overlay').forEach(o => { o.addEventListener('click', function(e) { if(e.target === this) { this.classList.remove('open'); if(this.id === 'previewModalOverlay') closePreview(); } }); });
+        function openAdminModal(){document.getElementById('adminModalOverlay').classList.add('open');populateAdminSemesters();if(isAdmin){document.getElementById('adminAuth').style.display='none';document.getElementById('adminPanel').style.display='';updateAdminSubjects();updateAdminCategoryOptions();refreshAdminExisting();}else{document.getElementById('adminAuth').style.display='';document.getElementById('adminPanel').style.display='none';}}
+        function closeAdminModal(){document.getElementById('adminModalOverlay').classList.remove('open');}
+        function openPreviewModal(){document.getElementById('previewModalOverlay').classList.add('open');}
+        function closePreview(){document.getElementById('previewModalOverlay').classList.remove('open');document.getElementById('previewIframe').src='';document.getElementById('previewIframe').style.display='none';}
+        document.getElementById('adminUploadBtn').addEventListener('click',openAdminModal);
+        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');if(this.id==='previewModalOverlay')closePreview();}});});
 
-        function adminLogin() { if(document.getElementById('adminPassword').value==='btadmin2024'&&(githubToken=document.getElementById('githubToken').value.trim())){ isAdmin=true; document.getElementById('adminAuth').style.display='none'; document.getElementById('adminPanel').style.display=''; updateAdminSubjects(); updateAdminCategoryOptions(); refreshAdminExisting(); showToast('Admin unlocked'); } else showToast('Wrong password or token'); }
-        function adminLogout() { isAdmin=false; document.getElementById('adminAuth').style.display=''; document.getElementById('adminPanel').style.display='none'; }
-        function populateAdminSemesters() { const s=document.getElementById('adminSemester'); s.innerHTML=''; for(let i=3;i<=8;i++){ const o=document.createElement('option'); o.value=i; o.textContent='Semester '+i; s.appendChild(o); } }
-        function updateAdminSubjects() { const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject'); s.innerHTML=''; [...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{ const o=document.createElement('option'); o.value=x.code; o.textContent=x.code+' - '+x.title; o.dataset.title=x.title; s.appendChild(o); }); }
-        function updateAdminCategoryOptions() { const s=document.getElementById('adminCategory'); const opt=document.getElementById('adminSubject').selectedOptions[0]; const title = opt ? (opt.dataset.title || opt.textContent.split(' - ')[1] || '') : ''; let allCats = []; if (isLabSubject(title)) { allCats = [...LAB_INDIVIDUAL]; } else { allCats = [...INDIVIDUAL_CATEGORIES]; GROUPED_CATEGORIES.forEach(g => { g.subCategories.forEach(sc => allCats.push(sc)); }); } s.innerHTML = ''; allCats.forEach(x => { const e = document.createElement('option'); e.value = x.key; e.textContent = x.label; s.appendChild(e); }); refreshAdminExisting(); }
-        function refreshAdminExisting() { const n=getNotes(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles'); d.innerHTML=n.length?'':'No files yet.'; n.forEach((x,i)=>{ const e=document.createElement('div'); e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;'; e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.6rem;">x</button>`; e.querySelector('button').onclick=()=>{ const k=getNotesKey(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value); if(notesData[k]){notesData[k].splice(i,1);if(!notesData[k].length)delete notesData[k];saveLocal();refreshAdminExisting();renderPanels();showToast('Deleted');} }; d.appendChild(e); }); }
-        async function commitToGithub() { try { const content=JSON.stringify(notesData,null,2); const base64=btoa(unescape(encodeURIComponent(content))); const getRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}}); const fi=await getRes.json(); await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:base64,sha:fi.sha})}); return true; } catch(e) { return false; } }
-        async function adminAddSingle() { const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value; const cat=document.getElementById('adminCategory').value,l=document.getElementById('adminFileLabel').value.trim(); const u=document.getElementById('adminDriveLink').value.trim(); if(!l||!u) return showToast('Fill all fields'); if(!extractFileId(u)) return showToast('Invalid file link'); const k=getNotesKey(s,c,cat); if(!notesData[k]) notesData[k]=[]; notesData[k].push({label:l,driveUrl:u,addedAt:Date.now()}); saveLocal(); const ok=await commitToGithub(); showToast(ok?'Published!':'Saved locally'); document.getElementById('adminFileLabel').value=''; document.getElementById('adminDriveLink').value=''; refreshAdminExisting(); renderPanels(); }
-        async function adminAddBulk() { const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value; const cat=document.getElementById('adminCategory').value; const raw=document.getElementById('adminBulkLinks').value.trim(); if(!raw) return showToast('Paste some links first'); const lines=raw.split('\n').filter(l=>l.trim()); let added=0; for(const line of lines) { const parts=line.split('|'); if(parts.length<2) continue; const label=parts[0].trim(); const url=parts.slice(1).join('|').trim(); if(!label||!url) continue; if(!extractFileId(url)) continue; const k=getNotesKey(s,c,cat); if(!notesData[k]) notesData[k]=[]; notesData[k].push({label,driveUrl:url,addedAt:Date.now()}); added++; } if(added===0) return showToast('No valid links found'); saveLocal(); const ok=await commitToGithub(); showToast(ok?`${added} files published!`:`${added} files saved locally`); document.getElementById('adminBulkLinks').value=''; refreshAdminExisting(); renderPanels(); }
-        window.adminAddSingle = adminAddSingle; window.adminAddBulk = adminAddBulk;
-        function exportJSON() { const b=new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='notes-data.json'; a.click(); }
-        function importJSON(e) { const f=e.target.files[0]; if(!f)return; const r=new FileReader(); r.onload=ev=>{notesData=JSON.parse(ev.target.result);saveLocal();renderPanels();refreshAdminExisting();showToast('Imported');}; r.readAsText(f); e.target.value=''; }
+        function adminLogin(){if(document.getElementById('adminPassword').value==='btadmin2024'&&(githubToken=document.getElementById('githubToken').value.trim())){isAdmin=true;document.getElementById('adminAuth').style.display='none';document.getElementById('adminPanel').style.display='';updateAdminSubjects();updateAdminCategoryOptions();refreshAdminExisting();showToast('Admin unlocked');}else showToast('Wrong password or token');}
+        function adminLogout(){isAdmin=false;document.getElementById('adminAuth').style.display='';document.getElementById('adminPanel').style.display='none';}
+        function populateAdminSemesters(){const s=document.getElementById('adminSemester');s.innerHTML='';for(let i=3;i<=8;i++){const o=document.createElement('option');o.value=i;o.textContent='Semester '+i;s.appendChild(o);}}
+        function updateAdminSubjects(){const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject');s.innerHTML='';[...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{const o=document.createElement('option');o.value=x.code;o.textContent=x.code+' - '+x.title;o.dataset.title=x.title;s.appendChild(o);});}
+        function updateAdminCategoryOptions(){const s=document.getElementById('adminCategory');const opt=document.getElementById('adminSubject').selectedOptions[0];const title=opt?(opt.dataset.title||opt.textContent.split(' - ')[1]||''):'';let allCats=[];if(isLabSubject(title)){allCats=[...LAB_INDIVIDUAL];}else{allCats=[...INDIVIDUAL_CATEGORIES];GROUPED_CATEGORIES.forEach(g=>{g.subCategories.forEach(sc=>allCats.push(sc));});}s.innerHTML='';allCats.forEach(x=>{const e=document.createElement('option');e.value=x.key;e.textContent=x.label;s.appendChild(e);});refreshAdminExisting();}
+        function refreshAdminExisting(){const n=getNotes(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles');d.innerHTML=n.length?'':'No files yet.';n.forEach((x,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.6rem;">x</button>`;e.querySelector('button').onclick=()=>{const k=getNotesKey(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);if(notesData[k]){notesData[k].splice(i,1);if(!notesData[k].length)delete notesData[k];saveLocal();refreshAdminExisting();renderPanels();showToast('Deleted');}};d.appendChild(e);});}
+        async function commitToGithub(){try{const content=JSON.stringify(notesData,null,2);const base64=btoa(unescape(encodeURIComponent(content)));const getRes=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await getRes.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:base64,sha:fi.sha})});return true;}catch(e){return false;}}
+        async function adminAddSingle(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value,l=document.getElementById('adminFileLabel').value.trim();const u=document.getElementById('adminDriveLink').value.trim();if(!l||!u)return showToast('Fill all fields');if(!extractFileId(u))return showToast('Invalid file link');const k=getNotesKey(s,c,cat);if(!notesData[k])notesData[k]=[];notesData[k].push({label:l,driveUrl:u,addedAt:Date.now()});saveLocal();const ok=await commitToGithub();showToast(ok?'Published!':'Saved locally');document.getElementById('adminFileLabel').value='';document.getElementById('adminDriveLink').value='';refreshAdminExisting();renderPanels();}
+        async function adminAddBulk(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value;const raw=document.getElementById('adminBulkLinks').value.trim();if(!raw)return showToast('Paste some links first');const lines=raw.split('\n').filter(l=>l.trim());let added=0;for(const line of lines){const parts=line.split('|');if(parts.length<2)continue;const label=parts[0].trim();const url=parts.slice(1).join('|').trim();if(!label||!url)continue;if(!extractFileId(url))continue;const k=getNotesKey(s,c,cat);if(!notesData[k])notesData[k]=[];notesData[k].push({label,driveUrl:url,addedAt:Date.now()});added++;}if(added===0)return showToast('No valid links found');saveLocal();const ok=await commitToGithub();showToast(ok?`${added} files published!`:`${added} files saved locally`);document.getElementById('adminBulkLinks').value='';refreshAdminExisting();renderPanels();}
+        window.adminAddSingle=adminAddSingle;window.adminAddBulk=adminAddBulk;
+        function exportJSON(){const b=new Blob([JSON.stringify(notesData,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='notes-data.json';a.click();}
+        function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{notesData=JSON.parse(ev.target.result);saveLocal();renderPanels();refreshAdminExisting();showToast('Imported');};r.readAsText(f);e.target.value='';}
 
-        document.getElementById('quickViewBtn').addEventListener('click', ()=>{ document.getElementById('previewIframe').style.display='none'; document.getElementById('quickViewInput').style.display=''; openPreviewModal(); });
-        window.quickPreview=function(){ const i=extractFileId(document.getElementById('quickDriveLink').value.trim()); if(i){ document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${i}/preview`; document.getElementById('previewIframe').style.display=''; document.getElementById('quickViewInput').style.display='none'; } else showToast('Invalid link'); };
+        document.getElementById('quickViewBtn').addEventListener('click',()=>{document.getElementById('previewIframe').style.display='none';document.getElementById('quickViewInput').style.display='';openPreviewModal();});
+        window.quickPreview=function(){const i=extractFileId(document.getElementById('quickDriveLink').value.trim());if(i){document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${i}/preview`;document.getElementById('previewIframe').style.display='';document.getElementById('quickViewInput').style.display='none';}else showToast('Invalid link');};
 
-        document.getElementById('themeToggle').addEventListener('click', ()=>{ document.body.classList.toggle('dark'); localStorage.setItem('theme', document.body.classList.contains('dark')?'dark':'light'); });
+        document.getElementById('themeToggle').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
         fetchLiveNotes();
     </script>
 </body>
 </html>
+```
