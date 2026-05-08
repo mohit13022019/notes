@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synapse — Magazine</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
+        :root {
+            --bg: #fafaf8; --surface: #ffffff; --surface-alt: #f5f4f1;
+            --primary: #1a3728; --accent: #c8944a; --accent-light: #d4a85c;
+            --text: #1a1d20; --text-secondary: #5a6070; --text-muted: #949aa8;
+            --border: #e8e5df; --border-light: #f0ede8;
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
+            --radius-lg: 18px; --transition: 0.25s ease;
+        }
+        body.dark {
+            --bg: #0a0d10; --surface: #14171b; --surface-alt: #1a1e23;
+            --primary: #c8944a; --accent: #c8944a; --accent-light: #d4a85c;
+            --text: #e8eaee; --text-secondary: #a8b0bc; --text-muted: #6a7280;
+            --border: #2a2e35; --border-light: #22252b;
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); transition:background 0.4s; }
+        nav {
+            background:var(--surface); border-bottom:1px solid var(--border-light);
+            padding:0.6rem 2rem; display:flex; align-items:center; justify-content:space-between;
+            position:sticky; top:0; z-index:101;
+        }
+        nav a { text-decoration:none; font-weight:600; font-size:0.85rem; }
+        .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); }
+        .nav-links { display:flex; gap:1rem; }
+        .nav-links a { color:var(--text-secondary); }
+        .nav-links a.active { color:var(--accent); }
+        .container { max-width:1200px; margin:0 auto; padding:2.5rem 2rem; }
+        .page-title { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:2rem; }
+        .magazine-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
+        .magazine-card { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border-light); padding:1.5rem; text-align:center; transition:var(--transition); }
+        .magazine-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); }
+        .magazine-issue { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
+        .magazine-desc { font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem; }
+        .btn-read { display:inline-block; background:var(--accent); color:#fff; padding:0.5rem 1.2rem; border-radius:50px; font-weight:600; text-decoration:none; }
+        .btn-read:hover { background:var(--accent-light); }
+        @media (max-width:768px){ .container{padding:1.5rem 1rem;} .page-title{font-size:2rem;} .magazine-grid{grid-template-columns:1fr;} }
+    </style>
+</head>
+<body class="light">
+    <nav>
+        <a href="index.html" class="nav-logo">Synapse</a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="notes.html">Notes</a>
+            <a href="events.html">Events</a>
+            <a href="magazine.html" class="active">Magazine</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1 class="page-title">Monthly Magazine</h1>
+        <div class="magazine-grid" id="magazineGrid"></div>
+    </div>
+
+    <script>
+        let magazineData = [];
+        async function fetchMagazine() {
+            try { const r = await fetch('./magazine-data.json'); if(r.ok) magazineData = await r.json(); else magazineData = []; } catch(e) { magazineData = []; }
+            renderMagazine();
+        }
+        function renderMagazine() {
+            const grid = document.getElementById('magazineGrid');
+            if (!magazineData.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);">No issues yet.</p>'; return; }
+            grid.innerHTML = magazineData.map(m => `
+                <div class="magazine-card">
+                    <div class="magazine-issue">${m.issue}</div>
+                    <div class="magazine-desc">${m.description}</div>
+                    <a href="${m.link}" target="_blank" class="btn-read">Read</a>
+                </div>
+            `).join('');
+        }
+        fetchMagazine();
+    </script>
+</body>
+</html>
