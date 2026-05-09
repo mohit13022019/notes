@@ -8,6 +8,7 @@
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
+        // ⓵ PASTE YOUR DEPLOYED WEB APP URL HERE
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
     </script>
     <style>
@@ -96,8 +97,10 @@
     <nav class="top-nav">
         <a href="index.html" class="nav-logo">Synapse</a>
         <div class="nav-links">
-            <a href="index.html">Home</a><a href="notes.html">Notes</a>
-            <a href="events.html" class="active">Events</a><a href="magazine.html">Magazine</a>
+            <a href="index.html">Home</a>
+            <a href="notes.html">Notes</a>
+            <a href="events.html" class="active">Events</a>
+            <a href="magazine.html">Magazine</a>
         </div>
     </nav>
 
@@ -145,29 +148,31 @@
 
     <!-- Admin Login -->
     <div class="modal-overlay" id="adminLoginOverlay">
-        <div class="modal"><button class="modal-close" onclick="closeAdminLogin()">✕</button><h3>Admin Login</h3>
+        <div class="modal">
+            <button class="modal-close" onclick="closeAdminLogin()">✕</button>
+            <h3>Admin Login</h3>
             <input type="password" id="adminPassword" placeholder="Password">
             <input type="password" id="githubToken" placeholder="GitHub Token (ghp_...)">
             <button class="btn-submit" onclick="adminLogin()">Login</button>
         </div>
     </div>
 
-    <!-- Add/Edit Event -->
+    <!-- Add/Edit Event Modal -->
     <div class="modal-overlay" id="addEventOverlay">
         <div class="modal">
             <button class="modal-close" onclick="closeAddEvent()">✕</button>
             <h3 id="addEventTitle">Add Event</h3>
             <input type="hidden" id="editEventIndex" value="-1">
             <input type="text" id="newEventName" placeholder="Event Name">
-            <input type="text" id="newEventDate" placeholder="Date & Time">
-            <input type="text" id="newEventLocation" placeholder="Venue">
+            <input type="text" id="newEventDate" placeholder="Date & Time (e.g., 11th May | 3:15 PM)">
+            <input type="text" id="newEventLocation" placeholder="Venue (e.g., BT CR 1)">
             <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
-            <p style="font-size:.7rem;color:var(--text-muted);">Upload image to GitHub repo → paste filename</p>
+            <p style="font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem;">Upload image to GitHub repo and paste filename.</p>
             <button class="btn-submit" onclick="saveEvent()">Save Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
-            <p style="font-weight:700;font-size:.8rem;">Existing Events:</p>
-            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:.75rem;"></div>
+            <p style="font-weight:700;font-size:0.8rem;">Existing Events:</p>
+            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:0.75rem;"></div>
         </div>
     </div>
 
@@ -198,14 +203,41 @@
         function registerFromDetail(){closeDetail();const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
         function closeRegModal(){document.getElementById('regModalOverlay').classList.remove('open');}
 
+        // ⓶ REGISTRATION FUNCTION – FIXED
         async function submitRegistration(){
-            const n=document.getElementById('regName').value.trim(),em=document.getElementById('regEmail').value.trim(),ph=document.getElementById('regPhone').value.trim();
+            const n=document.getElementById('regName').value.trim();
+            const em=document.getElementById('regEmail').value.trim();
+            const ph=document.getElementById('regPhone').value.trim();
             if(!n||!em||!ph)return showToast('Fill all fields');
-            const ev=eventsData.find(x=>x.id===selectedEventId);if(!ev)return;
-            try{
-                await fetch(GOOGLE_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({eventName:ev.name,eventDate:ev.date,studentName:n,email:em,phone:ph,timestamp:new Date().toISOString()})});
-                showToast('Registered!');closeRegModal();
-            }catch(err){showToast('Failed');}
+            const ev=eventsData.find(x=>x.id===selectedEventId);
+            if(!ev)return showToast('Event not found');
+            
+            const payload = {
+                eventName: ev.name,
+                eventDate: ev.date,
+                studentName: n,
+                email: em,
+                phone: ph,
+                timestamp: new Date().toISOString()
+            };
+            
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (result.result === 'success') {
+                    showToast('Registration successful! 🎉');
+                    closeRegModal();
+                } else {
+                    showToast('Registration failed: ' + (result.message || 'Unknown error'));
+                }
+            } catch(err) {
+                console.error('Registration error:', err);
+                showToast('Registration failed. Please try again.');
+            }
         }
 
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
@@ -213,6 +245,7 @@
         function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode');}else showToast('Wrong password or token');}
         function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Locked');}
 
+        // ⓷ EDIT FUNCTION – FIXED CLOSING ISSUE
         function openAddEventModal(editIndex=-1){
             document.getElementById('editEventIndex').value=editIndex;
             document.getElementById('addEventTitle').textContent=editIndex>=0?'Edit Event':'Add Event';
@@ -254,12 +287,19 @@
         }
         function refreshAdminEvents(){
             const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name}</span><div><button class="edit-btn" onclick="openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
+            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
         }
         async function deleteEvent(i){if(!confirm('Delete?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Deleted');}
         window.deleteEvent=deleteEvent;
 
-        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');}});});
+        // ⓸ MODAL CLOSING FIX – Only close when clicking the overlay itself, not its children
+        document.querySelectorAll('.modal-overlay').forEach(o=>{
+            o.addEventListener('click',function(e){
+                if(e.target === e.currentTarget){
+                    this.classList.remove('open');
+                }
+            });
+        });
         fetchEvents();
     </script>
 </body>
