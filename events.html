@@ -66,13 +66,11 @@
             background: var(--bg); color: var(--text); line-height:1.6;
             transition: background 0.4s, color 0.3s;
             -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-            overflow-x:hidden;
-            min-height:100vh;
+            overflow-x:hidden; min-height:100vh;
         }
         @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes scaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
-        @keyframes shimmer { 0%{opacity:0.6}50%{opacity:1}100%{opacity:0.6} }
 
         .top-nav {
             background: var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
@@ -81,7 +79,7 @@
             animation: fadeIn 0.6s ease;
         }
         .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); text-decoration:none; transition: var(--transition); }
-        .nav-logo:hover { color:var(--accent); transform:scale(1.02); }
+        .nav-logo:hover { color:var(--accent); }
         .nav-links { display:flex; gap:1.5rem; align-items:center; }
         .nav-links a { color:var(--text-secondary); text-decoration:none; font-weight:600; font-size:0.85rem; transition:var(--transition); position:relative; padding:0.3rem 0; }
         .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--accent); transition:width 0.3s; border-radius:2px; }
@@ -93,11 +91,7 @@
         .particle-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35; }
 
         .main-container { max-width:1300px; margin:0 auto; padding:3rem 2rem 4rem; position:relative; z-index:1; }
-        .page-title {
-            font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:700;
-            color:var(--primary); text-align:center; margin-bottom:0.5rem;
-            animation: fadeInUp 0.7s ease; letter-spacing:-0.6px;
-        }
+        .page-title { font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:0.5rem; animation: fadeInUp 0.7s ease; letter-spacing:-0.6px; }
         .page-subtitle { text-align:center; color:var(--text-muted); margin-bottom:2.5rem; animation: fadeInUp 0.7s ease 0.1s; opacity:0; animation-fill-mode:forwards; }
 
         .action-bar { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; animation: fadeInUp 0.7s ease 0.15s; opacity:0; animation-fill-mode:forwards; }
@@ -112,23 +106,31 @@
         .btn-accent { background:var(--accent); color:#fff; border:none; font-weight:700; box-shadow:0 4px 16px rgba(200,148,74,0.25); }
         .btn-accent:hover { background:var(--accent-light); box-shadow:0 8px 28px rgba(200,148,74,0.35); color:#fff; }
 
-        .events-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:1.3rem; }
+        .events-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap:1.5rem; }
         .event-card {
             background:var(--glass-bg); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
             border-radius:var(--radius-xl); border:1px solid var(--glass-border);
-            padding:1.8rem; transition:var(--transition); box-shadow:var(--shadow-sm);
-            animation: fadeInUp 0.6s ease; position:relative; overflow:hidden;
+            overflow:hidden; transition:var(--transition); box-shadow:var(--shadow-sm);
+            animation: fadeInUp 0.6s ease; position:relative;
         }
         .event-card:hover { box-shadow:var(--shadow-xl); transform:translateY(-3px); border-color:var(--accent); }
-        .event-card::before { content:''; position:absolute; top:-50%; left:-50%; width:200%; height:200%; background:linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%); pointer-events:none; }
-        body.dark .event-card::before { background:linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%); }
-        .event-name { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); margin-bottom:0.6rem; }
+        .event-poster {
+            width:100%; height:200px; object-fit:cover; display:block;
+            background:var(--surface-alt);
+        }
+        .event-poster-placeholder {
+            width:100%; height:120px; display:flex; align-items:center; justify-content:center;
+            background:linear-gradient(135deg, var(--accent-pale), var(--surface-alt));
+            color:var(--accent); font-size:2rem;
+        }
+        .event-card-body { padding:1.5rem; }
+        .event-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
         .event-meta { font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.8rem; display:flex; gap:1.2rem; flex-wrap:wrap; }
         .event-desc { font-size:0.88rem; color:var(--text); margin-bottom:1.2rem; line-height:1.5; }
         .btn-register {
-            background:var(--accent); color:#fff; border:none; padding:0.55rem 1.3rem;
+            background:var(--accent); color:#fff; border:none; padding:0.55rem 1.5rem;
             border-radius:50px; font-weight:600; cursor:pointer; transition:var(--transition);
-            font-size:0.82rem;
+            font-size:0.82rem; display:inline-flex; align-items:center; gap:0.3rem;
         }
         .btn-register:hover { background:var(--accent-light); transform:translateY(-1px); box-shadow:0 4px 16px rgba(200,148,74,0.3); }
 
@@ -136,7 +138,7 @@
         .modal-overlay.open { display:flex; background:rgba(0,0,0,0.5); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
         .modal {
             background:var(--surface); padding:2rem; border-radius:var(--radius-2xl);
-            width:100%; max-width:480px; max-height:85vh; overflow-y:auto;
+            width:100%; max-width:500px; max-height:85vh; overflow-y:auto;
             box-shadow:var(--shadow-xl); border:1px solid var(--glass-border);
             animation:scaleIn 0.35s ease; backdrop-filter:blur(20px);
         }
@@ -147,14 +149,15 @@
         .modal-close:hover { color:var(--text); transform:rotate(90deg); }
         .btn-submit { background:var(--accent); color:#fff; border:none; padding:0.7rem; border-radius:50px; font-weight:700; width:100%; cursor:pointer; margin-top:0.5rem; font-size:0.9rem; transition:var(--transition); }
         .btn-submit:hover { background:var(--accent-light); }
+        .poster-help { font-size:0.7rem; color:var(--text-muted); margin-bottom:0.5rem; }
+        .poster-help code { background:var(--surface-alt); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.65rem; }
 
-        .admin-btn { position:fixed; bottom:2rem; left:2rem; z-index:99; }
-        .toast { position:fixed; bottom:2rem; right:2rem; background:var(--primary); color:#fff; padding:0.7rem 1.3rem; border-radius:50px; font-weight:600; z-index:300; animation: fadeInUp 0.3s ease; box-shadow:var(--shadow-lg); font-size:0.85rem; }
+        .toast { position:fixed; bottom:2rem; right:2rem; background:var(--primary); color:#fff; padding:0.7rem 1.3rem; border-radius:50px; font-weight:600; z-index:300; animation: fadeInUp 0.3s ease; box-shadow:var(--shadow-lg); font-size:0.85rem; display:none; }
 
         @media (max-width:768px) {
             .top-nav { padding:0.5rem 1rem; } .nav-links { gap:0.8rem; } .nav-links a { font-size:0.7rem; }
             .main-container { padding:2rem 1rem 4rem; } .page-title { font-size:2.2rem; }
-            .events-grid { grid-template-columns:1fr; }
+            .events-grid { grid-template-columns:1fr; } .event-poster { height:160px; }
         }
     </style>
 </head>
@@ -177,13 +180,14 @@
         <h1 class="page-title">Events</h1>
         <p class="page-subtitle">Discover upcoming events and register to participate</p>
 
-        <!-- Admin Toggle (visible only after login) -->
+        <!-- Action Bar -->
         <div class="action-bar" id="adminActionBar" style="display:none;">
             <button class="btn btn-accent" onclick="openAddEventModal()">+ Add Event</button>
             <button class="btn" onclick="adminLogout()">Lock Admin</button>
         </div>
         <div class="action-bar" id="visitorActionBar">
             <button class="btn btn-accent" id="themeToggleBtn">🌓 Toggle Theme</button>
+            <button class="btn" onclick="openAdminLogin()">🔐 Admin</button>
         </div>
 
         <!-- Events Grid -->
@@ -222,6 +226,8 @@
             <input type="text" id="newEventDate" placeholder="Date (e.g., 20 May 2026)">
             <input type="text" id="newEventLocation" placeholder="Location (e.g., Auditorium)">
             <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
+            <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
+            <p class="poster-help">Upload the image to your GitHub repo (<code>notes/</code> folder) and paste the filename here.</p>
             <button class="btn-submit" onclick="addEvent()">Add Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
             <p style="font-weight:700;font-size:0.8rem;margin-bottom:0.5rem;">Existing Events:</p>
@@ -229,12 +235,11 @@
         </div>
     </div>
 
-    <div class="toast" id="toast" style="display:none;"></div>
+    <div class="toast" id="toast"></div>
 
     <script>
         (function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const n=35;function r(){c.width=innerWidth;c.height=innerHeight;}window.addEventListener('resize',r);r();class P{constructor(){this.reset();}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+0.5;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.o=Math.random()*0.4+0.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width||this.y<0||this.y>c.height){this.reset();}}draw(){const d=document.body.classList.contains('dark');const cl=d?'200,148,74':'26,60,46';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(${cl},${this.o})`;x.fill();}}for(let i=0;i<n;i++)p.push(new P());function a(){x.clearRect(0,0,c.width,c.height);p.forEach(v=>{v.update();v.draw();});requestAnimationFrame(a);}a();})();
 
-        // Theme
         (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
         document.getElementById('themeToggleBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
 
@@ -242,18 +247,31 @@
 
         let eventsData=[],selectedEventId=null,isAdmin=false,githubToken='';
 
+        function getPosterUrl(poster){
+            if(!poster)return null;
+            if(poster.startsWith('http'))return poster;
+            return `./${poster}`;
+        }
+
         async function fetchEvents(){try{const r=await fetch('./events-data.json');if(r.ok)eventsData=await r.json();else eventsData=[];}catch(e){eventsData=[];}renderEvents();}
         function renderEvents(){
             const grid=document.getElementById('eventsGrid');
             if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1rem;animation:fadeInUp 0.5s ease;">No events yet. Check back soon!</p>';return;}
-            grid.innerHTML=eventsData.map((e,i)=>`
+            grid.innerHTML=eventsData.map((e,i)=>{
+                const posterUrl=getPosterUrl(e.poster);
+                const posterHTML=posterUrl?`<img src="${posterUrl}" alt="${e.name}" class="event-poster" onerror="this.parentElement.querySelector('.event-poster-placeholder').style.display='flex';this.style.display='none';">`:'';
+                const placeholderHTML=posterUrl?`<div class="event-poster-placeholder" style="display:none;">📸</div>`:`<div class="event-poster-placeholder">📸</div>`;
+                return `
                 <div class="event-card" style="animation-delay:${i*0.07}s;">
-                    <div class="event-name">${e.name}</div>
-                    <div class="event-meta"><span>📅 ${e.date}</span><span>📍 ${e.location||'TBD'}</span></div>
-                    <div class="event-desc">${e.description}</div>
-                    <button class="btn-register" onclick="openRegistration('${e.id}')">Register Now</button>
-                </div>
-            `).join('');
+                    ${posterHTML}${placeholderHTML}
+                    <div class="event-card-body">
+                        <div class="event-name">${e.name}</div>
+                        <div class="event-meta"><span>📅 ${e.date}</span><span>📍 ${e.location||'TBD'}</span></div>
+                        <div class="event-desc">${e.description}</div>
+                        <button class="btn-register" onclick="openRegistration('${e.id}')">✨ Register Now</button>
+                    </div>
+                </div>`;
+            }).join('');
         }
 
         function openRegistration(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
@@ -270,7 +288,6 @@
             }catch(err){showToast('Registration failed. Try again.');}
         }
 
-        // Admin Functions
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
         function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
         function adminLogin(){
@@ -281,15 +298,14 @@
         }
         function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Admin locked');}
 
-        function openAddEventModal(){refreshAdminEvents();document.getElementById('addEventOverlay').classList.add('open');}
+        function openAddEventModal(){refreshAdminEvents();document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';document.getElementById('addEventOverlay').classList.add('open');}
         function closeAddEvent(){document.getElementById('addEventOverlay').classList.remove('open');}
 
         async function addEvent(){
-            const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim();
+            const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
             if(!n||!d)return showToast('Name and date required');
-            eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc});
+            eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
             await commitEvents();renderEvents();refreshAdminEvents();
-            document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';
             showToast('Event added!');
         }
 
@@ -303,17 +319,13 @@
         }
 
         function refreshAdminEvents(){
-            const list=document.getElementById('adminEventList');
-            list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';div.innerHTML=`<span>${e.name}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.55rem;" onclick="deleteEvent(${i})">✕</button>`;list.appendChild(div);});
+            const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
+            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';div.innerHTML=`<span>${e.name} ${e.poster?'🖼️':''}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.55rem;" onclick="deleteEvent(${i})">✕</button>`;list.appendChild(div);});
         }
 
         async function deleteEvent(i){if(!confirm('Delete this event?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Event deleted');}
 
-        // Add admin login button for visitors
-        document.getElementById('visitorActionBar').innerHTML+='<button class="btn" onclick="openAdminLogin()">🔐 Admin</button>';
         document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');}});});
-
         fetchEvents();
     </script>
 </body>
