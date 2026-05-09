@@ -8,7 +8,6 @@
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
-        // Replace with your full Tally form URL (without any parameters)
         const TALLY_FORM_URL = 'https://tally.so/r/RGv5x4';
     </script>
     <style>
@@ -205,8 +204,8 @@
         function openTallyForm(){
             const e = eventsData.find(x => x.id === selectedEventId);
             if (!e) return;
-            // Build the Tally URL with the event name as a hidden field value
-            const url = `${TALLY_FORM_URL}?eventName=${encodeURIComponent(e.name)}`;
+            // Try both common Tally URL parameter formats
+            const url = `${TALLY_FORM_URL}?eventName=${encodeURIComponent(e.name)}&event_name=${encodeURIComponent(e.name)}`;
             window.open(url, '_blank');
         }
 
