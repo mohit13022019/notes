@@ -8,7 +8,6 @@
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
-        const TALLY_FORM_URL = 'https://tally.so/r/RGv5x4';
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
@@ -140,7 +139,7 @@
                 <div class="detail-name" id="detailName"></div>
                 <div class="detail-meta"><span>📅 <span id="detailDate"></span></span><span>📍 <span id="detailLocation"></span></span></div>
                 <div class="detail-desc" id="detailDesc"></div>
-                <button class="btn-register-lg" onclick="openTallyForm()">✨ Register Now</button>
+                <button class="btn-register-lg" onclick="openRegistrationForm()">✨ Register Now</button>
             </div>
         </div>
     </div>
@@ -168,6 +167,8 @@
             <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
             <p class="poster-help">Upload image to GitHub repo (<code>notes/</code> folder) and paste filename here.</p>
+            <input type="text" id="newEventFormUrl" placeholder="Google Form URL (e.g., https://forms.gle/abc123)">
+            <p class="poster-help">Paste the Google Form link for this event's registrations.</p>
             <button class="btn-submit" onclick="saveEvent()">Save Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
             <p style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">Existing Events:</p>
@@ -200,13 +201,14 @@
         function openDetail(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;const pu=getPosterUrl(e.poster);document.getElementById('detailPoster').src=pu||'';document.getElementById('detailName').textContent=e.name;document.getElementById('detailDate').textContent=e.date||'TBA';document.getElementById('detailLocation').textContent=e.location||'TBA';document.getElementById('detailDesc').textContent=e.description||'';document.getElementById('detailOverlay').classList.add('open');}
         function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
 
-        // ── TALLY REGISTRATION (Free, URL pre-fill) ──
-        function openTallyForm(){
+        // ── REGISTRATION (Opens Google Form for that specific event) ──
+        function openRegistrationForm(){
             const e = eventsData.find(x => x.id === selectedEventId);
-            if (!e) return;
-            // Try both common Tally URL parameter formats
-            const url = `${TALLY_FORM_URL}?eventName=${encodeURIComponent(e.name)}&event_name=${encodeURIComponent(e.name)}`;
-            window.open(url, '_blank');
+            if (!e || !e.formUrl) {
+                showToast('No registration form available for this event.');
+                return;
+            }
+            window.open(e.formUrl, '_blank');
         }
 
         // ── ADMIN ──
@@ -218,18 +220,23 @@
         function openAddEventModal(editIndex=-1){
             document.getElementById('editEventIndex').value=editIndex;
             document.getElementById('addEventTitle').textContent=editIndex>=0?'Edit Event':'Add Event';
-            if(editIndex>=0){const e=eventsData[editIndex];document.getElementById('newEventName').value=e.name;document.getElementById('newEventDate').value=e.date;document.getElementById('newEventLocation').value=e.location||'';document.getElementById('newEventDesc').value=e.description||'';document.getElementById('newEventPoster').value=e.poster||'';}
-            else{document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';}
+            if(editIndex>=0){const e=eventsData[editIndex];document.getElementById('newEventName').value=e.name;document.getElementById('newEventDate').value=e.date;document.getElementById('newEventLocation').value=e.location||'';document.getElementById('newEventDesc').value=e.description||'';document.getElementById('newEventPoster').value=e.poster||'';document.getElementById('newEventFormUrl').value=e.formUrl||'';}
+            else{document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';document.getElementById('newEventFormUrl').value='';}
             refreshAdminEvents();document.getElementById('addEventOverlay').classList.add('open');
         }
         function closeAddEvent(){document.getElementById('addEventOverlay').classList.remove('open');}
 
         async function saveEvent(){
-            const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
+            const n=document.getElementById('newEventName').value.trim();
+            const d=document.getElementById('newEventDate').value.trim();
+            const l=document.getElementById('newEventLocation').value.trim();
+            const desc=document.getElementById('newEventDesc').value.trim();
+            const poster=document.getElementById('newEventPoster').value.trim();
+            const formUrl=document.getElementById('newEventFormUrl').value.trim();
             if(!n||!d)return showToast('Name and date/time required');
             const editIndex=parseInt(document.getElementById('editEventIndex').value);
-            if(editIndex>=0){eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null};}
-            else{eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});}
+            if(editIndex>=0){eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null};}
+            else{eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null});}
             await commitEvents();renderEvents();refreshAdminEvents();closeAddEvent();showToast(editIndex>=0?'Event updated!':'Event added!');
         }
 
@@ -238,7 +245,7 @@
         }
         function refreshAdminEvents(){
             const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name} ${e.poster?'🖼️':''}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
+            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name} ${e.formUrl?'🔗':''} ${e.poster?'🖼️':''}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
         }
         async function deleteEvent(i){if(!confirm('Delete this event?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Event deleted');}
         window.deleteEvent=deleteEvent;
