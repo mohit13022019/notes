@@ -6,10 +6,9 @@
     <title>Synapse — Events</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
     <script>
-        const REPO_OWNER = 'mohit13022019';
-        const REPO_NAME = 'notes';
-        // ⓵ PASTE YOUR DEPLOYED WEB APP URL HERE
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const REPO_OWNER = 'mohit13022019';   // ← Change this
+        const REPO_NAME = 'notes';            // ← Change this
+        const TALLY_FORM_URL = 'https://tally.so/r/YOUR_FORM_ID'; // ← Change this
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
@@ -31,29 +30,34 @@
             --shadow-xl:0 24px 64px rgba(0,0,0,0.6);
         }
         *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;transition:background 0.4s,color 0.3s}
         @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
         @keyframes scaleIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 
-        .top-nav{background:var(--glass-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:101}
-        .nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--primary);text-decoration:none}
-        .nav-links{display:flex;gap:1.5rem}.nav-links a{color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:.85rem}
+        .top-nav{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:101}
+        .nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--primary);text-decoration:none;transition:var(--transition)}
+        .nav-logo:hover{color:var(--accent)}
+        .nav-links{display:flex;gap:1.5rem;align-items:center}
+        .nav-links a{color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:.85rem;transition:var(--transition);position:relative;padding:.3rem 0}
+        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--accent);transition:width 0.3s;border-radius:2px}
+        .nav-links a:hover{color:var(--text)}
+        .nav-links a:hover::after{width:100%}
         .nav-links a.active{color:var(--accent)}
-
-        .particle-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35}
+        .nav-links a.active::after{width:100%}
 
         .main-container{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem;position:relative;z-index:1}
-        .page-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.3rem}
-        .page-subtitle{text-align:center;color:var(--text-muted);margin-bottom:2rem}
+        .page-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.3rem;animation:fadeInUp 0.7s ease}
+        .page-subtitle{text-align:center;color:var(--text-muted);margin-bottom:2rem;animation:fadeInUp 0.7s ease 0.1s;opacity:0;animation-fill-mode:forwards}
 
-        .action-bar{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
-        .btn{padding:.6rem 1.5rem;border-radius:50px;font-weight:600;font-size:.82rem;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem;background:var(--glass-bg);border:1.5px solid var(--glass-border);color:var(--text-secondary);transition:var(--transition)}
-        .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-        .btn-accent{background:var(--accent);color:#fff;border:none;font-weight:700}.btn-accent:hover{background:var(--accent-light)}
-        .btn-sm{padding:.4rem .9rem;font-size:.7rem}
+        .action-bar{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;animation:fadeInUp 0.7s ease 0.15s;opacity:0;animation-fill-mode:forwards}
+        .btn{padding:.6rem 1.5rem;border-radius:50px;font-weight:600;font-size:.82rem;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem;background:var(--glass-bg);border:1.5px solid var(--glass-border);color:var(--text-secondary);transition:var(--transition);backdrop-filter:blur(12px)}
+        .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--text-muted);color:var(--text)}
+        .btn:active{transform:scale(0.96)}
+        .btn-accent{background:var(--accent);color:#fff;border:none;font-weight:700;box-shadow:0 4px 16px rgba(200,148,74,0.25)}
+        .btn-accent:hover{background:var(--accent-light);box-shadow:0 8px 28px rgba(200,148,74,0.35);color:#fff}
 
         .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
-        .event-card{background:var(--glass-bg);backdrop-filter:blur(18px);border-radius:var(--radius-xl);border:1px solid var(--glass-border);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);animation:fadeInUp .6s ease}
+        .event-card{background:var(--glass-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:var(--radius-xl);border:1px solid var(--glass-border);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);animation:fadeInUp 0.6s ease}
         .event-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);border-color:var(--accent)}
         .event-poster-wrap{width:100%;aspect-ratio:1/1.4;overflow:hidden;background:var(--surface-alt);display:flex;align-items:center;justify-content:center}
         .event-poster{width:100%;height:100%;object-fit:contain}
@@ -61,39 +65,46 @@
         .event-body{padding:1.2rem 1.5rem}
         .event-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}
         .event-meta{font-size:.8rem;color:var(--text-secondary);display:flex;gap:1rem;flex-wrap:wrap}
+        .event-meta span{display:flex;align-items:center;gap:.3rem}
 
         .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;background:rgba(0,0,0,0);transition:all .35s}
-        .modal-overlay.open{display:flex;background:rgba(0,0,0,.55);backdrop-filter:blur(10px)}
+        .modal-overlay.open{display:flex;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
         .detail-modal{background:var(--surface);border-radius:var(--radius-2xl);width:100%;max-width:600px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease;backdrop-filter:blur(20px)}
         .detail-poster-wrap{width:100%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;padding:1rem}
         .detail-poster{max-width:100%;max-height:350px;object-fit:contain}
         .detail-content{padding:2rem}
         .detail-name{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--primary);margin-bottom:.8rem}
-        .detail-meta{font-size:.9rem;color:var(--text-secondary);margin-bottom:1rem;display:flex;gap:1.5rem}
+        .detail-meta{font-size:.9rem;color:var(--text-secondary);margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap}
         .detail-desc{font-size:.95rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;white-space:pre-wrap}
-        .detail-close{float:right;background:0 0;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);padding:.5rem 1rem}
+        .detail-close{float:right;background:0 0;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);padding:.5rem 1rem;transition:var(--transition)}
+        .detail-close:hover{color:var(--text);transform:rotate(90deg)}
         .btn-register-lg{background:var(--accent);color:#fff;border:none;padding:.8rem 2rem;border-radius:50px;font-weight:700;cursor:pointer;font-size:.95rem;transition:var(--transition);display:inline-flex;align-items:center;gap:.4rem}
-        .btn-register-lg:hover{background:var(--accent-light);transform:translateY(-2px)}
+        .btn-register-lg:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,148,74,0.3)}
 
         .modal{background:var(--surface);padding:2rem;border-radius:var(--radius-xl);width:100%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease}
-        .modal h3{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:1.2rem;text-align:center}
-        .modal input,.modal textarea{width:100%;padding:.7rem .9rem;margin:.3rem 0 .7rem;border:2px solid var(--border);border-radius:14px;background:var(--surface-alt);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif}
-        .modal input:focus,.modal textarea:focus{border-color:var(--accent);outline:0}
-        .modal-close{float:right;background:0 0;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted)}
-        .btn-submit{background:var(--accent);color:#fff;border:none;padding:.7rem;border-radius:50px;font-weight:700;width:100%;cursor:pointer}
+        .modal h3{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:1.2rem;text-align:center;font-size:1.3rem}
+        .modal input,.modal textarea{width:100%;padding:.7rem .9rem;margin:.3rem 0 .7rem;border:2px solid var(--border);border-radius:14px;background:var(--surface-alt);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;transition:var(--transition)}
+        .modal input:focus,.modal textarea:focus{border-color:var(--accent);outline:0;box-shadow:0 0 0 3px var(--accent-glow, rgba(200,148,74,0.15))}
+        .modal-close{float:right;background:0 0;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);transition:var(--transition)}
+        .modal-close:hover{color:var(--text);transform:rotate(90deg)}
+        .btn-submit{background:var(--accent);color:#fff;border:none;padding:.7rem;border-radius:50px;font-weight:700;width:100%;cursor:pointer;font-size:.9rem;transition:var(--transition)}
         .btn-submit:hover{background:var(--accent-light)}
+        .poster-help{font-size:.7rem;color:var(--text-muted);margin-bottom:.5rem}
+        .poster-help code{background:var(--surface-alt);padding:.15rem .4rem;border-radius:4px;font-size:.65rem}
 
-        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:#fff;padding:.7rem 1.3rem;border-radius:50px;font-weight:600;z-index:300;animation:fadeInUp .3s ease;box-shadow:var(--shadow-lg);display:none}
+        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:#fff;padding:.7rem 1.3rem;border-radius:50px;font-weight:600;z-index:300;animation:fadeInUp .3s ease;box-shadow:var(--shadow-lg);font-size:.85rem;display:none}
 
-        .edit-btn{background:var(--accent);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.3rem}
+        .edit-btn{background:var(--accent);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.3rem;transition:var(--transition)}
         .edit-btn:hover{background:var(--accent-light)}
 
-        @media(max-width:768px){.top-nav{padding:.5rem 1rem}.nav-links{gap:.8rem}.nav-links a{font-size:.7rem}.main-container{padding:2rem 1rem 4rem}.page-title{font-size:2.2rem}.events-grid{grid-template-columns:1fr}}
+        @media(max-width:768px){
+            .top-nav{padding:.5rem 1rem}.nav-links{gap:.8rem}.nav-links a{font-size:.7rem}
+            .main-container{padding:2rem 1rem 4rem}.page-title{font-size:2.2rem}
+            .events-grid{grid-template-columns:1fr}.detail-poster{max-height:250px}
+        }
     </style>
 </head>
 <body class="light">
-    <canvas class="particle-canvas" id="particleCanvas"></canvas>
-
     <nav class="top-nav">
         <a href="index.html" class="nav-logo">Synapse</a>
         <div class="nav-links">
@@ -129,20 +140,8 @@
                 <div class="detail-name" id="detailName"></div>
                 <div class="detail-meta"><span>📅 <span id="detailDate"></span></span><span>📍 <span id="detailLocation"></span></span></div>
                 <div class="detail-desc" id="detailDesc"></div>
-                <button class="btn-register-lg" onclick="registerFromDetail()">✨ Register Now</button>
+                <button class="btn-register-lg" onclick="openTallyForm()">✨ Register Now</button>
             </div>
-        </div>
-    </div>
-
-    <!-- Registration Modal -->
-    <div class="modal-overlay" id="regModalOverlay">
-        <div class="modal">
-            <button class="modal-close" onclick="closeRegModal()">✕</button>
-            <h3>Register for <span id="regEventName"></span></h3>
-            <input type="text" id="regName" placeholder="Full Name">
-            <input type="email" id="regEmail" placeholder="College Email">
-            <input type="tel" id="regPhone" placeholder="Phone Number">
-            <button class="btn-submit" onclick="submitRegistration()">Register</button>
         </div>
     </div>
 
@@ -151,13 +150,13 @@
         <div class="modal">
             <button class="modal-close" onclick="closeAdminLogin()">✕</button>
             <h3>Admin Login</h3>
-            <input type="password" id="adminPassword" placeholder="Password">
+            <input type="password" id="adminPassword" placeholder="Password (btadmin2024)">
             <input type="password" id="githubToken" placeholder="GitHub Token (ghp_...)">
             <button class="btn-submit" onclick="adminLogin()">Login</button>
         </div>
     </div>
 
-    <!-- Add/Edit Event Modal -->
+    <!-- Add/Edit Event -->
     <div class="modal-overlay" id="addEventOverlay">
         <div class="modal">
             <button class="modal-close" onclick="closeAddEvent()">✕</button>
@@ -166,21 +165,20 @@
             <input type="text" id="newEventName" placeholder="Event Name">
             <input type="text" id="newEventDate" placeholder="Date & Time (e.g., 11th May | 3:15 PM)">
             <input type="text" id="newEventLocation" placeholder="Venue (e.g., BT CR 1)">
-            <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
+            <textarea id="newEventDesc" placeholder="Description (shown when card expands)" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
-            <p style="font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem;">Upload image to GitHub repo and paste filename.</p>
+            <p class="poster-help">Upload image to GitHub repo (<code>notes/</code> folder) and paste filename here.</p>
             <button class="btn-submit" onclick="saveEvent()">Save Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
-            <p style="font-weight:700;font-size:0.8rem;">Existing Events:</p>
-            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:0.75rem;"></div>
+            <p style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">Existing Events:</p>
+            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:.75rem;"></div>
         </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        (function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const n=35;function r(){c.width=innerWidth;c.height=innerHeight;}window.addEventListener('resize',r);r();class P{constructor(){this.reset();}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+.5;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.o=Math.random()*.4+.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width||this.y<0||this.y>c.height){this.reset();}}draw(){const d=document.body.classList.contains('dark');const cl=d?'200,148,74':'26,60,46';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(${cl},${this.o})`;x.fill();}}for(let i=0;i<n;i++)p.push(new P());function a(){x.clearRect(0,0,c.width,c.height);p.forEach(v=>{v.update();v.draw();});requestAnimationFrame(a);}a();})();
-
+        // Theme
         (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
         document.getElementById('themeToggleBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
 
@@ -190,116 +188,58 @@
 
         function getPosterUrl(p){if(!p)return'';if(p.startsWith('http'))return p;return`./${p}`;}
 
+        // ── FETCH & RENDER ──
         async function fetchEvents(){try{const r=await fetch('./events-data.json');if(r.ok)eventsData=await r.json();else eventsData=[];}catch(e){eventsData=[];}renderEvents();}
         function renderEvents(){
             const grid=document.getElementById('eventsGrid');
-            if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);">No events yet.</p>';return;}
+            if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1.1rem;animation:fadeInUp 0.5s ease;">No events yet. Check back soon!</p>';return;}
             grid.innerHTML=eventsData.map((e,i)=>`<div class="event-card" style="animation-delay:${i*.07}s;" onclick="openDetail('${e.id}')"><div class="event-poster-wrap">${getPosterUrl(e.poster)?`<img src="${getPosterUrl(e.poster)}" class="event-poster" onerror="this.parentElement.innerHTML='<div class=event-poster-placeholder>📸</div>';">`:'<div class="event-poster-placeholder">📸</div>'}</div><div class="event-body"><div class="event-name">${e.name}</div><div class="event-meta"><span>📅 ${e.date||'TBA'}</span><span>📍 ${e.location||'TBA'}</span></div></div></div>`).join('');
         }
 
-        function openDetail(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;const pu=getPosterUrl(e.poster);document.getElementById('detailPoster').src=pu||'';document.getElementById('detailPoster').style.display=pu?'':'none';document.getElementById('detailName').textContent=e.name;document.getElementById('detailDate').textContent=e.date||'TBA';document.getElementById('detailLocation').textContent=e.location||'TBA';document.getElementById('detailDesc').textContent=e.description||'';document.getElementById('detailOverlay').classList.add('open');}
+        // ── DETAIL MODAL ──
+        function openDetail(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;const pu=getPosterUrl(e.poster);document.getElementById('detailPoster').src=pu||'';document.getElementById('detailName').textContent=e.name;document.getElementById('detailDate').textContent=e.date||'TBA';document.getElementById('detailLocation').textContent=e.location||'TBA';document.getElementById('detailDesc').textContent=e.description||'';document.getElementById('detailOverlay').classList.add('open');}
         function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
 
-        function registerFromDetail(){closeDetail();const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
-        function closeRegModal(){document.getElementById('regModalOverlay').classList.remove('open');}
+        // ── TALLY REGISTRATION ──
+        function openTallyForm(){const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;window.open(`${TALLY_FORM_URL}?eventName=${encodeURIComponent(e.name)}`,'_blank');}
 
-        // ⓶ REGISTRATION FUNCTION – FIXED
-        async function submitRegistration(){
-            const n=document.getElementById('regName').value.trim();
-            const em=document.getElementById('regEmail').value.trim();
-            const ph=document.getElementById('regPhone').value.trim();
-            if(!n||!em||!ph)return showToast('Fill all fields');
-            const ev=eventsData.find(x=>x.id===selectedEventId);
-            if(!ev)return showToast('Event not found');
-            
-            const payload = {
-                eventName: ev.name,
-                eventDate: ev.date,
-                studentName: n,
-                email: em,
-                phone: ph,
-                timestamp: new Date().toISOString()
-            };
-            
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-                const result = await response.json();
-                if (result.result === 'success') {
-                    showToast('Registration successful! 🎉');
-                    closeRegModal();
-                } else {
-                    showToast('Registration failed: ' + (result.message || 'Unknown error'));
-                }
-            } catch(err) {
-                console.error('Registration error:', err);
-                showToast('Registration failed. Please try again.');
-            }
-        }
-
+        // ── ADMIN ──
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
         function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
-        function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode');}else showToast('Wrong password or token');}
-        function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Locked');}
+        function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode activated');}else showToast('Wrong password or token');}
+        function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Admin locked');}
 
-        // ⓷ EDIT FUNCTION – FIXED CLOSING ISSUE
         function openAddEventModal(editIndex=-1){
             document.getElementById('editEventIndex').value=editIndex;
             document.getElementById('addEventTitle').textContent=editIndex>=0?'Edit Event':'Add Event';
-            if(editIndex>=0){
-                const e=eventsData[editIndex];
-                document.getElementById('newEventName').value=e.name;
-                document.getElementById('newEventDate').value=e.date;
-                document.getElementById('newEventLocation').value=e.location||'';
-                document.getElementById('newEventDesc').value=e.description||'';
-                document.getElementById('newEventPoster').value=e.poster||'';
-            }else{
-                document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';
-                document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';
-                document.getElementById('newEventPoster').value='';
-            }
+            if(editIndex>=0){const e=eventsData[editIndex];document.getElementById('newEventName').value=e.name;document.getElementById('newEventDate').value=e.date;document.getElementById('newEventLocation').value=e.location||'';document.getElementById('newEventDesc').value=e.description||'';document.getElementById('newEventPoster').value=e.poster||'';}
+            else{document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';}
             refreshAdminEvents();document.getElementById('addEventOverlay').classList.add('open');
         }
         function closeAddEvent(){document.getElementById('addEventOverlay').classList.remove('open');}
 
         async function saveEvent(){
             const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
-            if(!n||!d)return showToast('Name and date required');
+            if(!n||!d)return showToast('Name and date/time required');
             const editIndex=parseInt(document.getElementById('editEventIndex').value);
-            if(editIndex>=0){
-                eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null};
-            }else{
-                eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
-            }
+            if(editIndex>=0){eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null};}
+            else{eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});}
             await commitEvents();renderEvents();refreshAdminEvents();closeAddEvent();showToast(editIndex>=0?'Event updated!':'Event added!');
         }
 
         async function commitEvents(){
-            try{
-                const c=JSON.stringify(eventsData,null,2);const b64=btoa(unescape(encodeURIComponent(c)));
-                const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{headers:{Authorization:`token ${githubToken}`}});
-                const fi=await gr.json();
-                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update events',content:b64,sha:fi.sha})});
-            }catch(e){showToast('GitHub sync failed');}
+            try{const c=JSON.stringify(eventsData,null,2);const b64=btoa(unescape(encodeURIComponent(c)));const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await gr.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update events',content:b64,sha:fi.sha})});}catch(e){showToast('GitHub sync failed. Check your token.');}
         }
         function refreshAdminEvents(){
             const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
+            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name} ${e.poster?'🖼️':''}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
         }
-        async function deleteEvent(i){if(!confirm('Delete?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Deleted');}
+        async function deleteEvent(i){if(!confirm('Delete this event?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Event deleted');}
         window.deleteEvent=deleteEvent;
 
-        // ⓸ MODAL CLOSING FIX – Only close when clicking the overlay itself, not its children
-        document.querySelectorAll('.modal-overlay').forEach(o=>{
-            o.addEventListener('click',function(e){
-                if(e.target === e.currentTarget){
-                    this.classList.remove('open');
-                }
-            });
-        });
+        // Close modals when clicking overlay
+        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===e.currentTarget){this.classList.remove('open');}});});
+
         fetchEvents();
     </script>
 </body>
