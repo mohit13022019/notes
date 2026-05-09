@@ -8,145 +8,86 @@
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/home/projects/1pgsxZp2mg9hzWqF_cNZXslCMlkXiqA2sC0GqLXnanzeILXoNDiNI5lKc/edit';
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
         :root {
-            --bg: #fafaf8;
-            --surface: rgba(255,255,255,0.8);
-            --surface-alt: rgba(245,244,241,0.7);
-            --primary: #1a3728;
-            --accent: #c8944a;
-            --accent-light: #d4a85c;
-            --text: #1a1d20;
-            --text-secondary: #5a6070;
-            --text-muted: #949aa8;
-            --border: rgba(232,229,223,0.6);
-            --glass-bg: rgba(255,255,255,0.55);
-            --glass-border: rgba(255,255,255,0.5);
-            --shadow: 0 4px 16px rgba(0,0,0,0.06);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
-            --shadow-xl: 0 24px 64px rgba(0,0,0,0.14);
-            --radius-lg: 18px;
-            --radius-xl: 24px;
-            --radius-2xl: 32px;
-            --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+            --bg:#fafaf8;--surface:rgba(255,255,255,0.8);--surface-alt:rgba(245,244,241,0.7);
+            --primary:#1a3728;--accent:#c8944a;--accent-light:#d4a85c;--text:#1a1d20;
+            --text-secondary:#5a6070;--text-muted:#949aa8;--border:rgba(232,229,223,0.6);
+            --glass-bg:rgba(255,255,255,0.55);--glass-border:rgba(255,255,255,0.5);
+            --shadow:0 4px 16px rgba(0,0,0,0.06);--shadow-lg:0 16px 48px rgba(0,0,0,0.10);
+            --shadow-xl:0 24px 64px rgba(0,0,0,0.14);--radius-lg:18px;--radius-xl:24px;--radius-2xl:32px;
+            --transition:0.25s cubic-bezier(0.4,0,0.2,1);
         }
         body.dark {
-            --bg: #0a0d10;
-            --surface: rgba(20,23,27,0.8);
-            --surface-alt: rgba(26,30,35,0.6);
-            --primary: #c8944a;
-            --accent: #c8944a;
-            --accent-light: #d4a85c;
-            --text: #e8eaee;
-            --text-secondary: #a8b0bc;
-            --text-muted: #6a7280;
-            --border: rgba(42,46,53,0.6);
-            --glass-bg: rgba(20,23,27,0.6);
-            --glass-border: rgba(42,46,53,0.5);
-            --shadow: 0 4px 16px rgba(0,0,0,0.4);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
-            --shadow-xl: 0 24px 64px rgba(0,0,0,0.6);
+            --bg:#0a0d10;--surface:rgba(20,23,27,0.8);--surface-alt:rgba(26,30,35,0.6);
+            --primary:#c8944a;--accent:#c8944a;--accent-light:#d4a85c;--text:#e8eaee;
+            --text-secondary:#a8b0bc;--text-muted:#6a7280;--border:rgba(42,46,53,0.6);
+            --glass-bg:rgba(20,23,27,0.6);--glass-border:rgba(42,46,53,0.5);
+            --shadow:0 4px 16px rgba(0,0,0,0.4);--shadow-lg:0 16px 48px rgba(0,0,0,0.5);
+            --shadow-xl:0 24px 64px rgba(0,0,0,0.6);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text);
-            line-height:1.6; transition:background 0.4s,color 0.3s;
-            -webkit-font-smoothing:antialiased; min-height:100vh; overflow-x:hidden;
-        }
-        @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes scaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
 
-        .top-nav {
-            background:var(--glass-bg); backdrop-filter:blur(20px);
-            border-bottom:1px solid var(--glass-border); padding:0.6rem 2rem; display:flex;
-            align-items:center; justify-content:space-between; position:sticky; top:0; z-index:101;
-        }
-        .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); text-decoration:none; }
-        .nav-links { display:flex; gap:1.5rem; }
-        .nav-links a { color:var(--text-secondary); text-decoration:none; font-weight:600; font-size:0.85rem; }
-        .nav-links a.active { color:var(--accent); }
+        .top-nav{background:var(--glass-bg);backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:101}
+        .nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--primary);text-decoration:none}
+        .nav-links{display:flex;gap:1.5rem}.nav-links a{color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:.85rem}
+        .nav-links a.active{color:var(--accent)}
 
-        .particle-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35; }
+        .particle-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.35}
 
-        .main-container { max-width:1200px; margin:0 auto; padding:3rem 2rem 4rem; position:relative; z-index:1; }
-        .page-title { font-family:'Playfair Display',serif; font-size:3rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:0.3rem; }
-        .page-subtitle { text-align:center; color:var(--text-muted); margin-bottom:2rem; }
+        .main-container{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem;position:relative;z-index:1}
+        .page-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.3rem}
+        .page-subtitle{text-align:center;color:var(--text-muted);margin-bottom:2rem}
 
-        .action-bar { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
-        .btn {
-            padding:0.6rem 1.5rem; border-radius:50px; font-weight:600; font-size:0.82rem;
-            cursor:pointer; border:none; font-family:'Inter',sans-serif;
-            display:inline-flex; align-items:center; gap:0.4rem;
-            background:var(--glass-bg); border:1.5px solid var(--glass-border); color:var(--text-secondary);
-            transition:var(--transition);
-        }
-        .btn:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
-        .btn-accent { background:var(--accent); color:#fff; border:none; font-weight:700; }
-        .btn-accent:hover { background:var(--accent-light); }
+        .action-bar{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap}
+        .btn{padding:.6rem 1.5rem;border-radius:50px;font-weight:600;font-size:.82rem;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem;background:var(--glass-bg);border:1.5px solid var(--glass-border);color:var(--text-secondary);transition:var(--transition)}
+        .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+        .btn-accent{background:var(--accent);color:#fff;border:none;font-weight:700}.btn-accent:hover{background:var(--accent-light)}
+        .btn-sm{padding:.4rem .9rem;font-size:.7rem}
 
-        .events-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.5rem; }
-        .event-card {
-            background:var(--glass-bg); backdrop-filter:blur(18px);
-            border-radius:var(--radius-xl); border:1px solid var(--glass-border);
-            overflow:hidden; cursor:pointer; transition:var(--transition);
-            box-shadow:var(--shadow); animation: fadeInUp 0.6s ease;
-        }
-        .event-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-xl); border-color:var(--accent); }
-        .event-poster-wrap {
-            width:100%; aspect-ratio:1/1.4; overflow:hidden;
-            background:var(--surface-alt); display:flex; align-items:center; justify-content:center;
-        }
-        .event-poster { width:100%; height:100%; object-fit:contain; }
-        .event-poster-placeholder { font-size:3rem; opacity:0.4; color:var(--accent); }
-        .event-body { padding:1.2rem 1.5rem; }
-        .event-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
-        .event-meta { font-size:0.8rem; color:var(--text-secondary); display:flex; gap:1rem; flex-wrap:wrap; }
-        .event-meta span { display:flex; align-items:center; gap:0.3rem; }
+        .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+        .event-card{background:var(--glass-bg);backdrop-filter:blur(18px);border-radius:var(--radius-xl);border:1px solid var(--glass-border);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);animation:fadeInUp .6s ease}
+        .event-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);border-color:var(--accent)}
+        .event-poster-wrap{width:100%;aspect-ratio:1/1.4;overflow:hidden;background:var(--surface-alt);display:flex;align-items:center;justify-content:center}
+        .event-poster{width:100%;height:100%;object-fit:contain}
+        .event-poster-placeholder{font-size:3rem;opacity:.4;color:var(--accent)}
+        .event-body{padding:1.2rem 1.5rem}
+        .event-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}
+        .event-meta{font-size:.8rem;color:var(--text-secondary);display:flex;gap:1rem;flex-wrap:wrap}
 
-        .modal-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:200; padding:1.5rem; background:rgba(0,0,0,0); transition:all 0.35s; }
-        .modal-overlay.open { display:flex; background:rgba(0,0,0,0.55); backdrop-filter:blur(10px); }
-        .detail-modal {
-            background:var(--surface); border-radius:var(--radius-2xl); width:100%; max-width:600px;
-            max-height:85vh; overflow-y:auto; box-shadow:var(--shadow-xl);
-            border:1px solid var(--glass-border); animation:scaleIn 0.35s ease;
-            backdrop-filter:blur(20px);
-        }
-        .detail-poster-wrap { width:100%; background:var(--surface-alt); display:flex; align-items:center; justify-content:center; padding:1rem; }
-        .detail-poster { max-width:100%; max-height:350px; object-fit:contain; }
-        .detail-content { padding:2rem; }
-        .detail-name { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:0.8rem; }
-        .detail-meta { font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem; display:flex; gap:1.5rem; flex-wrap:wrap; }
-        .detail-desc { font-size:0.95rem; color:var(--text); line-height:1.7; margin-bottom:1.5rem; white-space:pre-wrap; }
-        .detail-close { float:right; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); padding:0.5rem 1rem; }
-        .btn-register-lg {
-            background:var(--accent); color:#fff; border:none; padding:0.8rem 2rem;
-            border-radius:50px; font-weight:700; cursor:pointer; font-size:0.95rem;
-            transition:var(--transition); display:inline-flex; align-items:center; gap:0.4rem;
-        }
-        .btn-register-lg:hover { background:var(--accent-light); transform:translateY(-2px); }
+        .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;background:rgba(0,0,0,0);transition:all .35s}
+        .modal-overlay.open{display:flex;background:rgba(0,0,0,.55);backdrop-filter:blur(10px)}
+        .detail-modal{background:var(--surface);border-radius:var(--radius-2xl);width:100%;max-width:600px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease;backdrop-filter:blur(20px)}
+        .detail-poster-wrap{width:100%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;padding:1rem}
+        .detail-poster{max-width:100%;max-height:350px;object-fit:contain}
+        .detail-content{padding:2rem}
+        .detail-name{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--primary);margin-bottom:.8rem}
+        .detail-meta{font-size:.9rem;color:var(--text-secondary);margin-bottom:1rem;display:flex;gap:1.5rem}
+        .detail-desc{font-size:.95rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;white-space:pre-wrap}
+        .detail-close{float:right;background:0 0;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);padding:.5rem 1rem}
+        .btn-register-lg{background:var(--accent);color:#fff;border:none;padding:.8rem 2rem;border-radius:50px;font-weight:700;cursor:pointer;font-size:.95rem;transition:var(--transition);display:inline-flex;align-items:center;gap:.4rem}
+        .btn-register-lg:hover{background:var(--accent-light);transform:translateY(-2px)}
 
-        .modal {
-            background:var(--surface); padding:2rem; border-radius:var(--radius-xl); width:100%;
-            max-width:500px; max-height:85vh; overflow-y:auto;
-            box-shadow:var(--shadow-xl); border:1px solid var(--glass-border); animation:scaleIn 0.35s ease;
-        }
-        .modal h3 { font-family:'Playfair Display',serif; color:var(--primary); margin-bottom:1.2rem; text-align:center; }
-        .modal input, .modal textarea { width:100%; padding:0.7rem 0.9rem; margin:0.3rem 0 0.7rem; border:2px solid var(--border); border-radius:14px; background:var(--surface-alt); color:var(--text); font-size:0.85rem; font-family:'Inter',sans-serif; }
-        .modal input:focus, .modal textarea:focus { border-color:var(--accent); outline:none; }
-        .modal-close { float:right; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-muted); }
-        .btn-submit { background:var(--accent); color:#fff; border:none; padding:0.7rem; border-radius:50px; font-weight:700; width:100%; cursor:pointer; }
-        .btn-submit:hover { background:var(--accent-light); }
+        .modal{background:var(--surface);padding:2rem;border-radius:var(--radius-xl);width:100%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease}
+        .modal h3{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:1.2rem;text-align:center}
+        .modal input,.modal textarea{width:100%;padding:.7rem .9rem;margin:.3rem 0 .7rem;border:2px solid var(--border);border-radius:14px;background:var(--surface-alt);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif}
+        .modal input:focus,.modal textarea:focus{border-color:var(--accent);outline:0}
+        .modal-close{float:right;background:0 0;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted)}
+        .btn-submit{background:var(--accent);color:#fff;border:none;padding:.7rem;border-radius:50px;font-weight:700;width:100%;cursor:pointer}
+        .btn-submit:hover{background:var(--accent-light)}
 
-        .toast { position:fixed; bottom:2rem; right:2rem; background:var(--primary); color:#fff; padding:0.7rem 1.3rem; border-radius:50px; font-weight:600; z-index:300; animation:fadeInUp 0.3s ease; box-shadow:var(--shadow-lg); display:none; }
+        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:#fff;padding:.7rem 1.3rem;border-radius:50px;font-weight:600;z-index:300;animation:fadeInUp .3s ease;box-shadow:var(--shadow-lg);display:none}
 
-        @media(max-width:768px){
-            .top-nav { padding:0.5rem 1rem; } .nav-links { gap:0.8rem; } .nav-links a { font-size:0.7rem; }
-            .main-container { padding:2rem 1rem 4rem; } .page-title { font-size:2.2rem; }
-            .events-grid { grid-template-columns:1fr; }
-        }
+        .edit-btn{background:var(--accent);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.3rem}
+        .edit-btn:hover{background:var(--accent-light)}
+
+        @media(max-width:768px){.top-nav{padding:.5rem 1rem}.nav-links{gap:.8rem}.nav-links a{font-size:.7rem}.main-container{padding:2rem 1rem 4rem}.page-title{font-size:2.2rem}.events-grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body class="light">
@@ -155,10 +96,8 @@
     <nav class="top-nav">
         <a href="index.html" class="nav-logo">Synapse</a>
         <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="notes.html">Notes</a>
-            <a href="events.html" class="active">Events</a>
-            <a href="magazine.html">Magazine</a>
+            <a href="index.html">Home</a><a href="notes.html">Notes</a>
+            <a href="events.html" class="active">Events</a><a href="magazine.html">Magazine</a>
         </div>
     </nav>
 
@@ -182,15 +121,10 @@
     <div class="modal-overlay" id="detailOverlay">
         <div class="detail-modal">
             <button class="detail-close" onclick="closeDetail()">✕</button>
-            <div class="detail-poster-wrap">
-                <img class="detail-poster" id="detailPoster" src="" alt="">
-            </div>
+            <div class="detail-poster-wrap"><img class="detail-poster" id="detailPoster" src="" alt=""></div>
             <div class="detail-content">
                 <div class="detail-name" id="detailName"></div>
-                <div class="detail-meta">
-                    <span>📅 <span id="detailDate"></span></span>
-                    <span>📍 <span id="detailLocation"></span></span>
-                </div>
+                <div class="detail-meta"><span>📅 <span id="detailDate"></span></span><span>📍 <span id="detailLocation"></span></span></div>
                 <div class="detail-desc" id="detailDesc"></div>
                 <button class="btn-register-lg" onclick="registerFromDetail()">✨ Register Now</button>
             </div>
@@ -211,37 +145,36 @@
 
     <!-- Admin Login -->
     <div class="modal-overlay" id="adminLoginOverlay">
-        <div class="modal">
-            <button class="modal-close" onclick="closeAdminLogin()">✕</button>
-            <h3>Admin Login</h3>
+        <div class="modal"><button class="modal-close" onclick="closeAdminLogin()">✕</button><h3>Admin Login</h3>
             <input type="password" id="adminPassword" placeholder="Password">
             <input type="password" id="githubToken" placeholder="GitHub Token (ghp_...)">
             <button class="btn-submit" onclick="adminLogin()">Login</button>
         </div>
     </div>
 
-    <!-- Add Event -->
+    <!-- Add/Edit Event -->
     <div class="modal-overlay" id="addEventOverlay">
         <div class="modal">
             <button class="modal-close" onclick="closeAddEvent()">✕</button>
-            <h3>Add Event</h3>
+            <h3 id="addEventTitle">Add Event</h3>
+            <input type="hidden" id="editEventIndex" value="-1">
             <input type="text" id="newEventName" placeholder="Event Name">
-            <input type="text" id="newEventDate" placeholder="Date & Time (e.g., 11th May | 3:15 PM)">
-            <input type="text" id="newEventLocation" placeholder="Venue (e.g., BT CR 1)">
+            <input type="text" id="newEventDate" placeholder="Date & Time">
+            <input type="text" id="newEventLocation" placeholder="Venue">
             <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
-            <p style="font-size:0.7rem;color:var(--text-muted);">Upload image to GitHub repo → paste filename</p>
-            <button class="btn-submit" onclick="addEvent()">Add Event</button>
+            <p style="font-size:.7rem;color:var(--text-muted);">Upload image to GitHub repo → paste filename</p>
+            <button class="btn-submit" onclick="saveEvent()">Save Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
-            <p style="font-weight:700;font-size:0.8rem;">Existing:</p>
-            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:0.75rem;"></div>
+            <p style="font-weight:700;font-size:.8rem;">Existing Events:</p>
+            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:.75rem;"></div>
         </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        (function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const n=35;function r(){c.width=innerWidth;c.height=innerHeight;}window.addEventListener('resize',r);r();class P{constructor(){this.reset();}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+0.5;this.vx=(Math.random()-0.5)*0.3;this.vy=(Math.random()-0.5)*0.3;this.o=Math.random()*0.4+0.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width||this.y<0||this.y>c.height){this.reset();}}draw(){const d=document.body.classList.contains('dark');const cl=d?'200,148,74':'26,60,46';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(${cl},${this.o})`;x.fill();}}for(let i=0;i<n;i++)p.push(new P());function a(){x.clearRect(0,0,c.width,c.height);p.forEach(v=>{v.update();v.draw();});requestAnimationFrame(a);}a();})();
+        (function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const n=35;function r(){c.width=innerWidth;c.height=innerHeight;}window.addEventListener('resize',r);r();class P{constructor(){this.reset();}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+.5;this.vx=(Math.random()-.5)*.3;this.vy=(Math.random()-.5)*.3;this.o=Math.random()*.4+.15;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width||this.y<0||this.y>c.height){this.reset();}}draw(){const d=document.body.classList.contains('dark');const cl=d?'200,148,74':'26,60,46';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(${cl},${this.o})`;x.fill();}}for(let i=0;i<n;i++)p.push(new P());function a(){x.clearRect(0,0,c.width,c.height);p.forEach(v=>{v.update();v.draw();});requestAnimationFrame(a);}a();})();
 
         (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
         document.getElementById('themeToggleBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
@@ -256,34 +189,13 @@
         function renderEvents(){
             const grid=document.getElementById('eventsGrid');
             if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);">No events yet.</p>';return;}
-            grid.innerHTML=eventsData.map((e,i)=>{
-                const pu=getPosterUrl(e.poster);
-                return`<div class="event-card" style="animation-delay:${i*0.07}s;" onclick="openDetail('${e.id}')">
-                    <div class="event-poster-wrap">${pu?`<img src="${pu}" class="event-poster" onerror="this.parentElement.innerHTML='<div class=event-poster-placeholder>📸</div>';">`:'<div class="event-poster-placeholder">📸</div>'}</div>
-                    <div class="event-body"><div class="event-name">${e.name}</div><div class="event-meta"><span>📅 ${e.date||'TBA'}</span><span>📍 ${e.location||'TBA'}</span></div></div>
-                </div>`;
-            }).join('');
+            grid.innerHTML=eventsData.map((e,i)=>`<div class="event-card" style="animation-delay:${i*.07}s;" onclick="openDetail('${e.id}')"><div class="event-poster-wrap">${getPosterUrl(e.poster)?`<img src="${getPosterUrl(e.poster)}" class="event-poster" onerror="this.parentElement.innerHTML='<div class=event-poster-placeholder>📸</div>';">`:'<div class="event-poster-placeholder">📸</div>'}</div><div class="event-body"><div class="event-name">${e.name}</div><div class="event-meta"><span>📅 ${e.date||'TBA'}</span><span>📍 ${e.location||'TBA'}</span></div></div></div>`).join('');
         }
 
-        function openDetail(id){
-            const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;
-            const pu=getPosterUrl(e.poster);
-            document.getElementById('detailPoster').src=pu||'';
-            document.getElementById('detailPoster').style.display=pu?'':'none';
-            document.getElementById('detailName').textContent=e.name;
-            document.getElementById('detailDate').textContent=e.date||'TBA';
-            document.getElementById('detailLocation').textContent=e.location||'TBA';
-            document.getElementById('detailDesc').textContent=e.description||'';
-            document.getElementById('detailOverlay').classList.add('open');
-        }
+        function openDetail(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;const pu=getPosterUrl(e.poster);document.getElementById('detailPoster').src=pu||'';document.getElementById('detailPoster').style.display=pu?'':'none';document.getElementById('detailName').textContent=e.name;document.getElementById('detailDate').textContent=e.date||'TBA';document.getElementById('detailLocation').textContent=e.location||'TBA';document.getElementById('detailDesc').textContent=e.description||'';document.getElementById('detailOverlay').classList.add('open');}
         function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
 
-        function registerFromDetail(){
-            closeDetail();const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;
-            document.getElementById('regEventName').textContent=e.name;
-            document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';
-            document.getElementById('regModalOverlay').classList.add('open');
-        }
+        function registerFromDetail(){closeDetail();const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
         function closeRegModal(){document.getElementById('regModalOverlay').classList.remove('open');}
 
         async function submitRegistration(){
@@ -291,31 +203,47 @@
             if(!n||!em||!ph)return showToast('Fill all fields');
             const ev=eventsData.find(x=>x.id===selectedEventId);if(!ev)return;
             try{
-                const payload={eventName:ev.name,eventDate:ev.date,studentName:n,email:em,phone:ph,timestamp:new Date().toISOString()};
-                console.log('Sending:',JSON.stringify(payload));
-                await fetch(GOOGLE_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify(payload)});
-                showToast('Registration saved!');closeRegModal();
-            }catch(err){console.error(err);showToast('Failed');}
+                await fetch(GOOGLE_SCRIPT_URL,{method:'POST',headers:{'Content-Type':'text/plain'},body:JSON.stringify({eventName:ev.name,eventDate:ev.date,studentName:n,email:em,phone:ph,timestamp:new Date().toISOString()})});
+                showToast('Registered!');closeRegModal();
+            }catch(err){showToast('Failed');}
         }
 
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
         function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
-        function adminLogin(){
-            const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();
-            if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode');}
-            else showToast('Wrong password or token');
-        }
+        function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode');}else showToast('Wrong password or token');}
         function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Locked');}
 
-        function openAddEventModal(){refreshAdminEvents();document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';document.getElementById('addEventOverlay').classList.add('open');}
+        function openAddEventModal(editIndex=-1){
+            document.getElementById('editEventIndex').value=editIndex;
+            document.getElementById('addEventTitle').textContent=editIndex>=0?'Edit Event':'Add Event';
+            if(editIndex>=0){
+                const e=eventsData[editIndex];
+                document.getElementById('newEventName').value=e.name;
+                document.getElementById('newEventDate').value=e.date;
+                document.getElementById('newEventLocation').value=e.location||'';
+                document.getElementById('newEventDesc').value=e.description||'';
+                document.getElementById('newEventPoster').value=e.poster||'';
+            }else{
+                document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';
+                document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';
+                document.getElementById('newEventPoster').value='';
+            }
+            refreshAdminEvents();document.getElementById('addEventOverlay').classList.add('open');
+        }
         function closeAddEvent(){document.getElementById('addEventOverlay').classList.remove('open');}
 
-        async function addEvent(){
+        async function saveEvent(){
             const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
             if(!n||!d)return showToast('Name and date required');
-            eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
-            await commitEvents();renderEvents();refreshAdminEvents();showToast('Event added');
+            const editIndex=parseInt(document.getElementById('editEventIndex').value);
+            if(editIndex>=0){
+                eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null};
+            }else{
+                eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
+            }
+            await commitEvents();renderEvents();refreshAdminEvents();closeAddEvent();showToast(editIndex>=0?'Event updated!':'Event added!');
         }
+
         async function commitEvents(){
             try{
                 const c=JSON.stringify(eventsData,null,2);const b64=btoa(unescape(encodeURIComponent(c)));
@@ -326,7 +254,7 @@
         }
         function refreshAdminEvents(){
             const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';div.innerHTML=`<span>${e.name}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.55rem;" onclick="deleteEvent(${i})">✕</button>`;list.appendChild(div);});
+            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name}</span><div><button class="edit-btn" onclick="openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
         }
         async function deleteEvent(i){if(!confirm('Delete?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Deleted');}
         window.deleteEvent=deleteEvent;
