@@ -71,6 +71,7 @@
         @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
         @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes scaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
+        @keyframes slideDown { from{max-height:0;opacity:0} to{max-height:500px;opacity:1} }
 
         .top-nav {
             background: var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
@@ -106,27 +107,41 @@
         .btn-accent { background:var(--accent); color:#fff; border:none; font-weight:700; box-shadow:0 4px 16px rgba(200,148,74,0.25); }
         .btn-accent:hover { background:var(--accent-light); box-shadow:0 8px 28px rgba(200,148,74,0.35); color:#fff; }
 
-        .events-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap:1.5rem; }
+        .events-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(360px, 1fr)); gap:1.3rem; }
         .event-card {
             background:var(--glass-bg); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
             border-radius:var(--radius-xl); border:1px solid var(--glass-border);
             overflow:hidden; transition:var(--transition); box-shadow:var(--shadow-sm);
-            animation: fadeInUp 0.6s ease; position:relative;
+            animation: fadeInUp 0.6s ease; cursor:pointer; position:relative;
         }
         .event-card:hover { box-shadow:var(--shadow-xl); transform:translateY(-3px); border-color:var(--accent); }
         .event-poster {
-            width:100%; height:200px; object-fit:cover; display:block;
+            width:100%; height:220px; object-fit:cover; display:block;
             background:var(--surface-alt);
         }
         .event-poster-placeholder {
-            width:100%; height:120px; display:flex; align-items:center; justify-content:center;
+            width:100%; height:140px; display:flex; align-items:center; justify-content:center;
             background:linear-gradient(135deg, var(--accent-pale), var(--surface-alt));
-            color:var(--accent); font-size:2rem;
+            color:var(--accent); font-size:2.5rem;
         }
-        .event-card-body { padding:1.5rem; }
-        .event-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
-        .event-meta { font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.8rem; display:flex; gap:1.2rem; flex-wrap:wrap; }
-        .event-desc { font-size:0.88rem; color:var(--text); margin-bottom:1.2rem; line-height:1.5; }
+        .event-card-body { padding:1.2rem 1.5rem 1.5rem; }
+        .event-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; line-height:1.2; }
+        .event-meta { font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.6rem; display:flex; gap:1rem; flex-wrap:wrap; }
+        .event-meta span { display:flex; align-items:center; gap:0.3rem; }
+
+        /* Expandable description */
+        .event-desc-preview { font-size:0.85rem; color:var(--text); margin-bottom:0.8rem; line-height:1.4; }
+        .event-desc-full { max-height:0; overflow:hidden; transition:max-height 0.4s ease, margin 0.4s ease; font-size:0.85rem; color:var(--text); line-height:1.5; }
+        .event-card.expanded .event-desc-full { max-height:400px; margin-bottom:1rem; }
+        .event-desc-toggle {
+            display:inline-flex; align-items:center; gap:0.3rem; font-size:0.75rem;
+            color:var(--accent); font-weight:600; cursor:pointer; margin-bottom:0.8rem;
+            user-select:none; transition:var(--transition);
+        }
+        .event-desc-toggle:hover { color:var(--accent-light); }
+        .event-desc-toggle .chevron { transition:transform 0.3s; font-size:0.6rem; }
+        .event-card.expanded .event-desc-toggle .chevron { transform:rotate(180deg); }
+
         .btn-register {
             background:var(--accent); color:#fff; border:none; padding:0.55rem 1.5rem;
             border-radius:50px; font-weight:600; cursor:pointer; transition:var(--transition);
@@ -157,7 +172,7 @@
         @media (max-width:768px) {
             .top-nav { padding:0.5rem 1rem; } .nav-links { gap:0.8rem; } .nav-links a { font-size:0.7rem; }
             .main-container { padding:2rem 1rem 4rem; } .page-title { font-size:2.2rem; }
-            .events-grid { grid-template-columns:1fr; } .event-poster { height:160px; }
+            .events-grid { grid-template-columns:1fr; } .event-poster { height:180px; }
         }
     </style>
 </head>
@@ -223,11 +238,11 @@
             <button class="modal-close" onclick="closeAddEvent()">✕</button>
             <h3>Add Event</h3>
             <input type="text" id="newEventName" placeholder="Event Name">
-            <input type="text" id="newEventDate" placeholder="Date (e.g., 20 May 2026)">
-            <input type="text" id="newEventLocation" placeholder="Location (e.g., Auditorium)">
-            <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
+            <input type="text" id="newEventDate" placeholder="Date & Time (e.g., 11th May | 3:15 PM)">
+            <input type="text" id="newEventLocation" placeholder="Venue (e.g., BT CR 1)">
+            <textarea id="newEventDesc" placeholder="Description (shown when expanded)" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
-            <p class="poster-help">Upload the image to your GitHub repo (<code>notes/</code> folder) and paste the filename here.</p>
+            <p class="poster-help">Upload image to GitHub repo (<code>notes/</code> folder) and paste filename here.</p>
             <button class="btn-submit" onclick="addEvent()">Add Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
             <p style="font-weight:700;font-size:0.8rem;margin-bottom:0.5rem;">Existing Events:</p>
@@ -261,17 +276,29 @@
                 const posterUrl=getPosterUrl(e.poster);
                 const posterHTML=posterUrl?`<img src="${posterUrl}" alt="${e.name}" class="event-poster" onerror="this.parentElement.querySelector('.event-poster-placeholder').style.display='flex';this.style.display='none';">`:'';
                 const placeholderHTML=posterUrl?`<div class="event-poster-placeholder" style="display:none;">📸</div>`:`<div class="event-poster-placeholder">📸</div>`;
+                const shortDesc = e.description ? e.description.substring(0,100) : '';
+                const hasMore = e.description && e.description.length > 100;
                 return `
-                <div class="event-card" style="animation-delay:${i*0.07}s;">
+                <div class="event-card" style="animation-delay:${i*0.07}s;" data-event-id="${e.id}" onclick="toggleExpand(this, event)">
                     ${posterHTML}${placeholderHTML}
                     <div class="event-card-body">
                         <div class="event-name">${e.name}</div>
-                        <div class="event-meta"><span>📅 ${e.date}</span><span>📍 ${e.location||'TBD'}</span></div>
-                        <div class="event-desc">${e.description}</div>
-                        <button class="btn-register" onclick="openRegistration('${e.id}')">✨ Register Now</button>
+                        <div class="event-meta">
+                            <span>📅 ${e.date||'TBA'}</span>
+                            <span>📍 ${e.location||'TBA'}</span>
+                        </div>
+                        ${hasMore ? `<div class="event-desc-preview">${shortDesc}...</div>` : ''}
+                        <div class="event-desc-full">${e.description||''}</div>
+                        ${hasMore ? `<div class="event-desc-toggle"><span>Read more</span><span class="chevron">▾</span></div>` : ''}
+                        <button class="btn-register" onclick="event.stopPropagation();openRegistration('${e.id}')">✨ Register Now</button>
                     </div>
                 </div>`;
             }).join('');
+        }
+
+        function toggleExpand(card, evt){
+            if(evt.target.closest('.btn-register')||evt.target.closest('.event-desc-toggle'))return;
+            card.classList.toggle('expanded');
         }
 
         function openRegistration(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
@@ -303,7 +330,7 @@
 
         async function addEvent(){
             const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
-            if(!n||!d)return showToast('Name and date required');
+            if(!n||!d)return showToast('Name and date/time required');
             eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
             await commitEvents();renderEvents();refreshAdminEvents();
             showToast('Event added!');
