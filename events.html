@@ -6,9 +6,9 @@
     <title>Synapse — Events</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
     <script>
-        const REPO_OWNER = 'mohit13022019';
-        const REPO_NAME = 'notes';
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec';
+        const REPO_OWNER = 'mohit13022019';   // ← CHANGE THIS
+        const REPO_NAME = 'notes';            // ← CHANGE THIS
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec'; // ← CHANGE THIS
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
@@ -20,22 +20,18 @@
             --accent: #c8944a;
             --accent-light: #d4a85c;
             --accent-pale: #fef9f2;
-            --accent-glow: rgba(200,148,74,0.15);
             --text: #1a1d20;
             --text-secondary: #5a6070;
             --text-muted: #949aa8;
             --border: rgba(232,229,223,0.6);
-            --border-light: rgba(240,237,232,0.4);
             --glass-bg: rgba(255,255,255,0.55);
             --glass-border: rgba(255,255,255,0.5);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
             --shadow: 0 4px 16px rgba(0,0,0,0.06);
             --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
             --shadow-xl: 0 24px 64px rgba(0,0,0,0.14);
-            --radius-sm: 10px;
-            --radius: 14px;
             --radius-lg: 18px;
             --radius-xl: 24px;
+            --radius-2xl: 32px;
             --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
         }
         body.dark {
@@ -50,10 +46,8 @@
             --text-secondary: #a8b0bc;
             --text-muted: #6a7280;
             --border: rgba(42,46,53,0.6);
-            --border-light: rgba(34,37,43,0.4);
             --glass-bg: rgba(20,23,27,0.6);
             --glass-border: rgba(42,46,53,0.5);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
             --shadow: 0 4px 16px rgba(0,0,0,0.4);
             --shadow-lg: 0 16px 48px rgba(0,0,0,0.5);
             --shadow-xl: 0 24px 64px rgba(0,0,0,0.6);
@@ -61,41 +55,31 @@
         * { margin:0; padding:0; box-sizing:border-box; }
         html { scroll-behavior:smooth; }
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: var(--bg); color: var(--text); line-height:1.6;
-            transition: background 0.4s, color 0.3s;
-            -webkit-font-smoothing:antialiased; overflow-x:hidden; min-height:100vh;
+            font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--text);
+            line-height:1.6; transition:background 0.4s,color 0.3s;
+            -webkit-font-smoothing:antialiased; min-height:100vh; overflow-x:hidden;
         }
         @keyframes fadeInUp { from{opacity:0;transform:translateY(30px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes fadeIn { from{opacity:0} to{opacity:1} }
         @keyframes scaleIn { from{transform:scale(0.94);opacity:0} to{transform:scale(1);opacity:1} }
 
         .top-nav {
-            background: var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+            background:var(--glass-bg); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
             border-bottom:1px solid var(--glass-border); padding:0.6rem 2rem; display:flex;
             align-items:center; justify-content:space-between; position:sticky; top:0; z-index:101;
         }
         .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); text-decoration:none; }
-        .nav-logo:hover { color:var(--accent); }
-        .nav-links { display:flex; gap:1.5rem; align-items:center; }
-        .nav-links a { color:var(--text-secondary); text-decoration:none; font-weight:600; font-size:0.85rem; transition:var(--transition); position:relative; padding:0.3rem 0; }
-        .nav-links a::after { content:''; position:absolute; bottom:0; left:0; width:0; height:2px; background:var(--accent); transition:width 0.3s; }
+        .nav-links { display:flex; gap:1.5rem; }
+        .nav-links a { color:var(--text-secondary); text-decoration:none; font-weight:600; font-size:0.85rem; transition:var(--transition); padding:0.3rem 0; }
         .nav-links a:hover { color:var(--text); }
-        .nav-links a:hover::after { width:100%; }
         .nav-links a.active { color:var(--accent); }
-        .nav-links a.active::after { width:100%; }
 
         .particle-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; opacity:0.35; }
 
         .main-container { max-width:1200px; margin:0 auto; padding:3rem 2rem 4rem; position:relative; z-index:1; }
-        .page-title {
-            font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:700;
-            color:var(--primary); text-align:center; margin-bottom:0.5rem;
-            animation: fadeInUp 0.7s ease; letter-spacing:-0.6px;
-        }
-        .page-subtitle { text-align:center; color:var(--text-muted); margin-bottom:2.5rem; animation: fadeInUp 0.7s ease 0.1s; opacity:0; animation-fill-mode:forwards; }
+        .page-title { font-family:'Playfair Display',serif; font-size:3.2rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:0.3rem; }
+        .page-subtitle { text-align:center; color:var(--text-muted); margin-bottom:2.5rem; }
 
-        .action-bar { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; animation: fadeInUp 0.7s ease 0.15s; opacity:0; animation-fill-mode:forwards; }
+        .action-bar { display:flex; justify-content:center; gap:1rem; margin-bottom:2rem; flex-wrap:wrap; }
         .btn {
             padding:0.6rem 1.5rem; border-radius:50px; font-weight:600; font-size:0.82rem;
             cursor:pointer; border:none; transition:var(--transition); font-family:'Inter',sans-serif;
@@ -103,56 +87,53 @@
             background:var(--glass-bg); border:1.5px solid var(--glass-border); color:var(--text-secondary);
         }
         .btn:hover { transform:translateY(-2px); box-shadow:var(--shadow); }
-        .btn-accent { background:var(--accent); color:#fff; border:none; font-weight:700; box-shadow:0 4px 16px rgba(200,148,74,0.25); }
-        .btn-accent:hover { background:var(--accent-light); box-shadow:0 8px 28px rgba(200,148,74,0.35); }
+        .btn-accent { background:var(--accent); color:#fff; border:none; font-weight:700; }
+        .btn-accent:hover { background:var(--accent-light); }
 
-        .events-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:1.3rem; }
+        .events-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(320px, 1fr)); gap:1.5rem; }
         .event-card {
             background:var(--glass-bg); backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
             border-radius:var(--radius-xl); border:1px solid var(--glass-border);
-            overflow:hidden; transition:var(--transition); box-shadow:var(--shadow-sm);
-            animation: fadeInUp 0.6s ease; cursor:pointer;
+            overflow:hidden; transition:var(--transition); box-shadow:var(--shadow);
+            cursor:pointer; animation: fadeInUp 0.6s ease;
         }
-        .event-card:hover { box-shadow:var(--shadow-xl); transform:translateY(-3px); border-color:var(--accent); }
-        .event-card.expanded { box-shadow:var(--shadow-xl); border-color:var(--accent); border-width:1.5px; }
+        .event-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-xl); border-color:var(--accent); }
         .event-poster-wrap {
-            width:100%; height:200px; overflow:hidden; position:relative;
+            width:100%; height:220px; overflow:hidden;
             background:var(--surface-alt); display:flex; align-items:center; justify-content:center;
         }
-        .event-poster {
-            width:100%; height:100%; object-fit:cover; object-position:center;
-            transition: transform 0.4s ease;
-        }
-        .event-card:hover .event-poster { transform:scale(1.03); }
-        .event-poster-placeholder {
-            display:flex; align-items:center; justify-content:center;
-            color:var(--accent); font-size:3rem; opacity:0.5;
-        }
+        .event-poster { width:100%; height:100%; object-fit:cover; }
+        .event-poster-placeholder { font-size:3rem; opacity:0.4; color:var(--accent); }
         .event-body { padding:1.2rem 1.5rem; }
-        .event-name { font-family:'Playfair Display',serif; font-size:1.25rem; font-weight:700; color:var(--primary); margin-bottom:0.4rem; }
-        .event-meta { font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.5rem; display:flex; gap:1rem; flex-wrap:wrap; }
+        .event-name { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
+        .event-meta { font-size:0.8rem; color:var(--text-secondary); display:flex; gap:1rem; flex-wrap:wrap; }
         .event-meta span { display:flex; align-items:center; gap:0.3rem; }
-        .event-chevron { text-align:center; color:var(--text-muted); font-size:0.6rem; transition:var(--transition); padding:0 0 0.5rem; }
-        .event-card.expanded .event-chevron { transform:rotate(180deg); color:var(--accent); }
 
-        /* Expandable description */
-        .event-description {
-            max-height:0; overflow:hidden; transition:max-height 0.5s cubic-bezier(0.4,0,0.2,1), padding 0.5s;
-            background:var(--surface-alt); border-top:1px solid transparent;
-        }
-        .event-card.expanded .event-description { max-height:500px; border-top-color:var(--border-light); }
-        .event-desc-inner { padding:1.2rem 1.5rem; font-size:0.88rem; color:var(--text); line-height:1.6; }
-        .btn-register-wrap { padding:0.8rem 1.5rem 1.2rem; }
-        .btn-register {
-            background:var(--accent); color:#fff; border:none; padding:0.55rem 1.5rem;
-            border-radius:50px; font-weight:600; cursor:pointer; transition:var(--transition);
-            font-size:0.82rem; display:inline-flex; align-items:center; gap:0.3rem;
-        }
-        .btn-register:hover { background:var(--accent-light); transform:translateY(-1px); box-shadow:0 4px 16px rgba(200,148,74,0.3); }
-
-        /* Modal styles (unchanged) */
+        /* Detail Modal */
         .modal-overlay { position:fixed; inset:0; display:none; align-items:center; justify-content:center; z-index:200; padding:1.5rem; background:rgba(0,0,0,0); backdrop-filter:blur(0px); transition:all 0.35s; }
-        .modal-overlay.open { display:flex; background:rgba(0,0,0,0.5); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+        .modal-overlay.open { display:flex; background:rgba(0,0,0,0.55); backdrop-filter:blur(10px); -webkit-backdrop-filter:blur(10px); }
+        .detail-modal {
+            background:var(--surface); border-radius:var(--radius-2xl); width:100%; max-width:650px;
+            max-height:85vh; overflow-y:auto; box-shadow:var(--shadow-xl);
+            border:1px solid var(--glass-border); animation:scaleIn 0.35s ease;
+            backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px);
+        }
+        .detail-poster { width:100%; height:300px; object-fit:cover; display:block; background:var(--surface-alt); }
+        .detail-content { padding:2rem; }
+        .detail-name { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:var(--primary); margin-bottom:0.8rem; }
+        .detail-meta { font-size:0.9rem; color:var(--text-secondary); margin-bottom:1rem; display:flex; gap:1.5rem; flex-wrap:wrap; }
+        .detail-meta span { display:flex; align-items:center; gap:0.4rem; }
+        .detail-desc { font-size:0.95rem; color:var(--text); line-height:1.7; margin-bottom:1.5rem; }
+        .detail-close { float:right; background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted); padding:0.5rem 1rem; }
+        .detail-close:hover { color:var(--text); }
+        .btn-register-lg {
+            background:var(--accent); color:#fff; border:none; padding:0.8rem 2rem;
+            border-radius:50px; font-weight:700; cursor:pointer; font-size:0.95rem;
+            transition:var(--transition); display:inline-flex; align-items:center; gap:0.4rem;
+        }
+        .btn-register-lg:hover { background:var(--accent-light); transform:translateY(-2px); box-shadow:0 8px 24px rgba(200,148,74,0.3); }
+
+        /* Admin/Register modals */
         .modal {
             background:var(--surface); padding:2rem; border-radius:var(--radius-xl); width:100%;
             max-width:500px; max-height:85vh; overflow-y:auto;
@@ -160,21 +141,18 @@
             animation:scaleIn 0.35s ease; backdrop-filter:blur(20px);
         }
         .modal h3 { font-family:'Playfair Display',serif; color:var(--primary); margin-bottom:1.2rem; text-align:center; }
-        .modal input, .modal textarea { width:100%; padding:0.7rem 0.9rem; margin:0.3rem 0 0.7rem; border:2px solid var(--border); border-radius:var(--radius-sm); background:var(--surface-alt); color:var(--text); font-size:0.85rem; font-family:'Inter',sans-serif; }
-        .modal input:focus, .modal textarea:focus { border-color:var(--accent); outline:none; box-shadow:0 0 0 3px var(--accent-glow); }
+        .modal input, .modal textarea { width:100%; padding:0.7rem 0.9rem; margin:0.3rem 0 0.7rem; border:2px solid var(--border); border-radius:14px; background:var(--surface-alt); color:var(--text); font-size:0.85rem; font-family:'Inter',sans-serif; }
+        .modal input:focus, .modal textarea:focus { border-color:var(--accent); outline:none; }
         .modal-close { float:right; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--text-muted); }
-        .modal-close:hover { color:var(--text); }
-        .btn-submit { background:var(--accent); color:#fff; border:none; padding:0.7rem; border-radius:50px; font-weight:700; width:100%; cursor:pointer; margin-top:0.5rem; }
+        .btn-submit { background:var(--accent); color:#fff; border:none; padding:0.7rem; border-radius:50px; font-weight:700; width:100%; cursor:pointer; }
         .btn-submit:hover { background:var(--accent-light); }
-        .poster-help { font-size:0.7rem; color:var(--text-muted); margin-bottom:0.5rem; }
-        .poster-help code { background:var(--surface-alt); padding:0.15rem 0.4rem; border-radius:4px; font-size:0.65rem; }
 
-        .toast { position:fixed; bottom:2rem; right:2rem; background:var(--primary); color:#fff; padding:0.7rem 1.3rem; border-radius:50px; font-weight:600; z-index:300; animation: fadeInUp 0.3s ease; box-shadow:var(--shadow-lg); font-size:0.85rem; display:none; }
+        .toast { position:fixed; bottom:2rem; right:2rem; background:var(--primary); color:#fff; padding:0.7rem 1.3rem; border-radius:50px; font-weight:600; z-index:300; animation:fadeInUp 0.3s ease; box-shadow:var(--shadow-lg); display:none; }
 
-        @media (max-width:768px) {
+        @media(max-width:768px){
             .top-nav { padding:0.5rem 1rem; } .nav-links { gap:0.8rem; } .nav-links a { font-size:0.7rem; }
             .main-container { padding:2rem 1rem 4rem; } .page-title { font-size:2.2rem; }
-            .events-grid { grid-template-columns:1fr; }
+            .events-grid { grid-template-columns:1fr; } .detail-poster { height:200px; }
         }
     </style>
 </head>
@@ -205,6 +183,23 @@
         </div>
 
         <div class="events-grid" id="eventsGrid"></div>
+    </div>
+
+    <!-- Event Detail Modal -->
+    <div class="modal-overlay" id="detailOverlay">
+        <div class="detail-modal">
+            <button class="detail-close" onclick="closeDetail()">✕</button>
+            <img class="detail-poster" id="detailPoster" src="" alt="">
+            <div class="detail-content">
+                <div class="detail-name" id="detailName"></div>
+                <div class="detail-meta">
+                    <span>📅 <span id="detailDate"></span></span>
+                    <span>📍 <span id="detailLocation"></span></span>
+                </div>
+                <div class="detail-desc" id="detailDesc"></div>
+                <button class="btn-register-lg" onclick="openRegistrationFromDetail()">✨ Register Now</button>
+            </div>
+        </div>
     </div>
 
     <!-- Registration Modal -->
@@ -238,12 +233,12 @@
             <input type="text" id="newEventName" placeholder="Event Name">
             <input type="text" id="newEventDate" placeholder="Date & Time (e.g., 11th May | 3:15 PM)">
             <input type="text" id="newEventLocation" placeholder="Venue (e.g., BT CR 1)">
-            <textarea id="newEventDesc" placeholder="Description (shown when card expands)" rows="3"></textarea>
+            <textarea id="newEventDesc" placeholder="Description" rows="3"></textarea>
             <input type="text" id="newEventPoster" placeholder="Poster filename (e.g., poster1.jpg)">
-            <p class="poster-help">Upload image to GitHub repo and paste filename.</p>
+            <p style="font-size:0.7rem;color:var(--text-muted);margin-bottom:0.5rem;">Upload image to GitHub repo and paste filename.</p>
             <button class="btn-submit" onclick="addEvent()">Add Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
-            <p style="font-weight:700;font-size:0.8rem;margin-bottom:0.5rem;">Existing Events:</p>
+            <p style="font-weight:700;font-size:0.8rem;">Existing Events:</p>
             <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:0.75rem;"></div>
         </div>
     </div>
@@ -261,7 +256,7 @@
         let eventsData=[],selectedEventId=null,isAdmin=false,githubToken='';
 
         function getPosterUrl(poster){
-            if(!poster)return null;
+            if(!poster)return'';
             if(poster.startsWith('http'))return poster;
             return `./${poster}`;
         }
@@ -269,14 +264,14 @@
         async function fetchEvents(){try{const r=await fetch('./events-data.json');if(r.ok)eventsData=await r.json();else eventsData=[];}catch(e){eventsData=[];}renderEvents();}
         function renderEvents(){
             const grid=document.getElementById('eventsGrid');
-            if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1.1rem;animation:fadeInUp 0.5s ease;">No events yet. Check back soon!</p>';return;}
+            if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1.1rem;">No events yet. Check back soon!</p>';return;}
             grid.innerHTML=eventsData.map((e,i)=>{
                 const posterUrl=getPosterUrl(e.poster);
                 const posterHTML=posterUrl
-                    ? `<div class="event-poster-wrap"><img src="${posterUrl}" alt="${e.name}" class="event-poster" onerror="this.innerHTML='<div class=event-poster-placeholder>📸</div>';"></div>`
-                    : `<div class="event-poster-wrap"><div class="event-poster-placeholder">📸</div></div>`;
+                    ?`<div class="event-poster-wrap"><img src="${posterUrl}" alt="${e.name}" class="event-poster" onerror="this.innerHTML='<div class=event-poster-placeholder>📸</div>';"></div>`
+                    :`<div class="event-poster-wrap"><div class="event-poster-placeholder">📸</div></div>`;
                 return `
-                <div class="event-card" style="animation-delay:${i*0.07}s;" data-event-id="${e.id}" onclick="toggleCard(this, event)">
+                <div class="event-card" style="animation-delay:${i*0.07}s;" onclick="openDetail('${e.id}')">
                     ${posterHTML}
                     <div class="event-body">
                         <div class="event-name">${e.name}</div>
@@ -285,43 +280,49 @@
                             <span>📍 ${e.location||'TBA'}</span>
                         </div>
                     </div>
-                    <div class="event-chevron">▾</div>
-                    <div class="event-description">
-                        <div class="event-desc-inner">${e.description||'No description available.'}</div>
-                        <div class="btn-register-wrap">
-                            <button class="btn-register" onclick="event.stopPropagation();openRegistration('${e.id}')">✨ Register Now</button>
-                        </div>
-                    </div>
                 </div>`;
             }).join('');
         }
 
-        function toggleCard(card, evt){
-            if(evt.target.closest('.btn-register')||evt.target.closest('button'))return;
-            const wasExpanded = card.classList.contains('expanded');
-            document.querySelectorAll('.event-card').forEach(c => c.classList.remove('expanded'));
-            if(!wasExpanded) card.classList.add('expanded');
+        function openDetail(id){
+            const e=eventsData.find(x=>x.id===id);if(!e)return;
+            selectedEventId=id;
+            const posterUrl=getPosterUrl(e.poster);
+            document.getElementById('detailPoster').src=posterUrl||'';
+            document.getElementById('detailPoster').style.display=posterUrl?'':'none';
+            document.getElementById('detailName').textContent=e.name;
+            document.getElementById('detailDate').textContent=e.date||'TBA';
+            document.getElementById('detailLocation').textContent=e.location||'TBA';
+            document.getElementById('detailDesc').textContent=e.description||'No description available.';
+            document.getElementById('detailOverlay').classList.add('open');
         }
+        function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
 
-        function openRegistration(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;document.getElementById('regEventName').textContent=e.name;document.getElementById('regName').value='';document.getElementById('regEmail').value='';document.getElementById('regPhone').value='';document.getElementById('regModalOverlay').classList.add('open');}
+        function openRegistrationFromDetail(){
+            closeDetail();
+            const e=eventsData.find(x=>x.id===selectedEventId);if(!e)return;
+            document.getElementById('regEventName').textContent=e.name;
+            document.getElementById('regName').value='';
+            document.getElementById('regEmail').value='';
+            document.getElementById('regPhone').value='';
+            document.getElementById('regModalOverlay').classList.add('open');
+        }
         function closeRegModal(){document.getElementById('regModalOverlay').classList.remove('open');}
 
         async function submitRegistration(){
             const n=document.getElementById('regName').value.trim(),em=document.getElementById('regEmail').value.trim(),ph=document.getElementById('regPhone').value.trim();
             if(!n||!em||!ph)return showToast('Please fill all fields');
-            const ev=eventsData.find(x=>x.id===selectedEventId);
-            if(!ev)return showToast('Event not found');
+            const ev=eventsData.find(x=>x.id===selectedEventId);if(!ev)return;
             try{
                 await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({eventName:ev.name,eventDate:ev.date,studentName:n,email:em,phone:ph,timestamp:new Date().toISOString()})});
                 showToast('Registration successful! 🎉');closeRegModal();
-            }catch(err){showToast('Registration failed. Try again.');}
+            }catch(err){showToast('Registration failed.');}
         }
 
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
         function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
         function adminLogin(){
-            const pw=document.getElementById('adminPassword').value;
-            const token=document.getElementById('githubToken').value.trim();
+            const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();
             if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode activated');}
             else showToast('Wrong password or missing token');
         }
@@ -334,26 +335,22 @@
             const n=document.getElementById('newEventName').value.trim(),d=document.getElementById('newEventDate').value.trim(),l=document.getElementById('newEventLocation').value.trim(),desc=document.getElementById('newEventDesc').value.trim(),poster=document.getElementById('newEventPoster').value.trim();
             if(!n||!d)return showToast('Name and date/time required');
             eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null});
-            await commitEvents();renderEvents();refreshAdminEvents();
-            showToast('Event added!');
+            await commitEvents();renderEvents();refreshAdminEvents();showToast('Event added!');
         }
-
         async function commitEvents(){
             try{
                 const content=JSON.stringify(eventsData,null,2);const b64=btoa(unescape(encodeURIComponent(content)));
                 const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{headers:{Authorization:`token ${githubToken}`}});
                 const fi=await gr.json();
                 await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update events',content:b64,sha:fi.sha})});
-            }catch(e){console.error('Commit failed:',e);showToast('Failed to save to GitHub. Check your token.');}
+            }catch(e){showToast('Failed to save to GitHub');}
         }
-
         function refreshAdminEvents(){
             const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
             eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.25rem 0;';div.innerHTML=`<span>${e.name} ${e.poster?'🖼️':''}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:0.55rem;" onclick="deleteEvent(${i})">✕</button>`;list.appendChild(div);});
         }
-
         async function deleteEvent(i){if(!confirm('Delete this event?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Event deleted');}
-        window.deleteEvent = deleteEvent;
+        window.deleteEvent=deleteEvent;
 
         document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');}});});
         fetchEvents();
