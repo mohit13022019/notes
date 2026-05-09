@@ -5,48 +5,91 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse — Magazine</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
+    <script>
+        const REPO_OWNER = 'mohit13022019';
+        const REPO_NAME = 'notes';
+    </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
         :root {
-            --bg: #fafaf8; --surface: #ffffff; --surface-alt: #f5f4f1;
-            --primary: #1a3728; --accent: #c8944a; --accent-light: #d4a85c;
-            --text: #1a1d20; --text-secondary: #5a6070; --text-muted: #949aa8;
-            --border: #e8e5df; --border-light: #f0ede8;
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
-            --radius-lg: 18px; --transition: 0.25s ease;
+            --bg:#fafaf8;--surface:rgba(255,255,255,0.8);--surface-alt:rgba(245,244,241,0.7);
+            --primary:#1a3728;--accent:#c8944a;--accent-light:#d4a85c;--text:#1a1d20;
+            --text-secondary:#5a6070;--text-muted:#949aa8;--border:rgba(232,229,223,0.6);
+            --glass-bg:rgba(255,255,255,0.55);--glass-border:rgba(255,255,255,0.5);
+            --shadow:0 4px 16px rgba(0,0,0,0.06);--shadow-lg:0 16px 48px rgba(0,0,0,0.10);
+            --shadow-xl:0 24px 64px rgba(0,0,0,0.14);--radius-lg:18px;--radius-xl:24px;--radius-2xl:32px;
+            --transition:0.25s cubic-bezier(0.4,0,0.2,1);
         }
         body.dark {
-            --bg: #0a0d10; --surface: #14171b; --surface-alt: #1a1e23;
-            --primary: #c8944a; --accent: #c8944a; --accent-light: #d4a85c;
-            --text: #e8eaee; --text-secondary: #a8b0bc; --text-muted: #6a7280;
-            --border: #2a2e35; --border-light: #22252b;
+            --bg:#0a0d10;--surface:rgba(20,23,27,0.8);--surface-alt:rgba(26,30,35,0.6);
+            --primary:#c8944a;--accent:#c8944a;--accent-light:#d4a85c;--text:#e8eaee;
+            --text-secondary:#a8b0bc;--text-muted:#6a7280;--border:rgba(42,46,53,0.6);
+            --glass-bg:rgba(20,23,27,0.6);--glass-border:rgba(42,46,53,0.5);
+            --shadow:0 4px 16px rgba(0,0,0,0.4);--shadow-lg:0 16px 48px rgba(0,0,0,0.5);
+            --shadow-xl:0 24px 64px rgba(0,0,0,0.6);
         }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); transition:background 0.4s; }
-        nav {
-            background:var(--surface); border-bottom:1px solid var(--border-light);
-            padding:0.6rem 2rem; display:flex; align-items:center; justify-content:space-between;
-            position:sticky; top:0; z-index:101;
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;transition:background 0.4s,color 0.3s}
+        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+
+        .top-nav{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:101}
+        .nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--primary);text-decoration:none;transition:var(--transition)}
+        .nav-logo:hover{color:var(--accent)}
+        .nav-links{display:flex;gap:1.5rem;align-items:center}
+        .nav-links a{color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:.85rem;transition:var(--transition);position:relative;padding:.3rem 0}
+        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--accent);transition:width 0.3s;border-radius:2px}
+        .nav-links a:hover{color:var(--accent)}                   /* 🟡 GOLD ON HOVER */
+        .nav-links a:hover::after{width:100%}
+        .nav-links a.active{color:var(--accent)}
+        .nav-links a.active::after{width:100%}
+
+        .main-container{max-width:1000px;margin:0 auto;padding:3rem 2rem 4rem;position:relative;z-index:1}
+        .page-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.3rem;animation:fadeInUp 0.7s ease}
+        .page-subtitle{text-align:center;color:var(--text-muted);margin-bottom:2rem;animation:fadeInUp 0.7s ease 0.1s;opacity:0;animation-fill-mode:forwards}
+
+        .action-bar{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;animation:fadeInUp 0.7s ease 0.15s;opacity:0;animation-fill-mode:forwards}
+        .btn{padding:.6rem 1.5rem;border-radius:50px;font-weight:600;font-size:.82rem;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem;background:var(--glass-bg);border:1.5px solid var(--glass-border);color:var(--text-secondary);transition:var(--transition);backdrop-filter:blur(12px)}
+        .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--text-muted);color:var(--text)}
+        .btn:active{transform:scale(0.96)}
+        .btn-accent{background:var(--accent);color:#fff;border:none;font-weight:700;box-shadow:0 4px 16px rgba(200,148,74,0.25)}
+        .btn-accent:hover{background:var(--accent-light);box-shadow:0 8px 28px rgba(200,148,74,0.35);color:#fff}
+
+        .magazine-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem}
+        .magazine-card{background:var(--glass-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:var(--radius-xl);border:1px solid var(--glass-border);padding:1.8rem;text-align:center;transition:var(--transition);box-shadow:var(--shadow);animation:fadeInUp 0.6s ease}
+        .magazine-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);border-color:var(--accent)}
+        .issue-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}
+        .issue-desc{font-size:.88rem;color:var(--text-secondary);margin-bottom:1.2rem;line-height:1.5}
+        .btn-read{display:inline-block;background:var(--accent);color:#fff;padding:.55rem 1.5rem;border-radius:50px;font-weight:600;text-decoration:none;font-size:.85rem;transition:var(--transition)}
+        .btn-read:hover{background:var(--accent-light);transform:translateY(-1px);box-shadow:0 4px 16px rgba(200,148,74,0.3)}
+
+        .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;background:rgba(0,0,0,0);transition:all .35s}
+        .modal-overlay.open{display:flex;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
+        .modal{background:var(--surface);padding:2rem;border-radius:var(--radius-xl);width:100%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease}
+        .modal h3{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:1.2rem;text-align:center;font-size:1.3rem}
+        .modal input,.modal textarea{width:100%;padding:.7rem .9rem;margin:.3rem 0 .7rem;border:2px solid var(--border);border-radius:14px;background:var(--surface-alt);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;transition:var(--transition)}
+        .modal input:focus,.modal textarea:focus{border-color:var(--accent);outline:0;box-shadow:0 0 0 3px rgba(200,148,74,0.15)}
+        .modal-close{float:right;background:0 0;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);transition:var(--transition)}
+        .modal-close:hover{color:var(--text);transform:rotate(90deg)}
+        .btn-submit{background:var(--accent);color:#fff;border:none;padding:.7rem;border-radius:50px;font-weight:700;width:100%;cursor:pointer;font-size:.9rem;transition:var(--transition)}
+        .btn-submit:hover{background:var(--accent-light)}
+        .poster-help{font-size:.7rem;color:var(--text-muted);margin-bottom:.5rem}
+        .poster-help code{background:var(--surface-alt);padding:.15rem .4rem;border-radius:4px;font-size:.65rem}
+
+        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:#fff;padding:.7rem 1.3rem;border-radius:50px;font-weight:600;z-index:300;animation:fadeInUp .3s ease;box-shadow:var(--shadow-lg);font-size:.85rem;display:none}
+
+        .edit-btn{background:var(--accent);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.3rem;transition:var(--transition)}
+        .edit-btn:hover{background:var(--accent-light)}
+
+        @media(max-width:768px){
+            .top-nav{padding:.5rem 1rem}.nav-links{gap:.8rem}.nav-links a{font-size:.7rem}
+            .main-container{padding:2rem 1rem 4rem}.page-title{font-size:2.2rem}
+            .magazine-grid{grid-template-columns:1fr}
         }
-        nav a { text-decoration:none; font-weight:600; font-size:0.85rem; }
-        .nav-logo { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:700; color:var(--primary); }
-        .nav-links { display:flex; gap:1rem; }
-        .nav-links a { color:var(--text-secondary); }
-        .nav-links a.active { color:var(--accent); }
-        .container { max-width:1200px; margin:0 auto; padding:2.5rem 2rem; }
-        .page-title { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:700; color:var(--primary); text-align:center; margin-bottom:2rem; }
-        .magazine-grid { display:grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap:1.5rem; }
-        .magazine-card { background:var(--surface); border-radius:var(--radius-lg); border:1px solid var(--border-light); padding:1.5rem; text-align:center; transition:var(--transition); }
-        .magazine-card:hover { box-shadow:var(--shadow-lg); transform:translateY(-2px); }
-        .magazine-issue { font-family:'Playfair Display',serif; font-size:1.2rem; font-weight:700; color:var(--primary); margin-bottom:0.5rem; }
-        .magazine-desc { font-size:0.85rem; color:var(--text-secondary); margin-bottom:1rem; }
-        .btn-read { display:inline-block; background:var(--accent); color:#fff; padding:0.5rem 1.2rem; border-radius:50px; font-weight:600; text-decoration:none; }
-        .btn-read:hover { background:var(--accent-light); }
-        @media (max-width:768px){ .container{padding:1.5rem 1rem;} .page-title{font-size:2rem;} .magazine-grid{grid-template-columns:1fr;} }
     </style>
 </head>
 <body class="light">
-    <nav>
+    <nav class="top-nav">
         <a href="index.html" class="nav-logo">Synapse</a>
         <div class="nav-links">
             <a href="index.html">Home</a>
@@ -56,28 +99,111 @@
         </div>
     </nav>
 
-    <div class="container">
-        <h1 class="page-title">Monthly Magazine</h1>
+    <div class="main-container">
+        <h1 class="page-title">Magazine</h1>
+        <p class="page-subtitle">Monthly issues of the Synapse Biotech Magazine</p>
+
+        <div class="action-bar" id="adminActionBar" style="display:none;">
+            <button class="btn btn-accent" onclick="openAddIssueModal()">+ Add Issue</button>
+            <button class="btn" onclick="adminLogout()">Lock Admin</button>
+        </div>
+        <div class="action-bar" id="visitorActionBar">
+            <button class="btn btn-accent" id="themeToggleBtn">🌓 Toggle Theme</button>
+            <button class="btn" onclick="openAdminLogin()">🔐 Admin</button>
+        </div>
+
         <div class="magazine-grid" id="magazineGrid"></div>
     </div>
 
+    <!-- Admin Login -->
+    <div class="modal-overlay" id="adminLoginOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeAdminLogin()">✕</button>
+            <h3>Admin Login</h3>
+            <input type="password" id="adminPassword" placeholder="Password (btadmin2024)">
+            <input type="password" id="githubToken" placeholder="GitHub Token (ghp_...)">
+            <button class="btn-submit" onclick="adminLogin()">Login</button>
+        </div>
+    </div>
+
+    <!-- Add/Edit Issue -->
+    <div class="modal-overlay" id="addIssueOverlay">
+        <div class="modal">
+            <button class="modal-close" onclick="closeAddIssue()">✕</button>
+            <h3 id="addIssueTitle">Add Issue</h3>
+            <input type="hidden" id="editIssueIndex" value="-1">
+            <input type="text" id="newIssueName" placeholder="Issue (e.g., May 2026)">
+            <input type="text" id="newIssueDesc" placeholder="Description">
+            <input type="text" id="newIssueLink" placeholder="PDF Link (Google Drive or URL)">
+            <p class="poster-help">Paste the link to the magazine PDF.</p>
+            <button class="btn-submit" onclick="saveIssue()">Save Issue</button>
+            <hr style="margin:1.2rem 0;border-color:var(--border);">
+            <p style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">Existing Issues:</p>
+            <div id="adminIssueList" style="max-height:200px;overflow-y:auto;font-size:.75rem;"></div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
     <script>
-        let magazineData = [];
-        async function fetchMagazine() {
-            try { const r = await fetch('./magazine-data.json'); if(r.ok) magazineData = await r.json(); else magazineData = []; } catch(e) { magazineData = []; }
-            renderMagazine();
+        // Theme
+        (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
+        document.getElementById('themeToggleBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
+
+        function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
+
+        let magazineData=[],isAdmin=false,githubToken='';
+
+        // ── FETCH & RENDER ──
+        async function fetchMagazine(){try{const r=await fetch('./magazine-data.json');if(r.ok)magazineData=await r.json();else magazineData=[];}catch(e){magazineData=[];}renderMagazine();}
+        function renderMagazine(){
+            const grid=document.getElementById('magazineGrid');
+            if(!magazineData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1.1rem;animation:fadeInUp 0.5s ease;">No issues yet. Check back soon!</p>';return;}
+            grid.innerHTML=magazineData.map((m,i)=>`<div class="magazine-card" style="animation-delay:${i*.07}s;">
+                <div class="issue-name">${m.issue}</div>
+                <div class="issue-desc">${m.description||''}</div>
+                ${m.link ? `<a href="${m.link}" target="_blank" class="btn-read">Read</a>` : '<span style="color:var(--text-muted);font-size:.85rem;">Coming soon</span>'}
+            </div>`).join('');
         }
-        function renderMagazine() {
-            const grid = document.getElementById('magazineGrid');
-            if (!magazineData.length) { grid.innerHTML = '<p style="text-align:center;color:var(--text-muted);">No issues yet.</p>'; return; }
-            grid.innerHTML = magazineData.map(m => `
-                <div class="magazine-card">
-                    <div class="magazine-issue">${m.issue}</div>
-                    <div class="magazine-desc">${m.description}</div>
-                    <a href="${m.link}" target="_blank" class="btn-read">Read</a>
-                </div>
-            `).join('');
+
+        // ── ADMIN ──
+        function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
+        function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
+        function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode activated');}else showToast('Wrong password or token');}
+        function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Admin locked');}
+
+        function openAddIssueModal(editIndex=-1){
+            document.getElementById('editIssueIndex').value=editIndex;
+            document.getElementById('addIssueTitle').textContent=editIndex>=0?'Edit Issue':'Add Issue';
+            if(editIndex>=0){const m=magazineData[editIndex];document.getElementById('newIssueName').value=m.issue;document.getElementById('newIssueDesc').value=m.description||'';document.getElementById('newIssueLink').value=m.link||'';}
+            else{document.getElementById('newIssueName').value='';document.getElementById('newIssueDesc').value='';document.getElementById('newIssueLink').value='';}
+            refreshAdminIssues();document.getElementById('addIssueOverlay').classList.add('open');
         }
+        function closeAddIssue(){document.getElementById('addIssueOverlay').classList.remove('open');}
+
+        async function saveIssue(){
+            const issue=document.getElementById('newIssueName').value.trim();
+            const desc=document.getElementById('newIssueDesc').value.trim();
+            const link=document.getElementById('newIssueLink').value.trim();
+            if(!issue)return showToast('Issue name required');
+            const editIndex=parseInt(document.getElementById('editIssueIndex').value);
+            if(editIndex>=0){magazineData[editIndex]={...magazineData[editIndex],issue:issue,description:desc,link:link||null};}
+            else{magazineData.push({id:Date.now().toString(),issue:issue,description:desc,link:link||null});}
+            await commitMagazine();renderMagazine();refreshAdminIssues();closeAddIssue();showToast(editIndex>=0?'Issue updated!':'Issue added!');
+        }
+
+        async function commitMagazine(){
+            try{const c=JSON.stringify(magazineData,null,2);const b64=btoa(unescape(encodeURIComponent(c)));const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/magazine-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await gr.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/magazine-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update magazine',content:b64,sha:fi.sha})});}catch(e){showToast('GitHub sync failed. Check your token.');}
+        }
+        function refreshAdminIssues(){
+            const list=document.getElementById('adminIssueList');list.innerHTML=magazineData.length?'':'No issues yet.';
+            magazineData.forEach((m,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${m.issue}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddIssueModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteIssue(${i})">✕</button></div>`;list.appendChild(div);});
+        }
+        async function deleteIssue(i){if(!confirm('Delete this issue?'))return;magazineData.splice(i,1);await commitMagazine();renderMagazine();refreshAdminIssues();showToast('Issue deleted');}
+        window.deleteIssue=deleteIssue;
+
+        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===e.currentTarget){this.classList.remove('open');}});});
+
         fetchMagazine();
     </script>
 </body>
