@@ -10,48 +10,154 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Inter', system-ui, sans-serif;
-            background: linear-gradient(135deg, #0f1f18 0%, #1a3728 40%, #0d1c15 100%);
-            color: #fff; min-height: 100vh; display: flex; flex-direction: column;
-            align-items: center; justify-content: center; text-align: center; padding: 2rem;
+            background: radial-gradient(circle at 50% 30%, #1a1f2a 0%, #0a0c10 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #fff;
+            padding: 2rem;
             overflow-x: hidden;
+            position: relative;
         }
+        /* Subtle animated background orbs */
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(120px);
+            opacity: 0.15;
+            pointer-events: none;
+            animation: float 20s ease-in-out infinite;
+        }
+        .orb-1 { width: 600px; height: 600px; background: #c8944a; top: -150px; left: -100px; animation-delay: 0s; }
+        .orb-2 { width: 500px; height: 500px; background: #2a5c45; bottom: -150px; right: -100px; animation-delay: -7s; }
+        .orb-3 { width: 400px; height: 400px; background: #8b5a2b; top: 40%; left: 60%; animation-delay: -14s; }
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(60px, 40px) scale(1.1); }
+            50% { transform: translate(-30px, -50px) scale(0.9); }
+            75% { transform: translate(-80px, 20px) scale(1.05); }
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            animation: fadeInUp 0.8s ease;
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .logo {
-            font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.5rem, 12vw, 7rem);
+            font-weight: 800;
             background: linear-gradient(135deg, #c8944a, #e0b96b, #c8944a);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            background-clip: text; margin-bottom: 1.5rem; letter-spacing: -2px;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 60px rgba(200,148,74,0.4);
+            letter-spacing: -2px;
+            margin-bottom: 1rem;
         }
-        .tagline { font-size: 1.8rem; font-weight: 300; margin-bottom: 1rem; opacity: 0.9; }
-        .desc { font-size: 1.1rem; opacity: 0.7; max-width: 500px; margin-bottom: 3rem; line-height: 1.6; }
-        .btn-group { display: flex; gap: 1.5rem; flex-wrap: wrap; justify-content: center; }
+        .tagline {
+            font-size: clamp(1rem, 3vw, 1.6rem);
+            font-weight: 300;
+            opacity: 0.85;
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.5px;
+        }
+        .desc {
+            font-size: clamp(0.9rem, 2.5vw, 1.15rem);
+            opacity: 0.65;
+            max-width: 550px;
+            margin: 0 auto 2.5rem;
+            line-height: 1.6;
+        }
+        .btn-group {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
         .btn {
-            padding: 1rem 2.5rem; border-radius: 50px; font-weight: 700; font-size: 1rem;
-            cursor: pointer; border: none; transition: all 0.3s; text-decoration: none;
-            display: inline-block; font-family: 'Inter', sans-serif;
+            padding: 0.9rem 2.5rem;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-decoration: none;
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+            position: relative;
+            overflow: hidden;
         }
-        .btn-notes { background: #c8944a; color: #0f1f18; }
-        .btn-notes:hover { background: #d4a85c; transform: translateY(-2px); box-shadow: 0 8px 30px rgba(200,148,74,0.5); }
-        .btn-events { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
-        .btn-events:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-2px); }
-        .btn-magazine { background: transparent; color: #fff; border: 2px solid rgba(255,255,255,0.4); }
-        .btn-magazine:hover { background: rgba(255,255,255,0.1); border-color: #fff; transform: translateY(-2px); }
-        .footer-text { margin-top: 4rem; font-size: 0.8rem; opacity: 0.5; }
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            transition: left 0.5s;
+        }
+        .btn:hover::before { left: 100%; }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #c8944a, #e0b96b);
+            color: #0a0c10;
+            box-shadow: 0 8px 30px rgba(200,148,74,0.4);
+        }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 40px rgba(200,148,74,0.6);
+        }
+        .btn-ghost {
+            background: transparent;
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(10px);
+        }
+        .btn-ghost:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #c8944a;
+            color: #c8944a;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(200,148,74,0.2);
+        }
+        .footer-text {
+            margin-top: 3rem;
+            font-size: 0.8rem;
+            opacity: 0.4;
+            letter-spacing: 0.5px;
+        }
+
         @media (max-width: 600px) {
-            .logo { font-size: 2.5rem; }
-            .tagline { font-size: 1.3rem; }
-            .btn { padding: 0.8rem 1.8rem; font-size: 0.9rem; }
+            .logo { font-size: 3rem; }
+            .btn { padding: 0.75rem 1.8rem; font-size: 0.9rem; }
         }
     </style>
 </head>
 <body>
-    <div class="logo">Synapse</div>
-    <div class="tagline">The Biotech Club of BMSCE</div>
-    <div class="desc">Access semester notes, register for events, and explore the monthly magazine — all in one place.</div>
-    <div class="btn-group">
-        <a href="notes.html" class="btn btn-notes">Notes</a>
-        <a href="events.html" class="btn btn-events">Events</a>
-        <a href="magazine.html" class="btn btn-magazine">Magazine</a>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+
+    <div class="content">
+        <div class="logo">Synapse</div>
+        <div class="tagline">The Biotech Club of BMSCE</div>
+        <div class="desc">Access semester notes, register for events, and explore the monthly magazine — all in one place.</div>
+        <div class="btn-group">
+            <a href="notes.html" class="btn btn-primary">Notes</a>
+            <a href="events.html" class="btn btn-ghost">Events</a>
+            <a href="magazine.html" class="btn btn-ghost">Magazine</a>
+        </div>
+        <div class="footer-text">Department of Biotechnology · BMSCE</div>
     </div>
-    <div class="footer-text">Department of Biotechnology · BMSCE</div>
 </body>
 </html>
