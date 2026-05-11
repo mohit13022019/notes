@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse — BMSCE Biotech Club</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
+    <!-- Dynamic favicon (will be toggled by JS) -->
+    <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -22,7 +23,8 @@
             overflow-x: hidden;
             position: relative;
         }
-        /* Subtle animated background orbs */
+
+        /* Background orbs */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -51,31 +53,77 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* Text reveal for the logo */
         .logo {
             font-family: 'Playfair Display', serif;
             font-size: clamp(3.5rem, 12vw, 7rem);
             font-weight: 800;
+            display: inline-block;
+            margin-bottom: 1rem;
+            letter-spacing: -2px;
+            text-shadow: 0 0 60px rgba(200,148,74,0.4);
+        }
+        .logo .char {
+            display: inline-block;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: revealChar 0.6s ease forwards;
+            color: transparent;
             background: linear-gradient(135deg, #c8944a, #e0b96b, #c8944a);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
             background-clip: text;
-            text-shadow: 0 0 60px rgba(200,148,74,0.4);
-            letter-spacing: -2px;
-            margin-bottom: 1rem;
         }
+        @keyframes revealChar {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         .tagline {
             font-size: clamp(1rem, 3vw, 1.6rem);
             font-weight: 300;
-            opacity: 0.85;
+            opacity: 0;
+            animation: blurIn 0.8s 0.5s forwards;
+            filter: blur(10px);
             margin-bottom: 0.5rem;
             letter-spacing: 0.5px;
         }
         .desc {
             font-size: clamp(0.9rem, 2.5vw, 1.15rem);
-            opacity: 0.65;
+            opacity: 0;
+            animation: blurIn 0.8s 0.7s forwards;
+            filter: blur(10px);
             max-width: 550px;
-            margin: 0 auto 2.5rem;
+            margin: 0 auto 1.5rem;
             line-height: 1.6;
+        }
+        @keyframes blurIn {
+            to { opacity: 1; filter: blur(0); }
+        }
+
+        /* Golden rule separator */
+        .golden-rule {
+            width: 60%;
+            max-width: 400px;
+            height: 2px;
+            margin: 1.5rem auto 2rem;
+            background: linear-gradient(90deg, transparent, #c8944a, transparent);
+            opacity: 0.7;
+            animation: fadeInUp 0.8s 0.9s forwards;
+        }
+
+        /* Glass-morphism card wrapper */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 24px;
+            padding: 2rem 1.5rem;
+            display: inline-flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            animation: fadeInUp 0.8s 1s forwards;
         }
         .btn-group {
             display: flex;
@@ -90,7 +138,7 @@
             font-size: 1rem;
             cursor: pointer;
             border: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-block;
             font-family: 'Inter', sans-serif;
@@ -103,8 +151,8 @@
             position: absolute;
             top: 0; left: -100%;
             width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
-            transition: left 0.5s;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
         }
         .btn:hover::before { left: 100%; }
 
@@ -115,26 +163,28 @@
         }
         .btn-primary:hover {
             transform: translateY(-3px);
-            box-shadow: 0 12px 40px rgba(200,148,74,0.6);
+            box-shadow: 0 14px 40px rgba(200,148,74,0.7);
         }
         .btn-ghost {
             background: transparent;
             color: #fff;
-            border: 2px solid rgba(255,255,255,0.25);
+            border: 2px solid rgba(255,255,255,0.3);
             backdrop-filter: blur(10px);
         }
         .btn-ghost:hover {
-            background: rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.12);
             border-color: #c8944a;
             color: #c8944a;
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(200,148,74,0.2);
+            box-shadow: 0 8px 25px rgba(200,148,74,0.25);
         }
+
         .footer-text {
             margin-top: 3rem;
             font-size: 0.8rem;
             opacity: 0.4;
             letter-spacing: 0.5px;
+            animation: fadeInUp 1s 1.2s forwards;
         }
 
         @media (max-width: 600px) {
@@ -149,15 +199,46 @@
     <div class="orb orb-3"></div>
 
     <div class="content">
-        <div class="logo">Synapse</div>
+        <div class="logo" id="logoText">Synapse</div>
         <div class="tagline">The Biotech Club of BMSCE</div>
         <div class="desc">Access semester notes, register for events, and explore the monthly magazine — all in one place.</div>
-        <div class="btn-group">
-            <a href="notes.html" class="btn btn-primary">Notes</a>
-            <a href="events.html" class="btn btn-ghost">Events</a>
-            <a href="magazine.html" class="btn btn-ghost">Magazine</a>
+        <div class="golden-rule"></div>
+        <div class="glass-card">
+            <div class="btn-group">
+                <a href="notes.html" class="btn btn-primary">Notes</a>
+                <a href="events.html" class="btn btn-ghost">Events</a>
+                <a href="magazine.html" class="btn btn-ghost">Magazine</a>
+            </div>
         </div>
         <div class="footer-text">Department of Biotechnology · BMSCE</div>
     </div>
+
+    <script>
+        // Text reveal for "Synapse"
+        (function() {
+            const logoEl = document.getElementById('logoText');
+            const text = logoEl.textContent;
+            logoEl.innerHTML = '';
+            [...text].forEach((char, i) => {
+                const span = document.createElement('span');
+                span.className = 'char';
+                span.textContent = char;
+                span.style.animationDelay = (i * 0.1) + 's';
+                logoEl.appendChild(span);
+            });
+        })();
+
+        // Dynamic favicon glow – alternates between dark green and gold
+        (function() {
+            const favicon = document.getElementById('favicon');
+            const greenSVG = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>";
+            const goldSVG = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c8944a'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%231b3b2e' font-family='Georgia,serif'>S</text></svg>";
+            let isGreen = true;
+            setInterval(() => {
+                favicon.href = isGreen ? goldSVG : greenSVG;
+                isGreen = !isGreen;
+            }, 1200);
+        })();
+    </script>
 </body>
 </html>
