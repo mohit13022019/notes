@@ -43,7 +43,6 @@
             --font-body: 'Inter', system-ui, -apple-system, sans-serif;
             --font-mono: 'JetBrains Mono', 'Consolas', monospace;
 
-            /* Focus mode */
             --focus-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
             --focus-dim: 0.25;
             --focus-blur: 6px;
@@ -132,7 +131,7 @@
         }
         .btn-icon:hover { background: var(--surface-alt); border-color: var(--rb-red); color: var(--rb-red); }
 
-        /* ══ SEARCH / SEM TABS ══ */
+        /* ══ SEARCH + SEM TABS ══ */
         .global-search-wrap {
             background: var(--rb-darker); border-bottom: 1px solid var(--border);
             padding: 0.8rem 1.5rem;
@@ -193,8 +192,6 @@
             margin: 0 1rem; transform: skewX(-18deg);
         }
         .semester-subtitle { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
-        .back-bar { margin-bottom: 1.5rem; display: none; justify-content: center; }
-        .back-bar.visible { display: flex; }
         .search-bar { max-width: 420px; margin: 0 auto 1.8rem; }
         .search-bar input {
             width: 100%; padding: 0.7rem 1.2rem;
@@ -269,26 +266,14 @@
             position: relative;
             overflow: hidden;
         }
-        .focus-overlay.open .focus-card {
-            transform: scale(1) translateY(0);
-            opacity: 1;
-        }
-        .focus-card.closing {
-            transform: scale(0.85) translateY(40px);
-            opacity: 0;
-            transition: transform 0.35s ease, opacity 0.25s ease;
-        }
-        /* Scan line that sweeps across the top of the card */
+        .focus-overlay.open .focus-card { transform: scale(1) translateY(0); opacity: 1; }
+        .focus-card.closing { transform: scale(0.85) translateY(40px); opacity: 0; transition: transform 0.35s ease, opacity 0.25s ease; }
         .focus-scan {
             position: absolute; top: 0; left: 0; right: 0; height: 3px;
             background: linear-gradient(90deg, transparent 0%, var(--rb-red) 20%, var(--rb-yellow) 50%, var(--rb-red) 80%, transparent 100%);
-            transform-origin: left;
-            transform: scaleX(0);
-            opacity: 0;
+            transform-origin: left; transform: scaleX(0); opacity: 0;
         }
-        .focus-overlay.open .focus-scan {
-            animation: scanSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
-        }
+        .focus-overlay.open .focus-scan { animation: scanSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards; }
         @keyframes scanSweep {
             0%   { transform: scaleX(0); opacity: 1; }
             70%  { transform: scaleX(1); opacity: 1; }
@@ -298,10 +283,7 @@
         .focus-header {
             padding: 2rem 2.2rem 1.4rem;
             border-bottom: 1px solid var(--border-light);
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 1.5rem;
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
             position: relative;
         }
         .focus-header-left { flex: 1; min-width: 0; }
@@ -309,34 +291,25 @@
             font-family: var(--font-display);
             font-weight: 400;
             font-size: clamp(1.4rem, 3vw, 2.2rem);
-            line-height: 1.05;
-            letter-spacing: 0.5px;
+            line-height: 1.05; letter-spacing: 0.5px;
             text-transform: uppercase;
-            color: var(--text);
-            margin-bottom: 0.6rem;
+            color: var(--text); margin-bottom: 0.6rem;
         }
         .focus-subject-code {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
+            font-size: 0.8rem; color: var(--text-muted);
+            letter-spacing: 2px; text-transform: uppercase;
             font-weight: 500;
-            display: inline-block;
-            padding: 0.25rem 0.6rem;
+            display: inline-block; padding: 0.25rem 0.6rem;
             background: var(--surface-alt);
             border: 1px solid var(--border);
         }
         .focus-close {
             width: 40px; height: 40px;
-            background: transparent;
-            border: 1.5px solid var(--border);
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 1rem;
+            background: transparent; border: 1.5px solid var(--border);
+            color: var(--text-secondary); cursor: pointer; font-size: 1rem;
             display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
-            flex-shrink: 0;
+            transition: var(--transition); flex-shrink: 0;
             clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
         }
         .focus-close:hover { border-color: var(--rb-red); color: var(--rb-red); transform: rotate(90deg); }
@@ -347,18 +320,13 @@
             grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
             gap: 1rem;
         }
-
-        /* Cascade reveal — each direct child fades in from the left */
         .focus-body > * {
-            opacity: 0;
-            transform: translateX(-12px);
+            opacity: 0; transform: translateX(-12px);
             animation: cascadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
         }
-        @keyframes cascadeIn {
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes cascadeIn { to { opacity: 1; transform: translateX(0); } }
 
-        /* ══ NOTE CATEGORIES (inside focus) ══ */
+        /* ══ NOTE CATEGORIES ══ */
         .grouped-section {
             background: var(--surface);
             border: 1px solid var(--border-light);
@@ -367,16 +335,12 @@
             transition: var(--transition);
         }
         .grouped-section-header {
-            padding: 0.7rem 0.9rem;
-            cursor: pointer;
+            padding: 0.7rem 0.9rem; cursor: pointer;
             display: flex; align-items: center; justify-content: space-between;
             font-family: var(--font-mono);
-            font-weight: 600; font-size: 0.72rem;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
-            user-select: none;
-            transition: var(--transition);
+            font-weight: 600; font-size: 0.72rem; color: var(--text);
+            text-transform: uppercase; letter-spacing: 1.5px;
+            user-select: none; transition: var(--transition);
         }
         .grouped-section-header:hover { background: var(--accent-pale); }
         .grouped-section-chevron { font-size: 0.6rem; transition: var(--transition); }
@@ -397,37 +361,27 @@
             font-weight: 600; font-size: 0.62rem;
             color: var(--text-muted);
             margin-bottom: 0.4rem;
-            text-transform: uppercase;
-            letter-spacing: 1.5px;
+            text-transform: uppercase; letter-spacing: 1.5px;
         }
         .file-link {
             display: flex; align-items: center; gap: 0.4rem;
-            padding: 0.45rem 0.65rem;
-            margin: 0.15rem 0;
+            padding: 0.45rem 0.65rem; margin: 0.15rem 0;
             background: var(--surface-alt);
             font-family: var(--font-body);
-            font-size: 0.8rem;
-            color: var(--text);
-            text-decoration: none;
-            cursor: pointer;
-            transition: var(--transition);
-            font-weight: 500;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size: 0.8rem; color: var(--text);
+            text-decoration: none; cursor: pointer;
+            transition: var(--transition); font-weight: 500;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
             border-left: 2px solid transparent;
         }
         .file-link:hover { background: var(--accent-pale); color: var(--rb-red); border-left-color: var(--rb-red); transform: translateX(3px); }
         .file-icon { font-size: 0.9rem; flex-shrink: 0; }
         .file-download-btn {
             margin-left: auto;
-            background: var(--rb-red); color: #fff;
-            border: none;
-            width: 22px; height: 22px;
-            cursor: pointer; font-size: 0.6rem;
+            background: var(--rb-red); color: #fff; border: none;
+            width: 22px; height: 22px; cursor: pointer; font-size: 0.6rem;
             display: flex; align-items: center; justify-content: center;
-            transition: var(--transition);
-            flex-shrink: 0;
+            transition: var(--transition); flex-shrink: 0;
         }
         .file-download-btn:hover { background: var(--rb-yellow); color: #000; transform: scale(1.15); }
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.68rem; }
@@ -436,8 +390,7 @@
             font-weight: 600; font-size: 0.6rem;
             color: var(--text-secondary);
             margin-bottom: 0.2rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            text-transform: uppercase; letter-spacing: 1px;
         }
         .new-badge {
             display: inline-block;
@@ -445,10 +398,8 @@
             padding: 0.1rem 0.4rem;
             font-family: var(--font-mono);
             font-size: 0.55rem; font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            animation: newPulse 2s ease infinite;
-            margin-left: 0.3rem;
+            text-transform: uppercase; letter-spacing: 1px;
+            animation: newPulse 2s ease infinite; margin-left: 0.3rem;
         }
         @keyframes newPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
 
@@ -573,7 +524,6 @@
             .focus-body { padding: 1.2rem 1.4rem 1.6rem; grid-template-columns: 1fr; }
         }
 
-        /* Reduced motion */
         @media (prefers-reduced-motion: reduce) {
             .focus-card, .focus-body > *, .focus-scan, .subjects-grid, .rb-nav, .header,
             .global-search-wrap, .semester-nav { transition: none !important; animation: none !important; }
@@ -628,7 +578,7 @@
     <!-- ══ FOCUS MODE OVERLAY ══ -->
     <div class="focus-overlay" id="focusOverlay" aria-modal="true" role="dialog">
         <div class="focus-card" id="focusCard">
-            <div class="focus-scan" id="focusScan"></div>
+            <div class="focus-scan"></div>
             <div class="focus-header">
                 <div class="focus-header-left">
                     <div class="focus-subject-title" id="focusSubjectTitle"></div>
@@ -695,7 +645,7 @@
     <div class="kc-toast" id="kcToast"></div>
 
     <script>
-        // ── Theme ──
+        // ── Theme init ──
         (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else document.body.classList.add('dark');})();
 
         function updateBackToTop(){document.getElementById('backToTop').classList.toggle('visible',scrollY>500);}
@@ -706,7 +656,7 @@
         function showToast(m){const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className='toast';t.textContent=m;c.appendChild(t);setTimeout(()=>t.remove(),2500);}
         function showKcToast(m){const e=document.getElementById('kcToast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),800);}
 
-        // ── ALL SUBJECTS ──
+        // ── ALL SUBJECTS, SEMESTERS III–VIII ──
         const SEMESTER_DATA = {
             3: { name: 'III Semester', subjects: [
                 { code: '23MA3BSTFN', title: 'Transform Calculus, Fourier Series and Numerical Techniques' },
@@ -844,65 +794,38 @@
             const found = findSubjectByCode(code);
             if (!found) return;
             currentFocusCode = code;
-
-            // Ensure correct semester is visible behind
             cs = String(sem);
-
-            // Save current scroll position
             lastScrollY = window.scrollY;
-
-            // Populate header
             focusTitleEl.textContent = found.sub.title;
             focusCodeEl.textContent = found.sub.code;
-
-            // Build body content — reuse existing renderCard internals but as flat sections
             focusBody.innerHTML = buildFocusBody(found.sem, found.sub);
-
-            // Cascade delay — apply per direct child
             [...focusBody.children].forEach((el, i) => {
                 el.style.animationDelay = (0.12 + i * 0.06) + 's';
             });
-
-            // Show overlay
             document.body.classList.add('focus-mode');
             focusOverlay.classList.add('open');
             focusOpen = true;
             document.body.style.overflow = 'hidden';
-
-            // Update URL hash (so the link is shareable)
             if (pushHistory && location.hash !== '#subject=' + code) {
                 history.pushState({ focus: code }, '', '#subject=' + code);
             }
-
-            // Focus management
             setTimeout(() => document.getElementById('focusCloseBtn').focus(), 100);
-
-            // Scroll overlay to top
             focusOverlay.scrollTop = 0;
         }
 
         function closeFocus(pushHistory=true){
             if (!focusOpen) return;
             focusOpen = false;
-
-            // Animate out
             focusCard.classList.add('closing');
             setTimeout(() => {
                 focusOverlay.classList.remove('open');
                 focusCard.classList.remove('closing');
                 document.body.classList.remove('focus-mode');
                 document.body.style.overflow = '';
-
-                // Restore scroll position
                 window.scrollTo({ top: lastScrollY, behavior: 'auto' });
-
-                // Clear body after transition
                 setTimeout(() => { focusBody.innerHTML = ''; focusTitleEl.textContent=''; focusCodeEl.textContent=''; }, 200);
             }, 320);
-
             currentFocusCode = null;
-
-            // Remove hash
             if (pushHistory && location.hash.startsWith('#subject=')) {
                 history.pushState({}, '', location.pathname + location.search);
             }
@@ -912,12 +835,10 @@
             const ic = isLab(sub.title) ? LIC : IC;
             const gc = isLab(sub.title) ? [] : GC;
             let html = '';
-            // Regular categories (Unit 1..5, Textbook or Lab Manual)
             ic.forEach(c => {
                 const notes = gn(sem, sub.code, c.key);
                 html += buildCategory(c.label, notes);
             });
-            // Grouped (CIE / Endsem) — kept collapsed but available
             gc.forEach(g => {
                 const allNotes = g.sc.flatMap(sc => gn(sem, sub.code, sc.key));
                 const hasContent = allNotes.length > 0;
@@ -962,14 +883,12 @@
             }).join('');
         }
 
-        // Close listeners
         document.getElementById('focusCloseBtn').addEventListener('click', () => closeFocus(true));
         focusOverlay.addEventListener('click', (e) => { if (e.target === focusOverlay) closeFocus(true); });
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape' && focusOpen) { e.preventDefault(); closeFocus(true); }
         });
 
-        // Back/forward button
         window.addEventListener('popstate', () => {
             if (location.hash.startsWith('#subject=')) {
                 const code = location.hash.replace('#subject=', '');
@@ -1006,13 +925,13 @@
             for(let s=3;s<=8;s++){const p=document.createElement('div');p.className='semester-panel';p.style.display=s.toString()===cs?'':'none';p.innerHTML=rsc(s);mc.appendChild(p);}
             attachListeners();
         }
-        function rsc(sem){let h=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2><p class="semester-subtitle">Click a subject to open</p></div>`;h+='<div class="search-bar"><input type="text" placeholder="Filter subjects..." oninput="filterCards(this,\''+sem+'\')"></div>';h+=`<div class="subjects-grid" id="grid${sem}">`+rac(sem)+'</div>';return h;}
+        function rsc(sem){let h=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2></div>`;h+='<div class="search-bar"><input type="text" placeholder="Filter subjects..." oninput="filterCards(this,\''+sem+'\')"></div>';h+=`<div class="subjects-grid" id="grid${sem}">`+rac(sem)+'</div>';return h;}
         function gas(sem){const d=SEMESTER_DATA[sem];let a=[...(d.subjects||[])];if(d.electives)Object.values(d.electives).forEach(arr=>a.push(...arr));return a;}
         function rac(sem){const d=SEMESTER_DATA[sem];let h='',si=0;if(d.subjects)d.subjects.forEach(s=>{h+=renderCard(sem,s,si);si++;});if(d.electives)for(const[g,ss]of Object.entries(d.electives)){h+=`<div class="elective-group-label">${g}</div>`;ss.forEach(s=>{h+=renderCard(sem,s,si);si++;});}return h;}
         function renderCard(sem,sub,si=0){
             const sc=si<16?` style="animation-delay:${si*0.04}s"`:'';
             return `<div class="subject-card card-enter" data-code="${sub.code}" data-sem="${sem}"${sc}>
-                <div class="card-header" style="padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+                <div style="padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
                     <div style="flex:1;min-width:0;">
                         <div class="card-title" style="font-weight:700;font-size:1rem;line-height:1.4;">${sub.title}</div>
                         <div class="card-code" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;letter-spacing:1px;text-transform:uppercase;">${sub.code}</div>
@@ -1048,7 +967,6 @@
         }
         window.filterCards=function(i,s){const q=i.value.toLowerCase();document.querySelectorAll(`#grid${s} .subject-card`).forEach(c=>{c.style.display=(!q||c.querySelector('.card-title').textContent.toLowerCase().includes(q))?'':'none';});};
 
-        // Keyboard semester shortcuts
         document.addEventListener('keydown',function(e){
             if (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
             if (focusOpen) return;
@@ -1056,7 +974,19 @@
         });
 
         // ── ADMIN ──
-        function openAdminModal(){document.getElementById('adminModalOverlay').classList.add('open');pas();if(ia){document.getElementById('adminAuth').style.display='none';document.getElementById('adminPanel').style.display='';uas();uaco();rae();}else{document.getElementById('adminAuth').style.display='';document.getElementById('adminPanel').style.display='none';}}
+        function openAdminModal(){
+            document.getElementById('adminModalOverlay').classList.add('open');
+            pas();
+            if(ia){
+                document.getElementById('adminAuth').style.display='none';
+                document.getElementById('adminPanel').style.display='';
+                uas();
+                rae();
+            } else {
+                document.getElementById('adminAuth').style.display='';
+                document.getElementById('adminPanel').style.display='none';
+            }
+        }
         function closeAdminModal(){document.getElementById('adminModalOverlay').classList.remove('open');}
         function openPreviewModal(){document.getElementById('previewModalOverlay').classList.add('open');}
         function closePreview(){document.getElementById('previewModalOverlay').classList.remove('open');document.getElementById('previewIframe').src='';document.getElementById('previewIframe').style.display='none';}
@@ -1064,16 +994,155 @@
         document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===this){this.classList.remove('open');if(this.id==='previewModalOverlay')closePreview();}});});
 
         let ia=false,githubToken='';
-        function adminLogin(){if(document.getElementById('adminPassword').value==='btadmin2024'&&(githubToken=document.getElementById('githubToken').value.trim())){ia=true;document.getElementById('adminAuth').style.display='none';document.getElementById('adminPanel').style.display='';uas();uaco();rae();showToast('Admin unlocked');}else showToast('Wrong password or token');}
+        function adminLogin(){
+            if(document.getElementById('adminPassword').value==='btadmin2024'&&(githubToken=document.getElementById('githubToken').value.trim())){
+                ia=true;
+                document.getElementById('adminAuth').style.display='none';
+                document.getElementById('adminPanel').style.display='';
+                uas();
+                rae();
+                showToast('Admin unlocked');
+            } else showToast('Wrong password or token');
+        }
         function adminLogout(){ia=false;document.getElementById('adminAuth').style.display='';document.getElementById('adminPanel').style.display='none';}
-        function pas(){const s=document.getElementById('adminSemester');s.innerHTML='';for(let i=3;i<=8;i++){const o=document.createElement('option');o.value=i;o.textContent='Semester '+i;s.appendChild(o);}}
-        function uas(){const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject');s.innerHTML='';[...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{const o=document.createElement('option');o.value=x.code;o.textContent=x.code+' - '+x.title;o.dataset.title=x.title;s.appendChild(o);});}
-        function uaco(){const s=document.getElementById('adminCategory');const o=document.getElementById('adminSubject').selectedOptions[0];const t=o?(o.dataset.title||o.textContent.split(' - ')[1]||''):'';let ac=[];if(isLab(t)){ac=[...LIC];}else{ac=[...IC];GC.forEach(g=>{g.sc.forEach(sc=>ac.push(sc));});}s.innerHTML='';ac.forEach(x=>{const e=document.createElement('option');e.value=x.key;e.textContent=x.label;s.appendChild(e);});rae();}
-        function rae(){const n=gn(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles');d.innerHTML=n.length?'':'No files yet.';n.forEach((x,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.2rem 0;';e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:2px;width:20px;height:20px;cursor:pointer;font-size:0.55rem;">x</button>`;e.querySelector('button').onclick=()=>{const k=gk(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);if(nd[k]){nd[k].splice(i,1);if(!nd[k].length)delete nd[k];sl();rae();renderPanels();showToast('Deleted');}};d.appendChild(e);});}
-        async function ctg(){try{const c=JSON.stringify(nd,null,2);const b64=btoa(unescape(encodeURIComponent(c)));const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await gr.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:b64,sha:fi.sha})});return true;}catch(e){return false;}}
-        async function adminAddSingle(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value,l=document.getElementById('adminFileLabel').value.trim();const u=document.getElementById('adminDriveLink').value.trim();if(!l||!u)return showToast('Fill all fields');if(!extractFileId(u))return showToast('Invalid file link');const k=gk(s,c,cat);if(!nd[k])nd[k]=[];nd[k].push({label:l,driveUrl:u,addedAt:Date.now()});sl();const ok=await ctg();showToast(ok?'Published!':'Saved locally');document.getElementById('adminFileLabel').value='';document.getElementById('adminDriveLink').value='';rae();renderPanels();}
-        async function adminAddBulk(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value;const raw=document.getElementById('adminBulkLinks').value.trim();if(!raw)return showToast('Paste some links first');const lines=raw.split('\n').filter(l=>l.trim());let added=0;for(const line of lines){const parts=line.split('|');if(parts.length<2)continue;const label=parts[0].trim();const url=parts.slice(1).join('|').trim();if(!label||!url)continue;if(!extractFileId(url))continue;const k=gk(s,c,cat);if(!nd[k])nd[k]=[];nd[k].push({label,driveUrl:url,addedAt:Date.now()});added++;}if(!added)return showToast('No valid links found');sl();const ok=await ctg();showToast(ok?`${added} files published!`:`${added} files saved locally`);document.getElementById('adminBulkLinks').value='';rae();renderPanels();}
-        window.adminAddSingle=adminAddSingle;window.adminAddBulk=adminAddBulk;
+
+        function pas(){
+            const s=document.getElementById('adminSemester');
+            s.innerHTML='';
+            for(let i=3;i<=8;i++){
+                const o=document.createElement('option');
+                o.value=i;
+                o.textContent='Semester '+i;
+                s.appendChild(o);
+            }
+        }
+
+        // ✅ FIXED: works for all semesters
+        function uas(){
+            const semVal = document.getElementById('adminSemester').value;
+            const sem = parseInt(semVal, 10);
+            const d = SEMESTER_DATA[sem];
+            const s = document.getElementById('adminSubject');
+            s.innerHTML = '';
+            if (!d) { console.warn('No SEMESTER_DATA for semester', semVal); return; }
+            const all = [
+                ...(d.subjects || []),
+                ...(d.electives ? Object.values(d.electives).flat() : [])
+            ];
+            all.forEach(x => {
+                const o = document.createElement('option');
+                o.value = x.code;
+                o.textContent = x.code + ' - ' + x.title;
+                o.dataset.title = x.title;
+                s.appendChild(o);
+            });
+            uaco();
+        }
+
+        // ✅ FIXED: works reliably with the auto-selected first subject
+        function uaco(){
+            const s = document.getElementById('adminCategory');
+            const subSel = document.getElementById('adminSubject');
+            const o = subSel.selectedOptions[0];
+            const t = o ? (o.dataset.title || o.textContent.split(' - ')[1] || '') : '';
+            let ac = [];
+            if (isLab(t)) {
+                ac = [...LIC];
+            } else {
+                ac = [...IC];
+                GC.forEach(g => { g.sc.forEach(sc => ac.push(sc)); });
+            }
+            s.innerHTML = '';
+            ac.forEach(x => {
+                const e = document.createElement('option');
+                e.value = x.key;
+                e.textContent = x.label;
+                s.appendChild(e);
+            });
+            rae();
+        }
+
+        // Aliases so the HTML onchange handlers work
+        window.updateAdminSubjects = uas;
+        window.updateAdminCategoryOptions = uaco;
+
+        function rae(){
+            const n=gn(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);
+            const d=document.getElementById('adminExistingFiles');
+            d.innerHTML=n.length?'':'No files yet.';
+            n.forEach((x,i)=>{
+                const e=document.createElement('div');
+                e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.2rem 0;';
+                e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:2px;width:20px;height:20px;cursor:pointer;font-size:0.55rem;">x</button>`;
+                e.querySelector('button').onclick=()=>{
+                    const k=gk(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);
+                    if(nd[k]){nd[k].splice(i,1);if(!nd[k].length)delete nd[k];sl();rae();renderPanels();showToast('Deleted');}
+                };
+                d.appendChild(e);
+            });
+        }
+
+        async function ctg(){
+            try{
+                const c=JSON.stringify(nd,null,2);
+                const b64=btoa(unescape(encodeURIComponent(c)));
+                const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});
+                const fi=await gr.json();
+                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{
+                    method:'PUT',
+                    headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},
+                    body:JSON.stringify({message:'Update notes',content:b64,sha:fi.sha})
+                });
+                return true;
+            }catch(e){return false;}
+        }
+        async function adminAddSingle(){
+            const s=document.getElementById('adminSemester').value;
+            const c=document.getElementById('adminSubject').value;
+            const cat=document.getElementById('adminCategory').value;
+            const l=document.getElementById('adminFileLabel').value.trim();
+            const u=document.getElementById('adminDriveLink').value.trim();
+            if(!l||!u)return showToast('Fill all fields');
+            if(!extractFileId(u))return showToast('Invalid file link');
+            const k=gk(s,c,cat);
+            if(!nd[k])nd[k]=[];
+            nd[k].push({label:l,driveUrl:u,addedAt:Date.now()});
+            sl();
+            const ok=await ctg();
+            showToast(ok?'Published!':'Saved locally');
+            document.getElementById('adminFileLabel').value='';
+            document.getElementById('adminDriveLink').value='';
+            rae();renderPanels();
+        }
+        async function adminAddBulk(){
+            const s=document.getElementById('adminSemester').value;
+            const c=document.getElementById('adminSubject').value;
+            const cat=document.getElementById('adminCategory').value;
+            const raw=document.getElementById('adminBulkLinks').value.trim();
+            if(!raw)return showToast('Paste some links first');
+            const lines=raw.split('\n').filter(l=>l.trim());
+            let added=0;
+            for(const line of lines){
+                const parts=line.split('|');
+                if(parts.length<2)continue;
+                const label=parts[0].trim();
+                const url=parts.slice(1).join('|').trim();
+                if(!label||!url)continue;
+                if(!extractFileId(url))continue;
+                const k=gk(s,c,cat);
+                if(!nd[k])nd[k]=[];
+                nd[k].push({label,driveUrl:url,addedAt:Date.now()});
+                added++;
+            }
+            if(!added)return showToast('No valid links found');
+            sl();
+            const ok=await ctg();
+            showToast(ok?`${added} files published!`:`${added} files saved locally`);
+            document.getElementById('adminBulkLinks').value='';
+            rae();renderPanels();
+        }
+        window.adminAddSingle=adminAddSingle;
+        window.adminAddBulk=adminAddBulk;
         function exportJSON(){const b=new Blob([JSON.stringify(nd,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='notes-data.json';a.click();}
         function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{nd=JSON.parse(ev.target.result);sl();renderPanels();rae();showToast('Imported');};r.readAsText(f);e.target.value='';}
         function refreshAdminExisting(){rae();}
