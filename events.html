@@ -4,109 +4,415 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse — Events</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
-    <script>
-        const REPO_OWNER = 'mohit13022019';
-        const REPO_NAME = 'notes';
-    </script>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0d10'/><text x='50' y='72' font-size='58' font-weight='900' text-anchor='middle' fill='%23db0a40' font-family='Arial,sans-serif'>S</text></svg>">
+    <script>const REPO_OWNER='mohit13022019';const REPO_NAME='notes';</script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
         :root {
-            --bg:#fafaf8;--surface:rgba(255,255,255,0.8);--surface-alt:rgba(245,244,241,0.7);
-            --primary:#1a3728;--accent:#c8944a;--accent-light:#d4a85c;--text:#1a1d20;
-            --text-secondary:#5a6070;--text-muted:#949aa8;--border:rgba(232,229,223,0.6);
-            --glass-bg:rgba(255,255,255,0.55);--glass-border:rgba(255,255,255,0.5);
-            --shadow:0 4px 16px rgba(0,0,0,0.06);--shadow-lg:0 16px 48px rgba(0,0,0,0.10);
-            --shadow-xl:0 24px 64px rgba(0,0,0,0.14);--radius-lg:18px;--radius-xl:24px;--radius-2xl:32px;
-            --transition:0.25s cubic-bezier(0.4,0,0.2,1);
+            --rb-red: #db0a40;
+            --rb-blue: #002b5c;
+            --rb-silver: #c9ced6;
+            --rb-darker: #05070a;
+            --rb-yellow: #ffcc00;
+            --accent: var(--rb-red);
+            --text: #f4f5f7;
+            --text-secondary: #c9ced6;
+            --text-muted: #6a7280;
+            --surface: #0f1216;
+            --surface-alt: #151921;
+            --surface-elevated: #12161c;
+            --border: rgba(255,255,255,0.10);
+            --border-light: rgba(255,255,255,0.05);
+            --accent-pale: rgba(219,10,64,0.08);
+            --accent-glow: rgba(219,10,64,0.22);
+            --shadow: 0 4px 16px rgba(0,0,0,0.5);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.65);
+            --shadow-xl: 0 24px 64px rgba(0,0,0,0.75);
+            --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+            --font-display: 'Anton', 'Arial Narrow', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+            --focus-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        body.dark {
-            --bg:#0a0d10;--surface:rgba(20,23,27,0.8);--surface-alt:rgba(26,30,35,0.6);
-            --primary:#c8944a;--accent:#c8944a;--accent-light:#d4a85c;--text:#e8eaee;
-            --text-secondary:#a8b0bc;--text-muted:#6a7280;--border:rgba(42,46,53,0.6);
-            --glass-bg:rgba(20,23,27,0.6);--glass-border:rgba(42,46,53,0.5);
-            --shadow:0 4px 16px rgba(0,0,0,0.4);--shadow-lg:0 16px 48px rgba(0,0,0,0.5);
-            --shadow-xl:0 24px 64px rgba(0,0,0,0.6);
+        body.light {
+            --rb-darker: #f4f5f7;
+            --text: #0b0d10; --text-secondary: #3a3f47; --text-muted: #6a7280;
+            --surface: #ffffff; --surface-alt: #f4f5f7; --surface-elevated: #ffffff;
+            --border: rgba(0,0,0,0.10); --border-light: rgba(0,0,0,0.05);
+            --accent-pale: rgba(219,10,64,0.06);
         }
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);line-height:1.6;min-height:100vh;overflow-x:hidden;transition:background 0.4s,color 0.3s}
-        @keyframes fadeInUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes scaleIn{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: var(--font-body);
+            background: var(--rb-darker);
+            color: var(--text);
+            line-height: 1.55;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
 
-        .top-nav{background:var(--glass-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid var(--glass-border);padding:.6rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:101}
-        .nav-logo{font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--primary);text-decoration:none;transition:var(--transition)}
-        .nav-logo:hover{color:var(--accent)}
-        .nav-links{display:flex;gap:1.5rem;align-items:center}
-        .nav-links a{color:var(--text-secondary);text-decoration:none;font-weight:600;font-size:.85rem;transition:var(--transition);position:relative;padding:.3rem 0}
-        .nav-links a::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--accent);transition:width 0.3s;border-radius:2px}
-        .nav-links a:hover{color:var(--text)}
-        .nav-links a:hover::after{width:100%}
-        .nav-links a.active{color:var(--accent)}
-        .nav-links a.active::after{width:100%}
+        /* ══ NAV ══ */
+        .rb-nav {
+            position: sticky; top: 0; z-index: 101;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--rb-darker);
+            border-bottom: 1px solid var(--border);
+        }
+        .rb-logo {
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 1.6rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text); text-decoration: none; line-height: 1;
+        }
+        .rb-logo span { color: var(--rb-red); }
+        .rb-nav-links { display: flex; gap: 0.4rem; }
+        .rb-nav-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary); text-decoration: none;
+            font-weight: 500; font-size: 0.78rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 0.55rem 1.1rem; position: relative;
+            transition: var(--transition);
+        }
+        .rb-nav-links a::after {
+            content: ""; position: absolute; left: 1.1rem; right: 1.1rem; bottom: 0.25rem;
+            height: 2px; background: var(--rb-red);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.3s;
+        }
+        .rb-nav-links a:hover { color: var(--text); }
+        .rb-nav-links a:hover::after,
+        .rb-nav-links a.active::after { transform: scaleX(1); }
+        .rb-nav-links a.active { color: var(--text); }
 
-        .main-container{max-width:1200px;margin:0 auto;padding:3rem 2rem 4rem;position:relative;z-index:1}
-        .page-title{font-family:'Playfair Display',serif;font-size:3rem;font-weight:700;color:var(--primary);text-align:center;margin-bottom:.3rem;animation:fadeInUp 0.7s ease}
-        .page-subtitle{text-align:center;color:var(--text-muted);margin-bottom:2rem;animation:fadeInUp 0.7s ease 0.1s;opacity:0;animation-fill-mode:forwards}
+        /* ══ MAIN ══ */
+        .main-container { max-width: 1440px; margin: 0 auto; padding: 3rem 2rem 4rem; }
 
-        .action-bar{display:flex;justify-content:center;gap:1rem;margin-bottom:2rem;flex-wrap:wrap;animation:fadeInUp 0.7s ease 0.15s;opacity:0;animation-fill-mode:forwards}
-        .btn{padding:.6rem 1.5rem;border-radius:50px;font-weight:600;font-size:.82rem;cursor:pointer;border:none;font-family:'Inter',sans-serif;display:inline-flex;align-items:center;gap:.4rem;background:var(--glass-bg);border:1.5px solid var(--glass-border);color:var(--text-secondary);transition:var(--transition);backdrop-filter:blur(12px)}
-        .btn:hover{transform:translateY(-2px);box-shadow:var(--shadow);border-color:var(--text-muted);color:var(--text)}
-        .btn:active{transform:scale(0.96)}
-        .btn-accent{background:var(--accent);color:#fff;border:none;font-weight:700;box-shadow:0 4px 16px rgba(200,148,74,0.25)}
-        .btn-accent:hover{background:var(--accent-light);box-shadow:0 8px 28px rgba(200,148,74,0.35);color:#fff}
+        .page-title {
+            font-family: var(--font-display);
+            font-weight: 400; font-size: clamp(2.5rem, 6vw, 4rem);
+            text-align: center; letter-spacing: 3px; text-transform: uppercase;
+            line-height: 1; margin-bottom: 0.6rem;
+        }
+        .page-title::before, .page-title::after {
+            content: ""; display: inline-block; width: 48px; height: 3px;
+            background: var(--rb-red); vertical-align: middle;
+            margin: 0 1.2rem; transform: skewX(-18deg);
+        }
+        .page-subtitle {
+            font-family: var(--font-mono);
+            text-align: center; color: var(--text-muted);
+            font-size: 0.8rem; letter-spacing: 2px;
+            text-transform: uppercase; margin-bottom: 2rem;
+        }
 
-        .events-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
-        .event-card{background:var(--glass-bg);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);border-radius:var(--radius-xl);border:1px solid var(--glass-border);overflow:hidden;cursor:pointer;transition:var(--transition);box-shadow:var(--shadow);animation:fadeInUp 0.6s ease}
-        .event-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-xl);border-color:var(--accent)}
-        .event-poster-wrap{width:100%;aspect-ratio:1/1.4;overflow:hidden;background:var(--surface-alt);display:flex;align-items:center;justify-content:center}
-        .event-poster{width:100%;height:100%;object-fit:contain}
-        .event-poster-placeholder{font-size:3rem;opacity:.4;color:var(--accent)}
-        .event-body{padding:1.2rem 1.5rem}
-        .event-name{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--primary);margin-bottom:.5rem}
-        .event-meta{font-size:.8rem;color:var(--text-secondary);display:flex;gap:1rem;flex-wrap:wrap}
-        .event-meta span{display:flex;align-items:center;gap:.3rem}
+        /* ══ ACTION BAR ══ */
+        .action-bar {
+            display: flex; justify-content: center; gap: 1rem;
+            margin-bottom: 2.5rem; flex-wrap: wrap;
+        }
+        .btn {
+            font-family: var(--font-display);
+            padding: 0.6rem 1.4rem;
+            font-weight: 400; font-size: 0.85rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; border: none;
+            transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            line-height: 1;
+        }
+        .btn:active { transform: scale(0.96); }
+        .btn-accent { background: var(--rb-red); color: #fff; box-shadow: 0 2px 12px rgba(219,10,64,0.4); }
+        .btn-accent:hover { background: #ff1150; transform: translateY(-2px); }
+        .btn-ghost { background: transparent; color: var(--text-secondary); border: 1.5px solid var(--border); }
+        .btn-ghost:hover { background: var(--surface-alt); color: var(--text); border-color: var(--text-muted); }
 
-        .modal-overlay{position:fixed;inset:0;display:none;align-items:center;justify-content:center;z-index:200;padding:1.5rem;background:rgba(0,0,0,0);transition:all .35s}
-        .modal-overlay.open{display:flex;background:rgba(0,0,0,.55);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px)}
-        .detail-modal{background:var(--surface);border-radius:var(--radius-2xl);width:100%;max-width:600px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease;backdrop-filter:blur(20px)}
-        .detail-poster-wrap{width:100%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;padding:1rem}
-        .detail-poster{max-width:100%;max-height:350px;object-fit:contain;border-radius:var(--radius-lg)}
-        .detail-content{padding:2rem}
-        .detail-name{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;color:var(--primary);margin-bottom:.8rem}
-        .detail-meta{font-size:.9rem;color:var(--text-secondary);margin-bottom:1rem;display:flex;gap:1.5rem;flex-wrap:wrap}
-        .detail-desc{font-size:.95rem;color:var(--text);line-height:1.7;margin-bottom:1.5rem;white-space:pre-wrap}
-        .detail-close{float:right;background:0 0;border:none;font-size:1.5rem;cursor:pointer;color:var(--text-muted);padding:.5rem 1rem;transition:var(--transition)}
-        .detail-close:hover{color:var(--text);transform:rotate(90deg)}
-        .btn-register-lg{background:var(--accent);color:#fff;border:none;padding:.8rem 2rem;border-radius:50px;font-weight:700;cursor:pointer;font-size:.95rem;transition:var(--transition);display:inline-flex;align-items:center;gap:.4rem}
-        .btn-register-lg:hover{background:var(--accent-light);transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,148,74,0.3)}
+        /* ══ EVENTS GRID ══ */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.2rem;
+            transition: filter 0.4s ease, opacity 0.4s ease;
+        }
+        body.focus-mode .events-grid { filter: blur(6px); opacity: 0.25; pointer-events: none; }
+        body.focus-mode .rb-nav { filter: blur(6px); opacity: 0.25; pointer-events: none; }
 
-        .modal{background:var(--surface);padding:2rem;border-radius:var(--radius-xl);width:100%;max-width:500px;max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-xl);border:1px solid var(--glass-border);animation:scaleIn .35s ease}
-        .modal h3{font-family:'Playfair Display',serif;color:var(--primary);margin-bottom:1.2rem;text-align:center;font-size:1.3rem}
-        .modal input,.modal textarea{width:100%;padding:.7rem .9rem;margin:.3rem 0 .7rem;border:2px solid var(--border);border-radius:14px;background:var(--surface-alt);color:var(--text);font-size:.85rem;font-family:'Inter',sans-serif;transition:var(--transition)}
-        .modal input:focus,.modal textarea:focus{border-color:var(--accent);outline:0;box-shadow:0 0 0 3px rgba(200,148,74,0.15)}
-        .modal-close{float:right;background:0 0;border:none;font-size:1.3rem;cursor:pointer;color:var(--text-muted);transition:var(--transition)}
-        .modal-close:hover{color:var(--text);transform:rotate(90deg)}
-        .btn-submit{background:var(--accent);color:#fff;border:none;padding:.7rem;border-radius:50px;font-weight:700;width:100%;cursor:pointer;font-size:.9rem;transition:var(--transition)}
-        .btn-submit:hover{background:var(--accent-light)}
-        .poster-help{font-size:.7rem;color:var(--text-muted);margin-bottom:.5rem}
-        .poster-help code{background:var(--surface-alt);padding:.15rem .4rem;border-radius:4px;font-size:.65rem}
+        .event-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--rb-red);
+            overflow: hidden;
+            cursor: pointer;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+            animation: cardEnter 0.5s ease forwards;
+            opacity: 0;
+            will-change: transform, box-shadow;
+        }
+        @keyframes cardEnter {
+            from { opacity: 0; transform: translateY(24px) scale(0.97); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .event-card:hover { border-left-color: var(--rb-yellow); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
 
-        .toast{position:fixed;bottom:2rem;right:2rem;background:var(--primary);color:#fff;padding:.7rem 1.3rem;border-radius:50px;font-weight:600;z-index:300;animation:fadeInUp .3s ease;box-shadow:var(--shadow-lg);font-size:.85rem;display:none}
+        .event-poster-wrap {
+            width: 100%; aspect-ratio: 1 / 1.1;
+            overflow: hidden; background: var(--surface-alt);
+            display: flex; align-items: center; justify-content: center;
+            border-bottom: 1px solid var(--border-light);
+        }
+        .event-poster { width: 100%; height: 100%; object-fit: cover; }
+        .event-poster-placeholder { font-size: 2.6rem; opacity: 0.35; color: var(--rb-red); }
 
-        .edit-btn{background:var(--accent);color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.3rem;transition:var(--transition)}
-        .edit-btn:hover{background:var(--accent-light)}
+        .event-body { padding: 1.1rem 1.3rem; }
+        .event-name {
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 1.2rem;
+            letter-spacing: 1px; text-transform: uppercase;
+            line-height: 1.1; margin-bottom: 0.5rem;
+        }
+        .event-meta {
+            font-family: var(--font-mono);
+            font-size: 0.72rem; color: var(--text-secondary);
+            display: flex; flex-direction: column; gap: 0.25rem;
+            letter-spacing: 0.5px;
+        }
+        .event-meta span { display: flex; align-items: center; gap: 0.4rem; }
 
-        @media(max-width:768px){
-            .top-nav{padding:.5rem 1rem}.nav-links{gap:.8rem}.nav-links a{font-size:.7rem}
-            .main-container{padding:2rem 1rem 4rem}.page-title{font-size:2.2rem}
-            .events-grid{grid-template-columns:1fr}.detail-poster{max-height:250px}
+        /* ══ FOCUS MODE ══ */
+        .focus-overlay {
+            position: fixed; inset: 0; z-index: 300;
+            background: rgba(5,7,10,0.55);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s ease;
+            display: flex; align-items: flex-start; justify-content: center;
+            padding: 4rem 2rem 4rem;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+        .focus-overlay.open { opacity: 1; pointer-events: auto; }
+        body.light .focus-overlay { background: rgba(244,245,247,0.6); }
+
+        .focus-card {
+            width: 100%; max-width: 900px;
+            background: var(--surface-elevated);
+            border: 1.5px solid var(--rb-red);
+            border-left: 6px solid var(--rb-red);
+            box-shadow: var(--shadow-xl);
+            clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+            transform: scale(0.85) translateY(40px);
+            opacity: 0;
+            transition: transform 0.55s var(--focus-spring), opacity 0.35s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        .focus-overlay.open .focus-card { transform: scale(1) translateY(0); opacity: 1; }
+        .focus-card.closing { transform: scale(0.85) translateY(40px); opacity: 0; transition: transform 0.35s ease, opacity 0.25s ease; }
+
+        .focus-scan {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--rb-red) 20%, var(--rb-yellow) 50%, var(--rb-red) 80%, transparent 100%);
+            transform-origin: left; transform: scaleX(0); opacity: 0;
+            z-index: 2;
+        }
+        .focus-overlay.open .focus-scan { animation: scanSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards; }
+        @keyframes scanSweep {
+            0%   { transform: scaleX(0); opacity: 1; }
+            70%  { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(1); opacity: 0; }
+        }
+
+        .focus-poster-wrap {
+            width: 100%; background: var(--surface-alt);
+            display: flex; align-items: center; justify-content: center;
+            padding: 1.5rem; border-bottom: 1px solid var(--border-light);
+        }
+        .focus-poster {
+            max-width: 100%; max-height: 420px;
+            object-fit: contain;
+        }
+        .focus-header {
+            padding: 1.8rem 2rem 1rem;
+            position: relative;
+            display: flex; align-items: flex-start; justify-content: space-between; gap: 1.5rem;
+        }
+        .focus-header-left { flex: 1; min-width: 0; }
+        .focus-name {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            line-height: 1.05; letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text); margin-bottom: 0.6rem;
+        }
+        .focus-meta {
+            font-family: var(--font-mono);
+            font-size: 0.8rem; color: var(--text-secondary);
+            display: flex; flex-wrap: wrap; gap: 1rem;
+            letter-spacing: 0.6px;
+        }
+        .focus-meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+        .focus-close {
+            width: 40px; height: 40px;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer; font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition); flex-shrink: 0;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+        }
+        .focus-close:hover { border-color: var(--rb-red); color: var(--rb-red); transform: rotate(90deg); }
+
+        .focus-body {
+            padding: 1rem 2rem 2rem;
+        }
+        .focus-desc {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--text);
+            line-height: 1.7;
+            white-space: pre-wrap;
+            margin-bottom: 1.6rem;
+            opacity: 0;
+            transform: translateX(-12px);
+            animation: cascadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.12s forwards;
+        }
+        .focus-register-wrap {
+            opacity: 0; transform: translateX(-12px);
+            animation: cascadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) 0.24s forwards;
+        }
+        @keyframes cascadeIn { to { opacity: 1; transform: translateX(0); } }
+
+        .btn-register-lg {
+            font-family: var(--font-display);
+            background: var(--rb-red); color: #fff;
+            border: none; padding: 0.9rem 2rem;
+            font-weight: 400; cursor: pointer;
+            font-size: 0.95rem; letter-spacing: 2.5px;
+            text-transform: uppercase;
+            transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+            line-height: 1;
+        }
+        .btn-register-lg:hover { background: #ff1150; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(219,10,64,0.35); }
+
+        /* ══ MODALS ══ */
+        .modal-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 400; padding: 1.5rem; background: rgba(0,0,0,0.75); }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--surface); padding: 2rem;
+            border-radius: 4px; width: 100%; max-width: 500px; max-height: 85vh; overflow-y: auto;
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--rb-red);
+            animation: modalIn 0.3s ease;
+        }
+        @keyframes modalIn { from { transform: scale(0.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+        .modal h3 {
+            font-family: var(--font-display);
+            font-weight: 400; color: var(--text);
+            margin-bottom: 1.2rem; text-align: center;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
+        .modal input, .modal textarea {
+            width: 100%; padding: 0.65rem 0.85rem; margin: 0.25rem 0 0.6rem;
+            font-family: var(--font-body);
+            border: 1.5px solid var(--border); border-radius: 2px;
+            background: var(--surface-alt); color: var(--text);
+            font-size: 0.85rem; transition: var(--transition);
+        }
+        .modal input:focus, .modal textarea:focus { border-color: var(--rb-red); outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
+        .modal textarea { resize: vertical; min-height: 70px; }
+        .modal-close { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
+        .modal-close:hover { color: var(--text); }
+        .btn-submit {
+            font-family: var(--font-display);
+            background: var(--rb-red); color: #fff;
+            border: none; padding: 0.75rem;
+            font-weight: 400; width: 100%;
+            cursor: pointer; font-size: 0.9rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            transition: var(--transition);
+        }
+        .btn-submit:hover { background: #ff1150; }
+        .poster-help { font-family: var(--font-mono); font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.5rem; letter-spacing: 0.5px; }
+        .poster-help code { background: var(--surface-alt); padding: 0.1rem 0.35rem; font-family: var(--font-mono); }
+        .edit-btn { background: var(--rb-red); color: #fff; border: none; width: 22px; height: 22px; cursor: pointer; font-size: 0.55rem; transition: var(--transition); }
+        .edit-btn:hover { background: #ff1150; }
+
+        /* ══ TOAST ══ */
+        .toast {
+            position: fixed; bottom: 2rem; right: 2rem;
+            background: var(--rb-red); color: #fff;
+            padding: 0.7rem 1.3rem;
+            font-family: var(--font-mono);
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            z-index: 500; box-shadow: var(--shadow-lg);
+            display: none;
+        }
+        .toast.show { display: block; animation: toastIn 0.3s ease; }
+        @keyframes toastIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* ══ EDGE NAV ══ */
+        .rb-edge-nav { position: fixed; top: 50%; z-index: 150; width: 64px; height: 200px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
+        .rb-edge-nav.left  { left: 0;  transform: translate(-30px, -50%); }
+        .rb-edge-nav.right { right: 0; transform: translate(30px, -50%); }
+        .rb-edge-nav.visible.left  { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav.visible.right { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav .edge-pill {
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            background: rgba(5,7,10,0.9); border: 1.5px solid var(--rb-red);
+            padding: 1rem 0.7rem; color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 0.8rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            writing-mode: vertical-rl;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+            transition: var(--transition); line-height: 1;
+        }
+        .rb-edge-nav.right .edge-pill { transform: rotate(180deg); }
+        .rb-edge-nav:hover .edge-pill { background: var(--rb-red); color: #fff; }
+        .rb-edge-nav .edge-ring { position: absolute; inset: 0; pointer-events: none; }
+        .rb-edge-nav .edge-ring circle {
+            fill: none; stroke: var(--rb-red); stroke-width: 3;
+            stroke-dasharray: 126; stroke-dashoffset: 126;
+            transition: stroke-dashoffset 0.15s linear;
+            transform: rotate(-90deg); transform-origin: center;
+        }
+
+        @media (max-width: 768px) {
+            .rb-nav { padding: 0.8rem 1rem; }
+            .main-container { padding: 2rem 1rem 4rem; }
+            .page-title { font-size: 2rem; letter-spacing: 2px; }
+            .page-title::before, .page-title::after { width: 24px; margin: 0 0.6rem; }
+            .events-grid { grid-template-columns: 1fr; }
+            .focus-overlay { padding: 2rem 1rem 4rem; }
+            .focus-poster { max-height: 260px; }
+            .focus-header { padding: 1.4rem 1.4rem 0.8rem; }
+            .focus-body { padding: 0.8rem 1.4rem 1.6rem; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .focus-card, .focus-desc, .focus-register-wrap, .focus-scan,
+            .event-card, .events-grid, .rb-nav { transition: none !important; animation: none !important; }
         }
     </style>
 </head>
-<body class="light">
-    <nav class="top-nav">
-        <a href="index.html" class="nav-logo">Synapse</a>
-        <div class="nav-links">
+<body>
+    <nav class="rb-nav">
+        <a href="index.html" class="rb-logo">Syn<span>apse</span></a>
+        <div class="rb-nav-links">
             <a href="index.html">Home</a>
             <a href="notes.html">Notes</a>
             <a href="events.html" class="active">Events</a>
@@ -120,26 +426,36 @@
 
         <div class="action-bar" id="adminActionBar" style="display:none;">
             <button class="btn btn-accent" onclick="openAddEventModal()">+ Add Event</button>
-            <button class="btn" onclick="adminLogout()">Lock Admin</button>
+            <button class="btn btn-ghost" onclick="adminLogout()">Lock Admin</button>
         </div>
         <div class="action-bar" id="visitorActionBar">
             <button class="btn btn-accent" id="themeToggleBtn">🌓 Toggle Theme</button>
-            <button class="btn" onclick="openAdminLogin()">🔐 Admin</button>
+            <button class="btn btn-ghost" onclick="openAdminLogin()">🔐 Admin</button>
         </div>
 
         <div class="events-grid" id="eventsGrid"></div>
     </div>
 
-    <!-- Detail Modal -->
-    <div class="modal-overlay" id="detailOverlay">
-        <div class="detail-modal">
-            <button class="detail-close" onclick="closeDetail()">✕</button>
-            <div class="detail-poster-wrap"><img class="detail-poster" id="detailPoster" src="" alt=""></div>
-            <div class="detail-content">
-                <div class="detail-name" id="detailName"></div>
-                <div class="detail-meta"><span>📅 <span id="detailDate"></span></span><span>📍 <span id="detailLocation"></span></span></div>
-                <div class="detail-desc" id="detailDesc"></div>
-                <button class="btn-register-lg" onclick="openRegistrationForm()">✨ Register Now</button>
+    <!-- Focus Overlay -->
+    <div class="focus-overlay" id="focusOverlay" aria-modal="true" role="dialog">
+        <div class="focus-card" id="focusCard">
+            <div class="focus-scan"></div>
+            <div class="focus-poster-wrap" id="focusPosterWrap"></div>
+            <div class="focus-header">
+                <div class="focus-header-left">
+                    <div class="focus-name" id="focusName"></div>
+                    <div class="focus-meta">
+                        <span>📅 <span id="focusDate"></span></span>
+                        <span>📍 <span id="focusLocation"></span></span>
+                    </div>
+                </div>
+                <button class="focus-close" id="focusCloseBtn" aria-label="Close">✕</button>
+            </div>
+            <div class="focus-body">
+                <div class="focus-desc" id="focusDesc"></div>
+                <div class="focus-register-wrap">
+                    <button class="btn-register-lg" id="focusRegisterBtn">✨ Register Now</button>
+                </div>
             </div>
         </div>
     </div>
@@ -171,58 +487,179 @@
             <p class="poster-help">Paste the Google Form link for this event's registrations.</p>
             <button class="btn-submit" onclick="saveEvent()">Save Event</button>
             <hr style="margin:1.2rem 0;border-color:var(--border);">
-            <p style="font-weight:700;font-size:.8rem;margin-bottom:.5rem;">Existing Events:</p>
-            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:.75rem;"></div>
+            <p style="font-family:var(--font-mono);font-weight:600;font-size:0.72rem;margin-bottom:0.5rem;letter-spacing:1px;text-transform:uppercase;">Existing Events:</p>
+            <div id="adminEventList" style="max-height:200px;overflow-y:auto;font-size:0.75rem;"></div>
         </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        // Theme
-        (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
-        document.getElementById('themeToggleBtn').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
+        // ── Theme init ──
+        (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else document.body.classList.add('dark');})();
+        document.getElementById('themeToggleBtn').addEventListener('click',()=>{
+            document.body.classList.toggle('dark');document.body.classList.toggle('light');
+            localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');
+        });
 
-        function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.style.display='block';setTimeout(()=>t.style.display='none',2500);}
+        function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+        function getPosterUrl(p){if(!p)return'';if(p.startsWith('http'))return p;return`./${p}`;}
 
         let eventsData=[],selectedEventId=null,isAdmin=false,githubToken='';
 
-        function getPosterUrl(p){if(!p)return'';if(p.startsWith('http'))return p;return`./${p}`;}
+        // ── FOCUS MODE ──
+        const focusOverlay=document.getElementById('focusOverlay');
+        const focusCard=document.getElementById('focusCard');
+        let lastScrollY=0, focusOpen=false, currentFocusId=null;
 
-        // ── FETCH & RENDER ──
-        async function fetchEvents(){try{const r=await fetch('./events-data.json');if(r.ok)eventsData=await r.json();else eventsData=[];}catch(e){eventsData=[];}renderEvents();}
-        function renderEvents(){
-            const grid=document.getElementById('eventsGrid');
-            if(!eventsData.length){grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1.1rem;animation:fadeInUp 0.5s ease;">No events yet. Check back soon!</p>';return;}
-            grid.innerHTML=eventsData.map((e,i)=>`<div class="event-card" style="animation-delay:${i*.07}s;" onclick="openDetail('${e.id}')"><div class="event-poster-wrap">${getPosterUrl(e.poster)?`<img src="${getPosterUrl(e.poster)}" class="event-poster" onerror="this.parentElement.innerHTML='<div class=event-poster-placeholder>📸</div>';">`:'<div class="event-poster-placeholder">📸</div>'}</div><div class="event-body"><div class="event-name">${e.name}</div><div class="event-meta"><span>📅 ${e.date||'TBA'}</span><span>📍 ${e.location||'TBA'}</span></div></div></div>`).join('');
+        function openFocus(id, pushHistory=true){
+            const e=eventsData.find(x=>x.id===id);
+            if(!e)return;
+            selectedEventId=id;
+            lastScrollY=window.scrollY;
+            currentFocusId=id;
+
+            // Poster (escape quotes in placeholder text)
+            const pu=getPosterUrl(e.poster);
+            document.getElementById('focusPosterWrap').innerHTML = pu
+                ? `<img src="${pu}" class="focus-poster" onerror="this.parentElement.innerHTML='<div class=&quot;event-poster-placeholder&quot;>📸</div>';">`
+                : `<div class="event-poster-placeholder">📸</div>`;
+
+            document.getElementById('focusName').textContent = e.name;
+            document.getElementById('focusDate').textContent = e.date||'TBA';
+            document.getElementById('focusLocation').textContent = e.location||'TBA';
+            document.getElementById('focusDesc').textContent = e.description||'';
+
+            // Register button visibility
+            const regBtn = document.getElementById('focusRegisterBtn');
+            if (e.formUrl) {
+                regBtn.style.display='inline-flex';
+                regBtn.onclick = () => window.open(e.formUrl, '_blank');
+            } else {
+                regBtn.style.display='none';
+            }
+
+            document.body.classList.add('focus-mode');
+            focusOverlay.classList.add('open');
+            focusOpen = true;
+            document.body.style.overflow = 'hidden';
+
+            if (pushHistory && location.hash !== '#event=' + id) {
+                history.pushState({focus: id}, '', '#event=' + id);
+            }
+            setTimeout(() => document.getElementById('focusCloseBtn').focus(), 100);
+            focusOverlay.scrollTop = 0;
         }
 
-        // ── DETAIL MODAL ──
-        function openDetail(id){const e=eventsData.find(x=>x.id===id);if(!e)return;selectedEventId=id;const pu=getPosterUrl(e.poster);document.getElementById('detailPoster').src=pu||'';document.getElementById('detailName').textContent=e.name;document.getElementById('detailDate').textContent=e.date||'TBA';document.getElementById('detailLocation').textContent=e.location||'TBA';document.getElementById('detailDesc').textContent=e.description||'';document.getElementById('detailOverlay').classList.add('open');}
-        function closeDetail(){document.getElementById('detailOverlay').classList.remove('open');}
+        function closeFocus(pushHistory=true){
+            if(!focusOpen)return;
+            focusOpen=false;
+            focusCard.classList.add('closing');
+            setTimeout(()=>{
+                focusOverlay.classList.remove('open');
+                focusCard.classList.remove('closing');
+                document.body.classList.remove('focus-mode');
+                document.body.style.overflow='';
+                window.scrollTo({top:lastScrollY,behavior:'auto'});
+            },320);
+            currentFocusId=null;
+            if (pushHistory && location.hash.startsWith('#event=')) {
+                history.pushState({}, '', location.pathname + location.search);
+            }
+        }
 
-        // ── REGISTRATION (Opens Google Form for that specific event) ──
-        function openRegistrationForm(){
-            const e = eventsData.find(x => x.id === selectedEventId);
-            if (!e || !e.formUrl) {
-                showToast('No registration form available for this event.');
+        document.getElementById('focusCloseBtn').addEventListener('click',()=>closeFocus(true));
+        focusOverlay.addEventListener('click',(e)=>{if(e.target===focusOverlay)closeFocus(true);});
+        document.addEventListener('keydown',(e)=>{
+            if(e.key==='Escape' && focusOpen){e.preventDefault();closeFocus(true);}
+        });
+
+        window.addEventListener('popstate', () => {
+            if (location.hash.startsWith('#event=')) {
+                const id = location.hash.replace('#event=', '');
+                openFocus(id, false);
+            } else if (focusOpen) {
+                closeFocus(false);
+            }
+        });
+
+        function maybeOpenFromHash(){
+            if (location.hash.startsWith('#event=')) {
+                const id = location.hash.replace('#event=', '');
+                if (eventsData.find(x => x.id === id)) {
+                    setTimeout(() => openFocus(id, false), 250);
+                }
+            }
+        }
+
+        // ── FETCH & RENDER ──
+        async function fetchEvents(){
+            try{const r=await fetch('./events-data.json');if(r.ok)eventsData=await r.json();else eventsData=[];}
+            catch(e){eventsData=[];}
+            renderEvents();
+            maybeOpenFromHash();
+        }
+        function renderEvents(){
+            const grid=document.getElementById('eventsGrid');
+            if(!eventsData.length){
+                grid.innerHTML='<p style="text-align:center;color:var(--text-muted);font-size:1rem;grid-column:1/-1;font-family:var(--font-mono);letter-spacing:1px;text-transform:uppercase;">No events yet. Check back soon.</p>';
                 return;
             }
-            window.open(e.formUrl, '_blank');
+            grid.innerHTML=eventsData.map((e,i)=>`
+                <div class="event-card" style="animation-delay:${i*0.06}s;" onclick="openFocus('${e.id}')">
+                    <div class="event-poster-wrap">
+                        ${getPosterUrl(e.poster)
+                            ? `<img src="${getPosterUrl(e.poster)}" class="event-poster" onerror="this.parentElement.innerHTML='<div class=&quot;event-poster-placeholder&quot;>📸</div>';">`
+                            : '<div class="event-poster-placeholder">📸</div>'}
+                    </div>
+                    <div class="event-body">
+                        <div class="event-name">${e.name}</div>
+                        <div class="event-meta">
+                            <span>📅 ${e.date||'TBA'}</span>
+                            <span>📍 ${e.location||'TBA'}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
         }
 
         // ── ADMIN ──
         function openAdminLogin(){document.getElementById('adminLoginOverlay').classList.add('open');}
         function closeAdminLogin(){document.getElementById('adminLoginOverlay').classList.remove('open');}
-        function adminLogin(){const pw=document.getElementById('adminPassword').value,token=document.getElementById('githubToken').value.trim();if(pw==='btadmin2024'&&token){isAdmin=true;githubToken=token;document.getElementById('adminLoginOverlay').classList.remove('open');document.getElementById('adminActionBar').style.display='flex';document.getElementById('visitorActionBar').style.display='none';showToast('Admin mode activated');}else showToast('Wrong password or token');}
-        function adminLogout(){isAdmin=false;githubToken='';document.getElementById('adminActionBar').style.display='none';document.getElementById('visitorActionBar').style.display='flex';showToast('Admin locked');}
+        function adminLogin(){
+            const pw=document.getElementById('adminPassword').value;
+            const token=document.getElementById('githubToken').value.trim();
+            if(pw==='btadmin2024'&&token){
+                isAdmin=true;githubToken=token;
+                document.getElementById('adminLoginOverlay').classList.remove('open');
+                document.getElementById('adminActionBar').style.display='flex';
+                document.getElementById('visitorActionBar').style.display='none';
+                showToast('Admin mode activated');
+            } else showToast('Wrong password or token');
+        }
+        function adminLogout(){
+            isAdmin=false;githubToken='';
+            document.getElementById('adminActionBar').style.display='none';
+            document.getElementById('visitorActionBar').style.display='flex';
+            showToast('Admin locked');
+        }
 
         function openAddEventModal(editIndex=-1){
             document.getElementById('editEventIndex').value=editIndex;
             document.getElementById('addEventTitle').textContent=editIndex>=0?'Edit Event':'Add Event';
-            if(editIndex>=0){const e=eventsData[editIndex];document.getElementById('newEventName').value=e.name;document.getElementById('newEventDate').value=e.date;document.getElementById('newEventLocation').value=e.location||'';document.getElementById('newEventDesc').value=e.description||'';document.getElementById('newEventPoster').value=e.poster||'';document.getElementById('newEventFormUrl').value=e.formUrl||'';}
-            else{document.getElementById('newEventName').value='';document.getElementById('newEventDate').value='';document.getElementById('newEventLocation').value='';document.getElementById('newEventDesc').value='';document.getElementById('newEventPoster').value='';document.getElementById('newEventFormUrl').value='';}
-            refreshAdminEvents();document.getElementById('addEventOverlay').classList.add('open');
+            if(editIndex>=0){
+                const e=eventsData[editIndex];
+                document.getElementById('newEventName').value=e.name;
+                document.getElementById('newEventDate').value=e.date;
+                document.getElementById('newEventLocation').value=e.location||'';
+                document.getElementById('newEventDesc').value=e.description||'';
+                document.getElementById('newEventPoster').value=e.poster||'';
+                document.getElementById('newEventFormUrl').value=e.formUrl||'';
+            } else {
+                ['newEventName','newEventDate','newEventLocation','newEventDesc','newEventPoster','newEventFormUrl'].forEach(id=>document.getElementById(id).value='');
+            }
+            refreshAdminEvents();
+            document.getElementById('addEventOverlay').classList.add('open');
         }
         function closeAddEvent(){document.getElementById('addEventOverlay').classList.remove('open');}
 
@@ -235,25 +672,79 @@
             const formUrl=document.getElementById('newEventFormUrl').value.trim();
             if(!n||!d)return showToast('Name and date/time required');
             const editIndex=parseInt(document.getElementById('editEventIndex').value);
-            if(editIndex>=0){eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null};}
-            else{eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null});}
-            await commitEvents();renderEvents();refreshAdminEvents();closeAddEvent();showToast(editIndex>=0?'Event updated!':'Event added!');
+            if(editIndex>=0){
+                eventsData[editIndex]={...eventsData[editIndex],name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null};
+            } else {
+                eventsData.push({id:Date.now().toString(),name:n,date:d,location:l,description:desc,poster:poster||null,formUrl:formUrl||null});
+            }
+            await commitEvents();
+            renderEvents();
+            refreshAdminEvents();
+            closeAddEvent();
+            showToast(editIndex>=0?'Event updated!':'Event added!');
         }
 
         async function commitEvents(){
-            try{const c=JSON.stringify(eventsData,null,2);const b64=btoa(unescape(encodeURIComponent(c)));const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await gr.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update events',content:b64,sha:fi.sha})});}catch(e){showToast('GitHub sync failed. Check your token.');}
+            try{
+                const c=JSON.stringify(eventsData,null,2);
+                const b64=btoa(unescape(encodeURIComponent(c)));
+                const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{headers:{Authorization:`token ${githubToken}`}});
+                const fi=await gr.json();
+                await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/events-data.json`,{
+                    method:'PUT',
+                    headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},
+                    body:JSON.stringify({message:'Update events',content:b64,sha:fi.sha})
+                });
+            }catch(e){showToast('GitHub sync failed. Check your token.');}
         }
         function refreshAdminEvents(){
-            const list=document.getElementById('adminEventList');list.innerHTML=eventsData.length?'':'No events yet.';
-            eventsData.forEach((e,i)=>{const div=document.createElement('div');div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.25rem 0;';div.innerHTML=`<span>${e.name} ${e.formUrl?'🔗':''} ${e.poster?'🖼️':''}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;list.appendChild(div);});
+            const list=document.getElementById('adminEventList');
+            list.innerHTML=eventsData.length?'':'No events yet.';
+            eventsData.forEach((e,i)=>{
+                const div=document.createElement('div');
+                div.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:.3rem 0;border-bottom:1px solid var(--border-light);';
+                div.innerHTML=`<span style="font-size:0.75rem;">${e.name} ${e.formUrl?'🔗':''} ${e.poster?'🖼️':''}</span><div><button class="edit-btn" onclick="event.stopPropagation();openAddEventModal(${i})">✎</button><button style="background:#7f1d1d;color:#fecaca;border:none;width:22px;height:22px;cursor:pointer;font-size:.55rem;margin-left:.2rem;" onclick="event.stopPropagation();deleteEvent(${i})">✕</button></div>`;
+                list.appendChild(div);
+            });
         }
-        async function deleteEvent(i){if(!confirm('Delete this event?'))return;eventsData.splice(i,1);await commitEvents();renderEvents();refreshAdminEvents();showToast('Event deleted');}
+        async function deleteEvent(i){
+            if(!confirm('Delete this event?'))return;
+            eventsData.splice(i,1);
+            await commitEvents();
+            renderEvents();
+            refreshAdminEvents();
+            showToast('Event deleted');
+        }
         window.deleteEvent=deleteEvent;
+        window.openFocus=openFocus;
 
-        // Close modals when clicking overlay
-        document.querySelectorAll('.modal-overlay').forEach(o=>{o.addEventListener('click',function(e){if(e.target===e.currentTarget){this.classList.remove('open');}});});
+        document.querySelectorAll('.modal-overlay').forEach(o=>{
+            o.addEventListener('click',function(e){
+                if(e.target===e.currentTarget)this.classList.remove('open');
+            });
+        });
 
         fetchEvents();
+    </script>
+
+    <!-- ══ MOUSE EDGE NAV ══ -->
+    <script>
+    (function () {
+        const PAGES=[{file:"index.html",name:"Home"},{file:"notes.html",name:"Notes"},{file:"events.html",name:"Events"},{file:"magazine.html",name:"Magazine"}];
+        const currentFile=location.pathname.split("/").pop()||"index.html";
+        const idx=PAGES.findIndex(p=>p.file===currentFile);if(idx===-1)return;
+        const prev=PAGES[(idx-1+PAGES.length)%PAGES.length],next=PAGES[(idx+1)%PAGES.length];
+        function makeEdge(side,target){const el=document.createElement("div");el.className=`rb-edge-nav ${side}`;el.innerHTML=`<svg class="edge-ring" viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="20"></circle></svg><div class="edge-pill">${side==="left"?"◀":""}<span>${target.name}</span>${side==="right"?"▶":""}</div>`;document.body.appendChild(el);return el;}
+        const leftNav=makeEdge("left",prev),rightNav=makeEdge("right",next);
+        const DWELL_MS=900;let hoverStart=0,rafId=null,activeNav=null;
+        function animateRing(nav,p){const c=nav.querySelector(".edge-ring circle");if(c)c.style.strokeDashoffset=String(126*(1-p));}
+        function startDwell(nav,target){if(activeNav&&activeNav!==nav){const o=activeNav===leftNav?rightNav:leftNav;o.classList.remove("visible");animateRing(o,0);}activeNav=nav;nav.classList.add("visible");hoverStart=performance.now();function tick(now){const p=Math.min(1,(now-hoverStart)/DWELL_MS);animateRing(nav,p);if(p>=1){navigate(target);return;}rafId=requestAnimationFrame(tick);}cancelAnimationFrame(rafId);rafId=requestAnimationFrame(tick);}
+        function stopDwell(nav){if(activeNav===nav){activeNav=null;animateRing(nav,0);}cancelAnimationFrame(rafId);setTimeout(()=>{if(activeNav!==nav)nav.classList.remove("visible");},200);}
+        function navigate(target){if(document.body.classList.contains('focus-mode'))return;document.body.style.transition='opacity 0.3s';document.body.style.opacity='0';setTimeout(()=>{window.location.href=target.file;},280);}
+        const TRIGGER=90;
+        document.addEventListener("mousemove",(e)=>{if(document.body.classList.contains('focus-mode'))return;const w=window.innerWidth,x=e.clientX;if(x<TRIGGER){if(activeNav!==leftNav)startDwell(leftNav,prev);return;}if(x>w-TRIGGER){if(activeNav!==rightNav)startDwell(rightNav,next);return;}if(activeNav===leftNav)stopDwell(leftNav);if(activeNav===rightNav)stopDwell(rightNav);leftNav.classList.remove("visible");rightNav.classList.remove("visible");animateRing(leftNav,0);animateRing(rightNav,0);});
+        leftNav.addEventListener("click",()=>navigate(prev));rightNav.addEventListener("click",()=>navigate(next));
+    })();
     </script>
 </body>
 </html>
