@@ -363,6 +363,8 @@
             margin-bottom: 0.4rem;
             text-transform: uppercase; letter-spacing: 1.5px;
         }
+        
+        /* ══ FILE LINKS (FIXED) ══ */
         .file-link {
             display: flex; align-items: center; gap: 0.5rem;
             padding: 0.5rem 0.7rem; margin: 0.2rem 0;
@@ -389,41 +391,33 @@
             min-width: 0;
         }
 
-        /* ── NEW: "Open ↗" hint ── */
-        .file-view-hint {
+        /* ── THE FIXED "OPEN" BUTTON ── */
+        .btn-open-fixed {
+            background-color: #1a1a1a;
+            color: #aaaaaa;
+            border: 1px solid #2a2a2a;
+            padding: 4px 10px;
+            border-radius: 4px;
             font-family: var(--font-mono);
-            font-size: 0.6rem;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            color: var(--text-muted);
-            padding: 0.15rem 0.5rem;
-            border: 1px solid var(--border);
-            transition: var(--transition);
+            font-size: 0.65rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
             flex-shrink: 0;
-            line-height: 1;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
         }
-        .file-link:hover .file-view-hint {
-            color: #fff;
-            background: var(--rb-red);
+        .btn-open-fixed:hover {
+            background-color: var(--rb-red);
             border-color: var(--rb-red);
+            color: #ffffff;
         }
-
-        /* ── NEW: quiet download button ── */
-        .file-download-btn {
-            background: transparent;
-            color: var(--text-muted);
-            border: 1px solid var(--border);
-            width: 24px; height: 24px;
-            cursor: pointer; font-size: 0.65rem;
-            display: flex; align-items: center; justify-content: center;
-            transition: var(--transition); flex-shrink: 0;
-            line-height: 1;
-        }
-        .file-download-btn:hover {
-            background: var(--rb-red);
-            color: #fff;
-            border-color: var(--rb-red);
-            transform: scale(1.1);
+        .btn-open-fixed .arrow-icon {
+            font-size: 0.5rem;
         }
 
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.68rem; }
@@ -434,16 +428,6 @@
             margin-bottom: 0.2rem;
             text-transform: uppercase; letter-spacing: 1px;
         }
-        .new-badge {
-            display: inline-block;
-            background: var(--rb-yellow); color: #000;
-            padding: 0.1rem 0.4rem;
-            font-family: var(--font-mono);
-            font-size: 0.55rem; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 1px;
-            animation: newPulse 2s ease infinite; flex-shrink: 0;
-        }
-        @keyframes newPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
 
         /* ══ BACK TO TOP ══ */
         .back-to-top {
@@ -564,7 +548,6 @@
             .focus-overlay { padding: 2rem 1rem 5rem; }
             .focus-header { padding: 1.4rem 1.4rem 1rem; }
             .focus-body { padding: 1.2rem 1.4rem 1.6rem; grid-template-columns: 1fr; }
-            .file-view-hint { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -695,7 +678,6 @@
         window.addEventListener('scroll',updateBackToTop,{passive:true});
         function getFileIcon(u){const l=u.toLowerCase();if(l.includes('.pdf')||l.includes('/pdf'))return'📄';if(l.includes('.ppt')||l.includes('.pptx'))return'📊';if(l.includes('.doc')||l.includes('.docx'))return'📝';if(l.includes('.xls')||l.includes('.xlsx'))return'📈';if(l.includes('.zip')||l.includes('.rar'))return'📦';return'🔗';}
         function getDl(u){const id=extractFileId(u);return id?`https://drive.google.com/uc?export=download&id=${id}`:null;}
-        function isNew(at){return Date.now()-at<7*24*60*60*1000;}
         function showToast(m){const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className='toast';t.textContent=m;c.appendChild(t);setTimeout(()=>t.remove(),2500);}
         function showKcToast(m){const e=document.getElementById('kcToast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),800);}
 
@@ -815,13 +797,6 @@
         function gn(s,c,cat){return nd[gk(s,c,cat)]||[];}
         function extractFileId(u){const m=u.match(/\/d\/([a-zA-Z0-9_-]+)/)||u.match(/[?&]id=([a-zA-Z0-9_-]+)/);return m?m[1]:null;}
 
-        // ══ NEW: open file in Google Drive (like clicking a file in Drive) ══
-        function openInDrive(driveUrl){
-            const id = extractFileId(driveUrl);
-            if (!id) return showToast('Invalid Drive link');
-            window.open(`https://drive.google.com/file/d/${id}/view`, '_blank', 'noopener');
-        }
-
         // ══ FOCUS MODE ══
         const focusOverlay = document.getElementById('focusOverlay');
         const focusCard    = document.getElementById('focusCard');
@@ -917,20 +892,20 @@
             </div>`;
         }
 
-        // ✅ UPDATED: now includes "Open ↗" hint, quiet download button
+        // ✅ FIXED: Removed the "NEW" tag, and replaced the broken link with a clean OPEN button
         function buildCategoryInner(notes){
             if (!notes.length) return '<span class="no-files">Empty</span>';
             return notes.map(x => {
                 const icon = getFileIcon(x.driveUrl);
                 const dl = getDl(x.driveUrl);
-                const nb = isNew(x.addedAt || 0) ? '<span class="new-badge">New</span>' : '';
-                const safeLabel = (x.label || 'file').replace(/'/g, "\\'");
-                return `<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)" title="Click to open in Google Drive">
+                const fileId = extractFileId(x.driveUrl);
+                const driveViewLink = fileId ? `https://drive.google.com/file/d/${fileId}/view` : x.driveUrl;
+                return `<a class="file-link" href="${driveViewLink}" target="_blank" rel="noopener" title="Open in Google Drive">
                     <span class="file-icon">${icon}</span>
                     <span class="file-label">${x.label || 'File'}</span>
-                    ${nb}
-                    <span class="file-view-hint">Open ↗</span>
-                    <button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${safeLabel}')" title="Download">↓</button>
+                    <span class="btn-open-fixed" onclick="event.stopPropagation();window.open('${driveViewLink}','_blank');">
+                        OPEN <span class="arrow-icon">▼</span>
+                    </span>
                 </a>`;
             }).join('');
         }
@@ -1001,14 +976,6 @@
                     const sem = this.getAttribute('data-sem');
                     const code = this.getAttribute('data-code');
                     openFocus(sem, code, true);
-                });
-            });
-            // ✅ UPDATED: click → open in Google Drive (new tab)
-            document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{
-                l.addEventListener('click', function(e){
-                    if (e.target.closest('button')) return; // let ↓ handle downloads
-                    e.stopPropagation();
-                    openInDrive(this.getAttribute('data-drive-url'));
                 });
             });
         }
