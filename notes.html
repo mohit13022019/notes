@@ -364,26 +364,68 @@
             text-transform: uppercase; letter-spacing: 1.5px;
         }
         .file-link {
-            display: flex; align-items: center; gap: 0.4rem;
-            padding: 0.45rem 0.65rem; margin: 0.15rem 0;
+            display: flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 0.7rem; margin: 0.2rem 0;
             background: var(--surface-alt);
             font-family: var(--font-body);
-            font-size: 0.8rem; color: var(--text);
+            font-size: 0.82rem; color: var(--text);
             text-decoration: none; cursor: pointer;
             transition: var(--transition); font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; overflow: hidden;
             border-left: 2px solid transparent;
         }
-        .file-link:hover { background: var(--accent-pale); color: var(--rb-red); border-left-color: var(--rb-red); transform: translateX(3px); }
+        .file-link:hover {
+            background: var(--accent-pale);
+            color: var(--rb-red);
+            border-left-color: var(--rb-red);
+            transform: translateX(3px);
+        }
         .file-icon { font-size: 0.9rem; flex-shrink: 0; }
+        .file-label {
+            flex: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            min-width: 0;
+        }
+
+        /* ── NEW: "Open ↗" hint ── */
+        .file-view-hint {
+            font-family: var(--font-mono);
+            font-size: 0.6rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            padding: 0.15rem 0.5rem;
+            border: 1px solid var(--border);
+            transition: var(--transition);
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .file-link:hover .file-view-hint {
+            color: #fff;
+            background: var(--rb-red);
+            border-color: var(--rb-red);
+        }
+
+        /* ── NEW: quiet download button ── */
         .file-download-btn {
-            margin-left: auto;
-            background: var(--rb-red); color: #fff; border: none;
-            width: 22px; height: 22px; cursor: pointer; font-size: 0.6rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+            width: 24px; height: 24px;
+            cursor: pointer; font-size: 0.65rem;
             display: flex; align-items: center; justify-content: center;
             transition: var(--transition); flex-shrink: 0;
+            line-height: 1;
         }
-        .file-download-btn:hover { background: var(--rb-yellow); color: #000; transform: scale(1.15); }
+        .file-download-btn:hover {
+            background: var(--rb-red);
+            color: #fff;
+            border-color: var(--rb-red);
+            transform: scale(1.1);
+        }
+
         .no-files { color: var(--text-muted); font-style: italic; font-size: 0.68rem; }
         .sub-cat-title {
             font-family: var(--font-mono);
@@ -399,7 +441,7 @@
             font-family: var(--font-mono);
             font-size: 0.55rem; font-weight: 700;
             text-transform: uppercase; letter-spacing: 1px;
-            animation: newPulse 2s ease infinite; margin-left: 0.3rem;
+            animation: newPulse 2s ease infinite; flex-shrink: 0;
         }
         @keyframes newPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
 
@@ -522,6 +564,7 @@
             .focus-overlay { padding: 2rem 1rem 5rem; }
             .focus-header { padding: 1.4rem 1.4rem 1rem; }
             .focus-body { padding: 1.2rem 1.4rem 1.6rem; grid-template-columns: 1fr; }
+            .file-view-hint { display: none; }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -772,6 +815,13 @@
         function gn(s,c,cat){return nd[gk(s,c,cat)]||[];}
         function extractFileId(u){const m=u.match(/\/d\/([a-zA-Z0-9_-]+)/)||u.match(/[?&]id=([a-zA-Z0-9_-]+)/);return m?m[1]:null;}
 
+        // ══ NEW: open file in Google Drive (like clicking a file in Drive) ══
+        function openInDrive(driveUrl){
+            const id = extractFileId(driveUrl);
+            if (!id) return showToast('Invalid Drive link');
+            window.open(`https://drive.google.com/file/d/${id}/view`, '_blank', 'noopener');
+        }
+
         // ══ FOCUS MODE ══
         const focusOverlay = document.getElementById('focusOverlay');
         const focusCard    = document.getElementById('focusCard');
@@ -867,6 +917,7 @@
             </div>`;
         }
 
+        // ✅ UPDATED: now includes "Open ↗" hint, quiet download button
         function buildCategoryInner(notes){
             if (!notes.length) return '<span class="no-files">Empty</span>';
             return notes.map(x => {
@@ -874,10 +925,11 @@
                 const dl = getDl(x.driveUrl);
                 const nb = isNew(x.addedAt || 0) ? '<span class="new-badge">New</span>' : '';
                 const safeLabel = (x.label || 'file').replace(/'/g, "\\'");
-                return `<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)">
+                return `<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)" title="Click to open in Google Drive">
                     <span class="file-icon">${icon}</span>
-                    <span style="overflow:hidden;text-overflow:ellipsis;">${x.label || 'File'}</span>
+                    <span class="file-label">${x.label || 'File'}</span>
                     ${nb}
+                    <span class="file-view-hint">Open ↗</span>
                     <button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${safeLabel}')" title="Download">↓</button>
                 </a>`;
             }).join('');
@@ -951,17 +1003,12 @@
                     openFocus(sem, code, true);
                 });
             });
+            // ✅ UPDATED: click → open in Google Drive (new tab)
             document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{
                 l.addEventListener('click', function(e){
-                    if (e.target.closest('button')) return;
+                    if (e.target.closest('button')) return; // let ↓ handle downloads
                     e.stopPropagation();
-                    const p = extractFileId(this.getAttribute('data-drive-url'));
-                    if (p) {
-                        document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${p}/preview`;
-                        document.getElementById('previewIframe').style.display='';
-                        document.getElementById('quickViewInput').style.display='none';
-                        openPreviewModal();
-                    }
+                    openInDrive(this.getAttribute('data-drive-url'));
                 });
             });
         }
@@ -1017,7 +1064,6 @@
             }
         }
 
-        // ✅ FIXED: works for all semesters
         function uas(){
             const semVal = document.getElementById('adminSemester').value;
             const sem = parseInt(semVal, 10);
@@ -1039,7 +1085,6 @@
             uaco();
         }
 
-        // ✅ FIXED: works reliably with the auto-selected first subject
         function uaco(){
             const s = document.getElementById('adminCategory');
             const subSel = document.getElementById('adminSubject');
@@ -1062,7 +1107,6 @@
             rae();
         }
 
-        // Aliases so the HTML onchange handlers work
         window.updateAdminSubjects = uas;
         window.updateAdminCategoryOptions = uaco;
 
