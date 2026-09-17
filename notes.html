@@ -4,233 +4,175 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse — Notes</title>
-    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0d10'/><text x='50' y='72' font-size='58' font-weight='900' text-anchor='middle' fill='%23db0a40' font-family='Arial,sans-serif'>S</text></svg>">
     <script>
         const REPO_OWNER = 'mohit13022019';
         const REPO_NAME = 'notes';
     </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
-
         :root {
-            --bg: #fafaf8;
-            --surface: #ffffff;
-            --surface-alt: #f5f4f1;
-            --surface-elevated: #ffffff;
-            --primary: #1a3728;
-            --primary-light: #2a5540;
-            --accent: #c8944a;
-            --accent-light: #d4a85c;
-            --accent-pale: #fef9f2;
-            --accent-glow: rgba(200, 148, 74, 0.12);
-            --text: #1a1d20;
-            --text-secondary: #5a6070;
-            --text-muted: #949aa8;
-            --border: #e8e5df;
-            --border-light: #f0ede8;
-            --shadow-xs: 0 1px 2px rgba(0,0,0,0.03);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.04);
-            --shadow: 0 4px 16px rgba(0,0,0,0.06);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.10);
-            --shadow-xl: 0 24px 64px rgba(0,0,0,0.14);
-            --radius-xs: 6px;
-            --radius-sm: 10px;
-            --radius: 14px;
-            --radius-lg: 18px;
-            --radius-xl: 24px;
-            --radius-2xl: 32px;
-            --transition-fast: 0.15s ease;
-            --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-            --transition-slow: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        body.dark {
-            --bg: #0a0d10;
-            --surface: #14171b;
-            --surface-alt: #1a1e23;
-            --surface-elevated: #1e2228;
-            --primary: #c8944a;
-            --primary-light: #d4a85c;
-            --accent: #c8944a;
-            --accent-light: #d4a85c;
-            --accent-pale: #1e1810;
-            --text: #e8eaee;
-            --text-secondary: #a8b0bc;
+            --rb-red: #db0a40;
+            --rb-blue: #002b5c;
+            --rb-silver: #c9ced6;
+            --rb-darker: #05070a;
+            --rb-yellow: #ffcc00;
+            --accent: var(--rb-red);
+            --text: #f4f5f7;
+            --text-secondary: #c9ced6;
             --text-muted: #6a7280;
-            --border: #2a2e35;
-            --border-light: #22252b;
-            --shadow-xs: 0 1px 2px rgba(0,0,0,0.2);
-            --shadow-sm: 0 2px 8px rgba(0,0,0,0.3);
-            --shadow: 0 4px 16px rgba(0,0,0,0.4);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.5);
-            --shadow-lg: 0 16px 48px rgba(0,0,0,0.6);
-            --shadow-xl: 0 24px 64px rgba(0,0,0,0.7);
+            --surface: #0f1216;
+            --surface-alt: #151921;
+            --surface-elevated: #12161c;
+            --border: rgba(255,255,255,0.10);
+            --border-light: rgba(255,255,255,0.05);
+            --accent-pale: rgba(219,10,64,0.08);
+            --accent-glow: rgba(219,10,64,0.22);
+            --shadow-xs: 0 1px 2px rgba(0,0,0,0.3);
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.4);
+            --shadow: 0 4px 16px rgba(0,0,0,0.5);
+            --shadow-lg: 0 16px 48px rgba(0,0,0,0.65);
+            --shadow-xl: 0 24px 64px rgba(0,0,0,0.75);
+            --transition: 0.25s cubic-bezier(0.4,0,0.2,1);
+
+            --font-display: 'Anton', 'Arial Narrow', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+
+            /* Focus mode */
+            --focus-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --focus-dim: 0.25;
+            --focus-blur: 6px;
         }
-
-        @media print {
-            .header, .semester-nav, .mobile-nav, .btn, .search-bar, .back-bar, .particle-canvas, .modal-overlay, .toast-container, .card-chevron, .back-to-top, .sparkle-container, .global-search-wrap, .top-nav { display: none !important; }
-            body { background: white !important; color: #000 !important; font-size: 11pt; }
-            .main-container { padding: 0 !important; max-width: 100% !important; }
-            .subjects-grid { grid-template-columns: 1fr 1fr !important; gap: 0.5rem !important; }
-            .subject-card { break-inside: avoid; box-shadow: none !important; border: 1px solid #ccc !important; background: white !important; transform: none !important; page-break-inside: avoid; }
-            .card-expand { max-height: none !important; display: block !important; }
-            @page { margin: 1.5cm; }
+        body.light {
+            --rb-darker: #f4f5f7;
+            --text: #0b0d10; --text-secondary: #3a3f47; --text-muted: #6a7280;
+            --surface: #ffffff; --surface-alt: #f4f5f7; --surface-elevated: #ffffff;
+            --border: rgba(0,0,0,0.10); --border-light: rgba(0,0,0,0.05);
+            --accent-pale: rgba(219,10,64,0.06);
         }
-
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
-        * { scrollbar-width: thin; scrollbar-color: var(--accent) transparent; margin: 0; padding: 0; box-sizing: border-box; }
-
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; }
         body {
-            font-family: 'Inter', system-ui, -apple-system, sans-serif;
-            background: var(--bg);
+            font-family: var(--font-body);
+            background: var(--rb-darker);
             color: var(--text);
-            line-height: 1.6;
-            transition: background 0.4s, color 0.3s;
+            line-height: 1.55;
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
         }
 
-        .particle-canvas { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0.4; }
-
-        .loading-mascot {
-            position: fixed; bottom: 3rem; left: 3rem; z-index: 99;
-            display: flex; align-items: center; justify-content: center;
-            opacity: 0; pointer-events: none; transition: opacity 0.4s;
+        /* ══ NAV ══ */
+        .rb-nav {
+            position: sticky; top: 0; z-index: 101;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 1rem 2rem;
+            background: var(--rb-darker);
+            border-bottom: 1px solid var(--border);
         }
-        .loading-mascot.visible { opacity: 1; }
-        .mascot-ring {
-            width: 40px; height: 40px; border: 3px solid var(--border);
-            border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite;
+        .rb-logo {
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 1.6rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            color: var(--text); text-decoration: none; line-height: 1;
         }
-        @keyframes spin { to { transform: rotate(360deg); } }
-
-        /* ── TOP NAVIGATION BAR ── */
-        .top-nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border-light);
-            padding: 0.6rem 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            position: sticky;
-            top: 0;
-            z-index: 101;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            background: rgba(255,255,255,0.92);
-        }
-        body.dark .top-nav { background: rgba(20,23,27,0.92); }
-        .nav-logo {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--primary);
-            text-decoration: none;
-        }
-        .nav-logo:hover { color: var(--accent); }
-        .nav-links { display: flex; gap: 1.5rem; }
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
+        .rb-logo span { color: var(--rb-red); }
+        .rb-nav-links { display: flex; gap: 0.4rem; }
+        .rb-nav-links a {
+            font-family: var(--font-mono);
+            color: var(--text-secondary); text-decoration: none;
+            font-weight: 500; font-size: 0.78rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            padding: 0.55rem 1.1rem; position: relative;
             transition: var(--transition);
         }
-        .nav-links a:hover { color: var(--text); }
-        .nav-links a.active { color: var(--accent); }
+        .rb-nav-links a::after {
+            content: ""; position: absolute; left: 1.1rem; right: 1.1rem; bottom: 0.25rem;
+            height: 2px; background: var(--rb-red);
+            transform: scaleX(0); transform-origin: left;
+            transition: transform 0.3s;
+        }
+        .rb-nav-links a:hover { color: var(--text); }
+        .rb-nav-links a:hover::after,
+        .rb-nav-links a.active::after { transform: scaleX(1); }
+        .rb-nav-links a.active { color: var(--text); }
 
-        .header {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border-light);
-            padding: 0 2rem;
-            position: sticky;
-            top: 52px;
-            z-index: 100;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            background: rgba(255,255,255,0.92);
-        }
-        body.dark .header { background: rgba(20,23,27,0.92); }
-        .header-inner {
-            max-width: 1440px; margin: 0 auto;
-            display: flex; align-items: center; justify-content: space-between;
-            height: 64px; gap: 1.5rem;
-        }
+        /* ══ HEADER ══ */
+        .header { background: var(--rb-darker); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+        .header-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; justify-content: flex-end; height: 56px; gap: 1rem; }
         .header-actions { display: flex; align-items: center; gap: 0.5rem; margin-left: auto; }
 
+        /* ══ BUTTONS ══ */
         .btn {
-            padding: 0.55rem 1.2rem; border-radius: 50px; font-weight: 600;
-            font-size: 0.8rem; cursor: pointer; border: none; transition: var(--transition);
-            font-family: 'Inter', sans-serif; white-space: nowrap;
-            display: inline-flex; align-items: center; gap: 0.35rem; letter-spacing: -0.1px;
+            font-family: var(--font-display);
+            padding: 0.55rem 1.2rem;
+            font-weight: 400; font-size: 0.82rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            cursor: pointer; border: none;
+            transition: var(--transition);
+            display: inline-flex; align-items: center; gap: 0.35rem;
+            clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 8px 100%, 0 calc(100% - 8px));
+            line-height: 1;
         }
         .btn:active { transform: scale(0.96); }
         .btn-ghost { background: transparent; color: var(--text-secondary); border: 1.5px solid var(--border); }
         .btn-ghost:hover { background: var(--surface-alt); color: var(--text); border-color: var(--text-muted); }
-        .btn-primary { background: var(--primary); color: #fff; box-shadow: var(--shadow-sm); }
-        .btn-primary:hover { background: var(--primary-light); transform: translateY(-1px); box-shadow: var(--shadow); }
-        .btn-accent { background: var(--accent); color: #fff; font-weight: 700; box-shadow: 0 2px 12px rgba(200,148,74,0.3); }
-        .btn-accent:hover { background: var(--accent-light); transform: translateY(-2px); box-shadow: 0 6px 24px rgba(200,148,74,0.4); }
+        .btn-accent { background: var(--rb-red); color: #fff; box-shadow: 0 2px 12px rgba(219,10,64,0.4); }
+        .btn-accent:hover { background: #ff1150; transform: translateY(-2px); }
         .btn-icon {
-            width: 38px; height: 38px; border-radius: 50%; background: transparent;
+            width: 40px; height: 40px; background: transparent;
             border: 1.5px solid var(--border); color: var(--text-secondary); cursor: pointer; font-size: 1rem;
             display: flex; align-items: center; justify-content: center; transition: var(--transition);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
         }
-        .btn-icon:hover { background: var(--surface-alt); border-color: var(--text-muted); color: var(--text); }
+        .btn-icon:hover { background: var(--surface-alt); border-color: var(--rb-red); color: var(--rb-red); }
 
+        /* ══ SEARCH / SEM TABS ══ */
         .global-search-wrap {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border-light);
-            padding: 0.7rem 1.5rem;
-            position: sticky; top: 116px; z-index: 89;
+            background: var(--rb-darker); border-bottom: 1px solid var(--border);
+            padding: 0.8rem 1.5rem;
             display: flex; align-items: center; justify-content: center;
         }
-        .global-search-inner { position: relative; width: 100%; max-width: 560px; }
+        .global-search-inner { position: relative; width: 100%; max-width: 600px; }
         .global-search-inner input {
-            width: 100%; padding: 0.65rem 1.2rem 0.65rem 2.5rem;
-            border: 2px solid var(--border); border-radius: 50px;
+            width: 100%; padding: 0.7rem 1.2rem 0.7rem 2.6rem;
+            font-family: var(--font-body);
+            border: 1.5px solid var(--border); border-radius: 2px;
             background: var(--surface-alt); color: var(--text);
-            font-size: 0.85rem; outline: none; transition: var(--transition); font-family: 'Inter', sans-serif;
+            font-size: 0.88rem; outline: none; transition: var(--transition);
         }
-        .global-search-inner input:focus {
-            border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 4px var(--accent-glow);
-        }
-        .global-search-inner .search-icon {
-            position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
-            color: var(--text-muted); font-size: 0.9rem; pointer-events: none;
-        }
-        .global-search-inner .clear-btn {
-            position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%);
-            background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem;
-        }
+        .global-search-inner input:focus { border-color: var(--rb-red); background: var(--surface); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .global-search-inner .search-icon { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.9rem; pointer-events: none; }
+        .global-search-inner .clear-btn { position: absolute; right: 0.8rem; top: 50%; transform: translateY(-50%); background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1rem; }
         .clear-btn:hover { color: var(--text); }
 
         .semester-nav {
-            background: var(--surface);
-            border-bottom: 1px solid var(--border-light);
-            position: sticky; top: 176px; z-index: 88;
-            padding: 0.5rem 1.5rem; display: flex; gap: 0.3rem;
+            background: var(--rb-darker); border-bottom: 1px solid var(--border);
+            padding: 0.6rem 1.5rem;
+            display: flex; gap: 0.4rem;
             overflow-x: auto; scrollbar-width: none;
         }
         .semester-nav::-webkit-scrollbar { display: none; }
         .sem-tab {
-            padding: 0.5rem 1.1rem; border-radius: 50px; border: none;
-            background: transparent; color: var(--text-secondary); font-weight: 600;
-            font-size: 0.78rem; cursor: pointer; white-space: nowrap; transition: var(--transition);
+            font-family: var(--font-mono);
+            padding: 0.5rem 1.1rem; border: 1.5px solid var(--border);
+            background: transparent; color: var(--text-secondary);
+            font-weight: 600; font-size: 0.75rem;
+            cursor: pointer; white-space: nowrap; transition: var(--transition);
+            letter-spacing: 1.5px; text-transform: uppercase;
+            clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 6px, 100% 100%, 6px 100%, 0 calc(100% - 6px));
         }
-        .sem-tab:hover { background: var(--surface-alt); color: var(--text); }
-        .sem-tab.active { background: var(--primary); color: #fff; box-shadow: var(--shadow); }
-        .sem-tab .badge {
-            display: inline-block; background: rgba(255,255,255,0.2);
-            padding: 0.1rem 0.4rem; border-radius: 12px; margin-left: 0.3rem; font-size: 0.62rem;
-        }
+        .sem-tab:hover { background: var(--surface-alt); color: var(--text); border-color: var(--rb-red); }
+        .sem-tab.active { background: var(--rb-red); color: #fff; border-color: var(--rb-red); }
+        .sem-tab .badge { display: inline-block; background: rgba(255,255,255,0.2); padding: 0.1rem 0.4rem; margin-left: 0.3rem; font-size: 0.62rem; }
 
-        .main-container { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 4rem; position: relative; z-index: 1; }
+        /* ══ MAIN ══ */
+        .main-container { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 4rem; }
 
         .semester-panel { animation: fadeSlideIn 0.4s ease forwards; }
         @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
@@ -239,209 +181,415 @@
 
         .semester-header { margin-bottom: 2rem; text-align: center; }
         .semester-title {
-            font-family: 'Playfair Display', serif; font-size: 2.8rem; font-weight: 700;
-            color: var(--primary); margin-bottom: 0.4rem; letter-spacing: -0.6px;
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 2.8rem;
+            color: var(--text); margin-bottom: 0.4rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            line-height: 1;
         }
-        .semester-subtitle { color: var(--text-muted); font-size: 0.9rem; }
+        .semester-title::before, .semester-title::after {
+            content: ""; display: inline-block; width: 40px; height: 3px;
+            background: var(--rb-red); vertical-align: middle;
+            margin: 0 1rem; transform: skewX(-18deg);
+        }
+        .semester-subtitle { font-family: var(--font-mono); color: var(--text-muted); font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase; }
         .back-bar { margin-bottom: 1.5rem; display: none; justify-content: center; }
         .back-bar.visible { display: flex; }
         .search-bar { max-width: 420px; margin: 0 auto 1.8rem; }
         .search-bar input {
-            width: 100%; padding: 0.7rem 1.2rem; border: 2px solid var(--border); border-radius: 50px;
-            font-size: 0.85rem; background: var(--surface); color: var(--text); outline: none;
-            transition: var(--transition); font-family: 'Inter', sans-serif;
+            width: 100%; padding: 0.7rem 1.2rem;
+            font-family: var(--font-body);
+            border: 1.5px solid var(--border); border-radius: 2px;
+            font-size: 0.9rem; background: var(--surface);
+            color: var(--text); outline: none;
+            transition: var(--transition);
         }
-        .search-bar input:focus { border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-glow); }
+        .search-bar input:focus { border-color: var(--rb-red); box-shadow: 0 0 0 4px var(--accent-glow); }
 
-        .subjects-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 1rem; }
+        /* ══ SUBJECT GRID ══ */
+        .subjects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 1rem;
+            transition: filter 0.4s ease, opacity 0.4s ease;
+        }
+        body.focus-mode .subjects-grid { filter: blur(var(--focus-blur)); opacity: var(--focus-dim); pointer-events: none; }
+        body.focus-mode .rb-nav,
+        body.focus-mode .header,
+        body.focus-mode .global-search-wrap,
+        body.focus-mode .semester-nav { filter: blur(var(--focus-blur)); opacity: var(--focus-dim); pointer-events: none; }
+
         .elective-group-label {
-            grid-column: 1/-1; font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600;
-            color: var(--accent); margin: 2rem 0 0.5rem; padding-bottom: 0.4rem;
-            border-bottom: 2px solid var(--accent-pale); text-align: center;
+            grid-column: 1/-1;
+            font-family: var(--font-mono);
+            font-weight: 600; font-size: 0.85rem;
+            color: var(--rb-red); margin: 2rem 0 0.5rem; padding-bottom: 0.4rem;
+            border-bottom: 2px solid var(--rb-red);
+            text-align: center; letter-spacing: 3px; text-transform: uppercase;
         }
 
         .subject-card {
-            background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border-light);
-            overflow: hidden; cursor: pointer; transition: var(--transition); box-shadow: var(--shadow-xs);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--rb-red);
+            overflow: hidden; cursor: pointer;
+            transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+            clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+            will-change: transform, box-shadow;
         }
-        .subject-card:hover { border-color: var(--border); box-shadow: var(--shadow-lg); transform: translateY(-2px); }
+        .subject-card:hover { border-left-color: var(--rb-yellow); box-shadow: var(--shadow-lg); transform: translateY(-3px); }
         .subject-card.hidden-card { display: none; }
-        .subject-card.selected-card {
-            grid-column: 1/-1; max-width: 100%; border-color: var(--accent); border-width: 1.5px;
-            box-shadow: var(--shadow-xl); cursor: default; transform: none !important;
+
+        /* ── FOCUS MODE OVERLAY ── */
+        .focus-overlay {
+            position: fixed; inset: 0; z-index: 300;
+            background: rgba(5,7,10,0.55);
+            backdrop-filter: blur(2px);
+            -webkit-backdrop-filter: blur(2px);
+            opacity: 0; pointer-events: none;
+            transition: opacity 0.35s ease;
+            display: flex; align-items: flex-start; justify-content: center;
+            padding: 4rem 2rem 4rem;
+            overflow-y: auto;
+            overscroll-behavior: contain;
+        }
+        .focus-overlay.open { opacity: 1; pointer-events: auto; }
+        body.light .focus-overlay { background: rgba(244,245,247,0.6); }
+
+        .focus-card {
+            width: 100%; max-width: 1100px;
             background: var(--surface-elevated);
+            border: 1.5px solid var(--rb-red);
+            border-left: 6px solid var(--rb-red);
+            box-shadow: var(--shadow-xl);
+            clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
+            transform: scale(0.85) translateY(40px);
+            opacity: 0;
+            transition: transform 0.55s var(--focus-spring), opacity 0.35s ease;
+            position: relative;
+            overflow: hidden;
         }
-        .card-header { padding: 1.2rem 1.4rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
-        .card-header-left { flex: 1; min-width: 0; }
-        .card-title { font-weight: 650; font-size: 0.92rem; color: var(--text); line-height: 1.4; }
-        .card-code {
-            font-family: 'JetBrains Mono', 'Consolas', monospace; font-size: 0.68rem;
-            color: var(--text-muted); margin-top: 0.2rem; font-weight: 500;
+        .focus-overlay.open .focus-card {
+            transform: scale(1) translateY(0);
+            opacity: 1;
         }
-        .card-chevron { color: var(--text-muted); transition: var(--transition); font-size: 0.6rem; flex-shrink: 0; }
-        .selected-card .card-chevron { transform: rotate(180deg); color: var(--accent); }
+        .focus-card.closing {
+            transform: scale(0.85) translateY(40px);
+            opacity: 0;
+            transition: transform 0.35s ease, opacity 0.25s ease;
+        }
+        /* Scan line that sweeps across the top of the card */
+        .focus-scan {
+            position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, transparent 0%, var(--rb-red) 20%, var(--rb-yellow) 50%, var(--rb-red) 80%, transparent 100%);
+            transform-origin: left;
+            transform: scaleX(0);
+            opacity: 0;
+        }
+        .focus-overlay.open .focus-scan {
+            animation: scanSweep 0.9s cubic-bezier(0.4, 0, 0.2, 1) 0.1s forwards;
+        }
+        @keyframes scanSweep {
+            0%   { transform: scaleX(0); opacity: 1; }
+            70%  { transform: scaleX(1); opacity: 1; }
+            100% { transform: scaleX(1); opacity: 0; }
+        }
 
-        .card-expand {
-            max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1);
+        .focus-header {
+            padding: 2rem 2.2rem 1.4rem;
+            border-bottom: 1px solid var(--border-light);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1.5rem;
+            position: relative;
+        }
+        .focus-header-left { flex: 1; min-width: 0; }
+        .focus-subject-title {
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: clamp(1.4rem, 3vw, 2.2rem);
+            line-height: 1.05;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text);
+            margin-bottom: 0.6rem;
+        }
+        .focus-subject-code {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 500;
+            display: inline-block;
+            padding: 0.25rem 0.6rem;
             background: var(--surface-alt);
+            border: 1px solid var(--border);
         }
-        .selected-card .card-expand { max-height: 2200px; border-top: 1px solid var(--border-light); }
-        .card-expand-inner {
-            padding: 1.2rem 1.4rem; display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 0.7rem;
+        .focus-close {
+            width: 40px; height: 40px;
+            background: transparent;
+            border: 1.5px solid var(--border);
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
+        }
+        .focus-close:hover { border-color: var(--rb-red); color: var(--rb-red); transform: rotate(90deg); }
+
+        .focus-body {
+            padding: 1.6rem 2.2rem 2.2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1rem;
         }
 
+        /* Cascade reveal — each direct child fades in from the left */
+        .focus-body > * {
+            opacity: 0;
+            transform: translateX(-12px);
+            animation: cascadeIn 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+        @keyframes cascadeIn {
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* ══ NOTE CATEGORIES (inside focus) ══ */
         .grouped-section {
-            background: var(--surface); border-radius: var(--radius-sm);
-            border: 1px solid var(--border-light); overflow: hidden; transition: var(--transition);
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+            border-left: 3px solid var(--rb-blue);
+            overflow: hidden;
+            transition: var(--transition);
         }
         .grouped-section-header {
-            padding: 0.6rem 0.8rem; cursor: pointer; display: flex; align-items: center; justify-content: space-between;
-            font-weight: 700; font-size: 0.68rem; color: var(--primary); text-transform: uppercase;
-            letter-spacing: 0.5px; user-select: none; transition: var(--transition);
+            padding: 0.7rem 0.9rem;
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: space-between;
+            font-family: var(--font-mono);
+            font-weight: 600; font-size: 0.72rem;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            user-select: none;
+            transition: var(--transition);
         }
         .grouped-section-header:hover { background: var(--accent-pale); }
-        .grouped-section-chevron { font-size: 0.55rem; transition: var(--transition); }
+        .grouped-section-chevron { font-size: 0.6rem; transition: var(--transition); }
         .grouped-section.open .grouped-section-chevron { transform: rotate(180deg); }
-        .grouped-section-body { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; }
-        .grouped-section.open .grouped-section-body { max-height: 500px; }
-        .grouped-section-body-inner { padding: 0 0.8rem 0.6rem; }
+        .grouped-section-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+        .grouped-section.open .grouped-section-body { max-height: 600px; }
+        .grouped-section-body-inner { padding: 0 0.9rem 0.7rem; }
 
         .note-category {
-            background: var(--surface); border-radius: var(--radius-sm);
-            padding: 0.6rem; border: 1px solid var(--border-light); transition: var(--transition);
+            background: var(--surface);
+            padding: 0.7rem;
+            border: 1px solid var(--border-light);
+            transition: var(--transition);
         }
         .note-category:hover { border-color: var(--border); }
         .note-cat-title {
-            font-weight: 700; font-size: 0.65rem; color: var(--primary); margin-bottom: 0.35rem;
-            text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8;
+            font-family: var(--font-mono);
+            font-weight: 600; font-size: 0.62rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
         }
         .file-link {
-            display: flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.55rem; margin: 0.12rem 0;
-            background: var(--surface-alt); border-radius: 8px; font-size: 0.7rem; color: var(--text);
-            text-decoration: none; cursor: pointer; transition: var(--transition); font-weight: 500;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; border: 1px solid transparent;
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.45rem 0.65rem;
+            margin: 0.15rem 0;
+            background: var(--surface-alt);
+            font-family: var(--font-body);
+            font-size: 0.8rem;
+            color: var(--text);
+            text-decoration: none;
+            cursor: pointer;
+            transition: var(--transition);
+            font-weight: 500;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            border-left: 2px solid transparent;
         }
-        .file-link:hover {
-            background: var(--accent-pale); color: var(--primary); border-color: var(--accent); transform: translateX(2px);
-        }
-        .file-icon { font-size: 0.85rem; flex-shrink: 0; }
+        .file-link:hover { background: var(--accent-pale); color: var(--rb-red); border-left-color: var(--rb-red); transform: translateX(3px); }
+        .file-icon { font-size: 0.9rem; flex-shrink: 0; }
         .file-download-btn {
-            margin-left: auto; background: var(--accent); color: #fff; border: none; border-radius: 50%;
-            width: 22px; height: 22px; cursor: pointer; font-size: 0.55rem;
-            display: flex; align-items: center; justify-content: center; transition: var(--transition); flex-shrink: 0;
+            margin-left: auto;
+            background: var(--rb-red); color: #fff;
+            border: none;
+            width: 22px; height: 22px;
+            cursor: pointer; font-size: 0.6rem;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition);
+            flex-shrink: 0;
         }
-        .file-download-btn:hover { background: var(--accent-light); transform: scale(1.15); }
-        .no-files { color: var(--text-muted); font-style: italic; font-size: 0.6rem; }
+        .file-download-btn:hover { background: var(--rb-yellow); color: #000; transform: scale(1.15); }
+        .no-files { color: var(--text-muted); font-style: italic; font-size: 0.68rem; }
         .sub-cat-title {
-            font-weight: 600; font-size: 0.6rem; color: var(--text-secondary); margin-bottom: 0.15rem;
-            text-transform: uppercase; letter-spacing: 0.4px;
+            font-family: var(--font-mono);
+            font-weight: 600; font-size: 0.6rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
         .new-badge {
-            display: inline-block; background: var(--accent); color: #fff; padding: 0.08rem 0.35rem;
-            border-radius: 6px; font-size: 0.52rem; font-weight: 700; text-transform: uppercase;
-            letter-spacing: 0.3px; animation: newPulse 2s ease infinite; margin-left: 0.3rem;
+            display: inline-block;
+            background: var(--rb-yellow); color: #000;
+            padding: 0.1rem 0.4rem;
+            font-family: var(--font-mono);
+            font-size: 0.55rem; font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            animation: newPulse 2s ease infinite;
+            margin-left: 0.3rem;
         }
-        @keyframes newPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+        @keyframes newPulse { 0%,100% { opacity: 1; } 50% { opacity: 0.6; } }
 
+        /* ══ BACK TO TOP ══ */
         .back-to-top {
-            position: fixed; bottom: 2.5rem; right: 2.5rem; width: 42px; height: 42px; border-radius: 50%;
-            background: var(--surface); border: 2px solid var(--border); color: var(--text-secondary);
-            cursor: pointer; font-size: 1rem; z-index: 99; box-shadow: var(--shadow); transition: var(--transition);
+            position: fixed; bottom: 2.5rem; right: 2.5rem; width: 44px; height: 44px;
+            background: var(--surface); border: 1.5px solid var(--border);
+            color: var(--text-secondary); cursor: pointer; font-size: 1rem;
+            z-index: 99; transition: var(--transition);
             opacity: 0; pointer-events: none; transform: translateY(10px);
             display: flex; align-items: center; justify-content: center;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 8px), calc(100% - 8px) 100%, 0 100%);
         }
         .back-to-top.visible { opacity: 1; pointer-events: auto; transform: translateY(0); }
-        .back-to-top:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-3px); box-shadow: var(--shadow-lg); }
+        .back-to-top:hover { border-color: var(--rb-red); color: var(--rb-red); transform: translateY(-3px); }
 
-        .modal-overlay {
-            position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 200;
-            padding: 1.5rem; background: rgba(0,0,0,0); backdrop-filter: blur(0px);
-            transition: background 0.35s, backdrop-filter 0.35s;
-        }
-        .modal-overlay.open { display: flex; background: rgba(0,0,0,0.55); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        /* ══ MODALS ══ */
+        .modal-overlay { position: fixed; inset: 0; display: none; align-items: center; justify-content: center; z-index: 400; padding: 1.5rem; background: rgba(0,0,0,0.75); }
+        .modal-overlay.open { display: flex; }
         .modal {
-            background: var(--surface); padding: 2rem; border-radius: var(--radius-xl);
-            width: 100%; max-width: 500px; max-height: 80vh; overflow-y: auto;
-            box-shadow: var(--shadow-xl); border: 1px solid var(--border-light); animation: modalIn 0.3s ease;
+            background: var(--surface); padding: 2rem;
+            border-radius: 4px; width: 100%; max-width: 500px; max-height: 80vh; overflow-y: auto;
+            border: 1px solid var(--border);
+            border-top: 4px solid var(--rb-red);
+            animation: modalIn 0.3s ease;
         }
         @keyframes modalIn { from { transform: scale(0.94); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-        .modal h3 { font-family: 'Playfair Display', serif; color: var(--primary); margin-bottom: 1.2rem; text-align: center; }
+        .modal h3 {
+            font-family: var(--font-display);
+            font-weight: 400; color: var(--text);
+            margin-bottom: 1.2rem; text-align: center;
+            letter-spacing: 2px; text-transform: uppercase;
+        }
         .modal input, .modal select, .modal textarea {
             width: 100%; padding: 0.6rem 0.8rem; margin: 0.25rem 0 0.6rem;
-            border: 2px solid var(--border); border-radius: var(--radius-sm);
-            background: var(--surface-alt); color: var(--text); font-size: 0.82rem;
-            font-family: 'Inter', sans-serif; transition: var(--transition);
+            font-family: var(--font-body);
+            border: 1.5px solid var(--border); border-radius: 2px;
+            background: var(--surface-alt); color: var(--text);
+            font-size: 0.85rem; transition: var(--transition);
         }
-        .modal input:focus, .modal select:focus, .modal textarea:focus {
-            border-color: var(--accent); outline: none; box-shadow: 0 0 0 3px var(--accent-glow);
-        }
+        .modal input:focus, .modal select:focus, .modal textarea:focus { border-color: var(--rb-red); outline: none; box-shadow: 0 0 0 3px var(--accent-glow); }
         .modal textarea { resize: vertical; min-height: 80px; }
-        .modal-close {
-            float: right; background: none; border: none; font-size: 1.2rem; cursor: pointer;
-            color: var(--text-muted); transition: var(--transition);
-        }
+        .modal-close { float: right; background: none; border: none; font-size: 1.3rem; cursor: pointer; color: var(--text-muted); transition: var(--transition); }
         .modal-close:hover { color: var(--text); }
 
-        .mobile-nav {
-            display: none; position: fixed; bottom: 0; left: 0; right: 0;
-            background: var(--surface); border-top: 1px solid var(--border-light);
-            z-index: 95; padding: 0.5rem 1rem;
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-        }
+        /* ══ MOBILE NAV ══ */
+        .mobile-nav { display: none; position: fixed; bottom: 0; left: 0; right: 0; background: var(--rb-darker); border-top: 1px solid var(--border); z-index: 95; padding: 0.5rem 1rem; }
         .mobile-nav-inner { display: flex; justify-content: space-around; align-items: center; }
         .mobile-nav-btn {
-            background: transparent; border: none; color: var(--text-secondary); font-size: 0.6rem;
-            font-weight: 600; cursor: pointer; padding: 0.35rem 0.5rem; border-radius: 30px;
-            transition: var(--transition); font-family: 'Inter', sans-serif;
+            font-family: var(--font-mono);
+            background: transparent; border: none; color: var(--text-secondary);
+            font-size: 0.62rem; font-weight: 600;
+            cursor: pointer; padding: 0.35rem 0.5rem;
+            transition: var(--transition);
             display: flex; flex-direction: column; align-items: center; gap: 0.15rem;
+            letter-spacing: 1px; text-transform: uppercase;
         }
-        .mobile-nav-btn.active { color: var(--accent); }
+        .mobile-nav-btn.active { color: var(--rb-red); }
         .mobile-nav-btn .nav-icon { font-size: 1rem; }
 
-        .toast-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 300; display: flex; flex-direction: column; gap: 0.4rem; }
+        /* ══ TOASTS ══ */
+        .toast-container { position: fixed; bottom: 5rem; right: 1.5rem; z-index: 500; display: flex; flex-direction: column; gap: 0.4rem; }
         .toast {
-            background: var(--primary); color: #fff; padding: 0.6rem 1.1rem; border-radius: 50px;
-            font-size: 0.75rem; font-weight: 600; box-shadow: var(--shadow-lg); animation: toastIn 0.3s ease;
+            background: var(--rb-red); color: #fff;
+            padding: 0.6rem 1.1rem;
+            font-family: var(--font-mono);
+            font-size: 0.72rem; font-weight: 600;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            animation: toastIn 0.3s ease;
         }
         @keyframes toastIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
         .kc-toast {
-            position: fixed; bottom: 50%; left: 50%; transform: translate(-50%,50%); background: var(--primary);
-            color: #fff; padding: 1.2rem 2rem; border-radius: 16px; font-size: 1.3rem; font-weight: 700;
-            z-index: 400; pointer-events: none; opacity: 0; transition: opacity 0.15s; box-shadow: var(--shadow-xl);
-            font-family: 'Playfair Display', serif;
+            position: fixed; bottom: 50%; left: 50%; transform: translate(-50%,50%);
+            background: var(--rb-red); color: #fff;
+            padding: 1.2rem 2rem;
+            font-family: var(--font-display);
+            font-size: 1.4rem; font-weight: 400;
+            z-index: 600; pointer-events: none; opacity: 0;
+            transition: opacity 0.15s;
+            letter-spacing: 3px; text-transform: uppercase;
         }
         .kc-toast.show { opacity: 1; }
 
+        /* ══ MOUSE EDGE NAV ══ */
+        .rb-edge-nav { position: fixed; top: 50%; z-index: 150; width: 64px; height: 200px; display: flex; align-items: center; justify-content: center; cursor: pointer; opacity: 0; transition: opacity 0.3s, transform 0.3s; }
+        .rb-edge-nav.left  { left: 0;  transform: translate(-30px, -50%); }
+        .rb-edge-nav.right { right: 0; transform: translate(30px, -50%); }
+        .rb-edge-nav.visible.left  { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav.visible.right { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav .edge-pill {
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            background: rgba(5,7,10,0.9); border: 1.5px solid var(--rb-red);
+            padding: 1rem 0.7rem; color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 400; font-size: 0.8rem;
+            letter-spacing: 2px; text-transform: uppercase;
+            writing-mode: vertical-rl;
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+            transition: var(--transition); line-height: 1;
+        }
+        .rb-edge-nav.right .edge-pill { transform: rotate(180deg); }
+        .rb-edge-nav:hover .edge-pill { background: var(--rb-red); color: #fff; }
+        .rb-edge-nav .edge-ring { position: absolute; inset: 0; pointer-events: none; }
+        .rb-edge-nav .edge-ring circle {
+            fill: none; stroke: var(--rb-red); stroke-width: 3;
+            stroke-dasharray: 126; stroke-dashoffset: 126;
+            transition: stroke-dashoffset 0.15s linear;
+            transform: rotate(-90deg); transform-origin: center;
+        }
+
         @media (max-width: 768px) {
-            .header { padding: 0 1rem; } .header-inner { height: 56px; }
-            .btn { padding: 0.4rem 0.8rem; font-size: 0.7rem; } .main-container { padding: 1.5rem 1rem 5rem; }
-            .semester-title { font-size: 2rem; } .subjects-grid { grid-template-columns: 1fr; }
-            .semester-nav { padding: 0.4rem 0.8rem; top: 168px; } .sem-tab { padding: 0.4rem 0.7rem; font-size: 0.68rem; }
-            .card-header { padding: 1rem 1.2rem; } .card-title { font-size: 0.85rem; }
-            .card-expand-inner { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+            .header { padding: 0 1rem; }
+            .rb-nav { padding: 0.8rem 1rem; }
+            .main-container { padding: 1.5rem 1rem 5rem; }
+            .semester-title { font-size: 1.8rem; letter-spacing: 1px; }
+            .semester-title::before, .semester-title::after { width: 20px; margin: 0 0.5rem; }
+            .subjects-grid { grid-template-columns: 1fr; }
+            .sem-tab { padding: 0.4rem 0.7rem; font-size: 0.68rem; }
             .mobile-nav { display: block; }
-            .nav-links { gap: 0.8rem; }
-            .nav-links a { font-size: 0.7rem; }
+            .focus-overlay { padding: 2rem 1rem 5rem; }
+            .focus-header { padding: 1.4rem 1.4rem 1rem; }
+            .focus-body { padding: 1.2rem 1.4rem 1.6rem; grid-template-columns: 1fr; }
+        }
+
+        /* Reduced motion */
+        @media (prefers-reduced-motion: reduce) {
+            .focus-card, .focus-body > *, .focus-scan, .subjects-grid, .rb-nav, .header,
+            .global-search-wrap, .semester-nav { transition: none !important; animation: none !important; }
         }
     </style>
 </head>
-<body class="light">
-    <!-- ── TOP NAVIGATION BAR ── -->
-    <nav class="top-nav">
-        <a href="index.html" class="nav-logo">Synapse</a>
-        <div class="nav-links">
+<body>
+    <nav class="rb-nav">
+        <a href="index.html" class="rb-logo">Syn<span>apse</span></a>
+        <div class="rb-nav-links">
             <a href="index.html">Home</a>
             <a href="notes.html" class="active">Notes</a>
             <a href="events.html">Events</a>
             <a href="magazine.html">Magazine</a>
         </div>
     </nav>
-
-    <canvas class="particle-canvas" id="particleCanvas"></canvas>
-    <div class="kc-toast" id="kcToast"></div>
-    <div class="loading-mascot" id="loadingMascot"><div class="mascot-ring"></div></div>
-    <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
     <header class="header">
         <div class="header-inner">
@@ -462,129 +610,452 @@
     </div>
 
     <nav class="semester-nav" id="semesterNav"></nav>
-    <div class="main-container" id="mainContainer">
-        <div class="subjects-grid" id="loadingSkeleton">
-            <div style="height:80px;border-radius:18px;background:var(--surface-alt);animation:shimmer 1.5s infinite;"></div>
-            <div style="height:80px;border-radius:18px;background:var(--surface-alt);animation:shimmer 1.5s infinite;"></div>
-            <div style="height:80px;border-radius:18px;background:var(--surface-alt);animation:shimmer 1.5s infinite;"></div>
-            <div style="height:80px;border-radius:18px;background:var(--surface-alt);animation:shimmer 1.5s infinite;"></div>
+
+    <main>
+        <div class="main-container" id="mainContainer">
+            <div class="subjects-grid" id="loadingSkeleton">
+                <div style="height:80px;background:var(--surface-alt);"></div>
+                <div style="height:80px;background:var(--surface-alt);"></div>
+                <div style="height:80px;background:var(--surface-alt);"></div>
+                <div style="height:80px;background:var(--surface-alt);"></div>
+            </div>
         </div>
-    </div>
+    </main>
+
+    <button class="back-to-top" id="backToTop" title="Back to top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
     <nav class="mobile-nav" id="mobileNav"><div class="mobile-nav-inner" id="mobileNavInner"></div></nav>
 
-    <!-- Admin Modal -->
+    <!-- ══ FOCUS MODE OVERLAY ══ -->
+    <div class="focus-overlay" id="focusOverlay" aria-modal="true" role="dialog">
+        <div class="focus-card" id="focusCard">
+            <div class="focus-scan" id="focusScan"></div>
+            <div class="focus-header">
+                <div class="focus-header-left">
+                    <div class="focus-subject-title" id="focusSubjectTitle"></div>
+                    <span class="focus-subject-code" id="focusSubjectCode"></span>
+                </div>
+                <button class="focus-close" id="focusCloseBtn" aria-label="Close">✕</button>
+            </div>
+            <div class="focus-body" id="focusBody"></div>
+        </div>
+    </div>
+
+    <!-- ══ ADMIN MODAL ══ -->
     <div class="modal-overlay" id="adminModalOverlay">
         <div class="modal">
             <button class="modal-close" onclick="closeAdminModal()">✕</button>
             <h3>Admin Panel</h3>
             <div id="adminAuth">
-                <label>Password</label><input type="password" id="adminPassword" placeholder="btadmin2024">
-                <label>GitHub Token</label><input type="password" id="githubToken" placeholder="ghp_...">
+                <label style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);">Password</label>
+                <input type="password" id="adminPassword" placeholder="btadmin2024">
+                <label style="font-family:var(--font-mono);font-size:0.7rem;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);">GitHub Token</label>
+                <input type="password" id="githubToken" placeholder="ghp_...">
                 <button class="btn btn-accent" onclick="adminLogin()" style="width:100%;margin-top:0.5rem;">Login</button>
             </div>
             <div id="adminPanel" style="display:none;">
-                <p style="color:#2e7d32;font-weight:600;">Authenticated</p>
+                <p style="font-family:var(--font-mono);color:#22c55e;font-weight:600;font-size:0.75rem;letter-spacing:1.5px;">AUTHENTICATED</p>
                 <select id="adminSemester" onchange="updateAdminSubjects()"></select>
                 <select id="adminSubject" onchange="updateAdminCategoryOptions()"></select>
                 <select id="adminCategory"></select>
-                <label style="font-weight:600;font-size:0.75rem;">Single File</label>
+                <label style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;">Single File</label>
                 <input type="text" id="adminFileLabel" placeholder="File label">
                 <input type="text" id="adminDriveLink" placeholder="Google Drive shareable link">
                 <button class="btn btn-accent" onclick="adminAddSingle()" style="width:100%;">Add File</button>
                 <hr style="margin:1rem 0;border-color:var(--border);">
-                <label style="font-weight:600;font-size:0.75rem;">Bulk Upload</label>
-                <p style="font-size:0.65rem;color:var(--text-muted);">Format: Label | https://drive.google.com/...</p>
+                <label style="font-family:var(--font-mono);font-size:0.7rem;font-weight:600;">Bulk Upload</label>
+                <p style="font-family:var(--font-mono);font-size:0.62rem;color:var(--text-muted);">Format: Label | https://drive.google.com/...</p>
                 <textarea id="adminBulkLinks" placeholder="Unit 1 Notes | https://drive.google.com/file/d/...&#10;CIE 1 Paper | https://drive.google.com/file/d/..."></textarea>
                 <button class="btn btn-accent" onclick="adminAddBulk()" style="width:100%;">Add All</button>
                 <hr style="margin:1rem 0;border-color:var(--border);">
-                <p style="font-weight:700;font-size:0.75rem;">Existing:</p>
+                <p style="font-family:var(--font-mono);font-weight:600;font-size:0.7rem;">Existing:</p>
                 <div id="adminExistingFiles" style="max-height:130px;overflow-y:auto;font-size:0.7rem;"></div>
                 <button class="btn btn-ghost" onclick="refreshAdminExisting()" style="font-size:0.65rem;">Refresh</button>
                 <hr style="margin:1rem 0;border-color:var(--border);">
                 <button class="btn btn-ghost" onclick="exportJSON()" style="font-size:0.65rem;">Export JSON</button>
                 <button class="btn btn-ghost" onclick="document.getElementById('importFile').click()" style="font-size:0.65rem;">Import</button>
                 <input type="file" id="importFile" accept=".json" style="display:none;" onchange="importJSON(event)">
-                <button class="btn btn-ghost" onclick="adminLogout()" style="font-size:0.65rem;background:#fef2f2;border-color:#fecaca;color:#991b1b;">Lock</button>
+                <button class="btn btn-ghost" onclick="adminLogout()" style="font-size:0.65rem;background:#7f1d1d;border-color:#991b1b;color:#fecaca;">Lock</button>
             </div>
         </div>
     </div>
 
-    <!-- Preview Modal -->
     <div class="modal-overlay" id="previewModalOverlay">
         <div class="modal" style="max-width:90vw;width:1000px;">
             <button class="modal-close" onclick="closePreview()">✕</button>
             <h3>Preview</h3>
             <div id="quickViewInput">
                 <input type="text" id="quickDriveLink" placeholder="Paste Google Drive link">
-                <button class="btn btn-accent" onclick="quickPreview()">Preview</button>
+                <button class="btn btn-accent" onclick="quickPreview()" style="margin-top:0.4rem;">Preview</button>
             </div>
-            <iframe id="previewIframe" style="display:none;width:100%;height:70vh;border:none;border-radius:12px;"></iframe>
+            <iframe id="previewIframe" style="display:none;width:100%;height:70vh;border:none;"></iframe>
         </div>
     </div>
 
     <div class="toast-container" id="toastContainer"></div>
+    <div class="kc-toast" id="kcToast"></div>
 
     <script>
-        // ── Particle Background ──
-        (function(){const c=document.getElementById('particleCanvas'),x=c.getContext('2d');let p=[];const n=40;function r(){c.width=innerWidth;c.height=innerHeight;}window.addEventListener('resize',r);r();class P{constructor(){this.reset();}reset(){this.x=Math.random()*c.width;this.y=Math.random()*c.height;this.s=Math.random()*2+0.5;this.vx=(Math.random()-0.5)*0.4;this.vy=(Math.random()-0.5)*0.4;this.o=Math.random()*0.5+0.2;}update(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>c.width||this.y<0||this.y>c.height){this.reset();}}draw(){const d=document.body.classList.contains('dark');const cl=d?'200,148,74':'26,60,46';x.beginPath();x.arc(this.x,this.y,this.s,0,Math.PI*2);x.fillStyle=`rgba(${cl},${this.o})`;x.fill();}}for(let i=0;i<n;i++)p.push(new P());function a(){x.clearRect(0,0,c.width,c.height);p.forEach(v=>{v.update();v.draw();});requestAnimationFrame(a);}a();})();
-
         // ── Theme ──
-        (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else{document.body.classList.add(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');}})();
-        window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{if(!localStorage.getItem('theme'))document.body.classList.toggle('dark',e.matches);});
+        (function(){const s=localStorage.getItem('theme');if(s)document.body.classList.add(s);else document.body.classList.add('dark');})();
 
-        // ── Utilities ──
-        function showLoadingMascot(){document.getElementById('loadingMascot').classList.add('visible');}
-        function hideLoadingMascot(){document.getElementById('loadingMascot').classList.remove('visible');}
         function updateBackToTop(){document.getElementById('backToTop').classList.toggle('visible',scrollY>500);}
         window.addEventListener('scroll',updateBackToTop,{passive:true});
-        function getFileIcon(u){const l=u.toLowerCase();if(l.includes('.pdf')||l.includes('/pdf'))return'📄';if(l.includes('.ppt')||l.includes('.pptx')||l.includes('presentation'))return'📊';if(l.includes('.doc')||l.includes('.docx')||l.includes('document'))return'📝';if(l.includes('.xls')||l.includes('.xlsx')||l.includes('spreadsheet'))return'📈';if(l.includes('.zip')||l.includes('.rar'))return'📦';return'🔗';}
+        function getFileIcon(u){const l=u.toLowerCase();if(l.includes('.pdf')||l.includes('/pdf'))return'📄';if(l.includes('.ppt')||l.includes('.pptx'))return'📊';if(l.includes('.doc')||l.includes('.docx'))return'📝';if(l.includes('.xls')||l.includes('.xlsx'))return'📈';if(l.includes('.zip')||l.includes('.rar'))return'📦';return'🔗';}
         function getDl(u){const id=extractFileId(u);return id?`https://drive.google.com/uc?export=download&id=${id}`:null;}
         function isNew(at){return Date.now()-at<7*24*60*60*1000;}
         function showToast(m){const c=document.getElementById('toastContainer');const t=document.createElement('div');t.className='toast';t.textContent=m;c.appendChild(t);setTimeout(()=>t.remove(),2500);}
         function showKcToast(m){const e=document.getElementById('kcToast');e.textContent=m;e.classList.add('show');setTimeout(()=>e.classList.remove('show'),800);}
 
-        // ── Notes Data ──
-        const SEMESTER_DATA={3:{name:'III Semester',subjects:[{code:'23MA3BSTFN',title:'Transform Calculus, Fourier Series and Numerical Techniques'},{code:'23BT3ESPPC',title:'Process Principles and Calculations'},{code:'23BT3PCFME',title:'Fluid Mechanics'},{code:'23BT3PCCMB',title:'Cell and Molecular Biology'},{code:'23BT3PCMBG',title:'Microbiology'},{code:'23BT3PCBBM',title:'Basics of Biomolecules'},{code:'22MA3HSUHV',title:'Universal Human Values'},{code:'23BT3AEFBL',title:'Fundamentals of Biotechnology Lab'},{code:'23BT3PCMBL',title:'Microbiology Lab'},{code:'23BT3PCFML',title:'Fluid Mechanics Lab'}]},4:{name:'IV Semester',subjects:[{code:'23MA4BSBDE',title:'Biostatistics and Design of Experiments'},{code:'23BT4ESPET',title:'Process Engineering Thermodynamics'},{code:'23BT4PCBAB',title:'Biochemistry and Bioenergetics'},{code:'23BT4PCGEN',title:'Genetic Engineering'},{code:'23BT4PCBCA',title:'Basics of Computer Applications'},{code:'23BT4PCHMT',title:'Heat and Mass Transfer'},{code:'23BT4PCBIE',title:'Bioinspired Engineering'},{code:'23BT4AECBL',title:'Computational Biology Lab'},{code:'23BT4PCBCL',title:'Biochemistry Lab'},{code:'23BT4PCGEL',title:'Genetic Engineering Lab'}]},5:{name:'V Semester',subjects:[{code:'23BT5PCREN',title:'Reaction Engineering'},{code:'23BT5PCBIN',title:'Bioinformatics'},{code:'23BT5PCBAT',title:'Bioanalytical Techniques'},{code:'23BT5PCIMM',title:'Immunotechnology'},{code:'23BT5HSEVS',title:'Environmental Studies'},{code:'23BT5PCPW-1',title:'Project-1'},{code:'23BT5PCBIL',title:'Bioinformatics Lab'},{code:'23BT5PCBTL',title:'Bioanalytical Techniques Lab'},{code:'23BTA5ERMI',title:'Research Methodology and IPR'}],electives:{'Professional Elective 1':[{code:'23BT5PEMTE',title:'Metabolic Engineering'},{code:'23BT5PESTN',title:'Signal Transduction'},{code:'23BT5PEMBT',title:'Microbial Biotechnology'},{code:'23BT5PEFMB',title:'Food Microbiology'},{code:'23BT5PEVCI',title:'Vaccines and Cancer Immunotherapy'}]}},6:{name:'VI Semester',subjects:[{code:'23BT6PCGAP',title:'Genomics and Proteomics'},{code:'23BT6PCETK',title:'Enzyme Technology and Kinetics'},{code:'23BT6HSPMF',title:'Project Management and Finance'},{code:'23BT6PCBPT',title:'Bioprocess Technology'},{code:'23BT6PCETL',title:'Enzyme Technology and Kinetics Lab'},{code:'23BT6PCBPL',title:'Bioprocess Technology Lab'},{code:'23BT6PCPW-1',title:'Project Work-1'},{code:'23BT6AEISD',title:'Industry Skill Development'}],electives:{'Professional Elective 2':[{code:'23BT6PESYB',title:'Systems Biology'},{code:'23BT6PETAP',title:'Toxicology & Pharmacology'},{code:'23BT6PEPBT',title:'Plant Biotechnology'},{code:'23BT6PEAFC',title:'Advances in Food Chemistry'},{code:'23BT6PEBIM',title:'Biomaterials'}],'Open Elective 1':[{code:'23BT6OEIMA',title:'Instrumental Methods of Analysis'},{code:'23BT6OEBBI',title:'Biosensors & Bioinstrumentation'},{code:'23BT6OEBTE',title:'Battery Technology'}]}},7:{name:'VII Semester',subjects:[{code:'23BT7PCEQD',title:'Bioprocess Equipment Design and CAED'},{code:'23BT7PCEQL',title:'Bioprocess Equipment Design and CAED Lab'},{code:'23BT7PCPW-3',title:'Project-3'},{code:'25MA7HSIKL',title:'Indian Knowledge Systems'}],electives:{'Professional Elective 3':[{code:'23BT7PEGIN',title:'Genome Informatics'},{code:'23BT7PEBNB',title:'Biologics & Biopharmaceuticals'},{code:'23BT7PEABT',title:'Animal Biotechnology'},{code:'23BT7PEFPC',title:'Food Processing and Quality Control'},{code:'23BT7PETEN',title:'Tissue Engineering'}],'Open Elective 2':[{code:'23BT7OEIPR',title:'IPR in Engineering'},{code:'23BT7OEEEM',title:'Ecology and Environmental Management'},{code:'23BT7OESEN',title:'Sustainability Engineering'}]}},8:{name:'VIII Semester',subjects:[{code:'23BT8SRIN',title:'Internship-Based Seminar'}],electives:{'Professional Elective 4':[{code:'23BT8PEBDA',title:'Biological Data Analytics'},{code:'23BT8PEDRD',title:'Drug Discovery'},{code:'23BT8PEABP',title:'Advanced BT Processes and Products'},{code:'23BT8PEFWM',title:'Food Waste Management'},{code:'23BT8PENAT',title:'Nanotechnology'}],'Open Elective 3':[{code:'23BT8OEFRS',title:'Forensic Science'},{code:'23BT8OEHAN',title:'Health and Nutrition'}]}}};
+        // ── ALL SUBJECTS ──
+        const SEMESTER_DATA = {
+            3: { name: 'III Semester', subjects: [
+                { code: '23MA3BSTFN', title: 'Transform Calculus, Fourier Series and Numerical Techniques' },
+                { code: '23BT3ESPPC', title: 'Process Principles and Calculations' },
+                { code: '23BT3PCFME', title: 'Fluid Mechanics' },
+                { code: '23BT3PCCMB', title: 'Cell and Molecular Biology' },
+                { code: '23BT3PCMBG', title: 'Microbiology' },
+                { code: '23BT3PCBBM', title: 'Basics of Biomolecules' },
+                { code: '22MA3HSUHV', title: 'Universal Human Values' },
+                { code: '23BT3AEFBL', title: 'Fundamentals of Biotechnology Lab' },
+                { code: '23BT3PCMBL', title: 'Microbiology Lab' },
+                { code: '23BT3PCFML', title: 'Fluid Mechanics Lab' }
+            ]},
+            4: { name: 'IV Semester', subjects: [
+                { code: '23MA4BSBDE', title: 'Biostatistics and Design of Experiments' },
+                { code: '23BT4ESPET', title: 'Process Engineering Thermodynamics' },
+                { code: '23BT4PCBAB', title: 'Biochemistry and Bioenergetics' },
+                { code: '23BT4PCGEN', title: 'Genetic Engineering' },
+                { code: '23BT4PCBCA', title: 'Basics of Computer Applications' },
+                { code: '23BT4PCHMT', title: 'Heat and Mass Transfer' },
+                { code: '23BT4PCBIE', title: 'Bioinspired Engineering' },
+                { code: '23BT4AECBL', title: 'Computational Biology Lab' },
+                { code: '23BT4PCBCL', title: 'Biochemistry Lab' },
+                { code: '23BT4PCGEL', title: 'Genetic Engineering Lab' }
+            ]},
+            5: { name: 'V Semester', subjects: [
+                { code: '23BT5PCREN', title: 'Reaction Engineering' },
+                { code: '23BT5PCBIN', title: 'Bioinformatics' },
+                { code: '23BT5PCBAT', title: 'Bioanalytical Techniques' },
+                { code: '23BT5PCIMM', title: 'Immunotechnology' },
+                { code: '23BT5HSEVS', title: 'Environmental Studies' },
+                { code: '23BT5PCPW-1', title: 'Project-1' },
+                { code: '23BT5PCBIL', title: 'Bioinformatics Lab' },
+                { code: '23BT5PCBTL', title: 'Bioanalytical Techniques Lab' },
+                { code: '23BTA5ERMI', title: 'Research Methodology and IPR' }
+            ], electives: {
+                'Professional Elective 1': [
+                    { code: '23BT5PEMTE', title: 'Metabolic Engineering' },
+                    { code: '23BT5PESTN', title: 'Signal Transduction' },
+                    { code: '23BT5PEMBT', title: 'Microbial Biotechnology' },
+                    { code: '23BT5PEFMB', title: 'Food Microbiology' },
+                    { code: '23BT5PEVCI', title: 'Vaccines and Cancer Immunotherapy' }
+                ]
+            }},
+            6: { name: 'VI Semester', subjects: [
+                { code: '23BT6PCGAP', title: 'Genomics and Proteomics' },
+                { code: '23BT6PCETK', title: 'Enzyme Technology and Kinetics' },
+                { code: '23BT6HSPMF', title: 'Project Management and Finance' },
+                { code: '23BT6PCBPT', title: 'Bioprocess Technology' },
+                { code: '23BT6PCETL', title: 'Enzyme Technology and Kinetics Lab' },
+                { code: '23BT6PCBPL', title: 'Bioprocess Technology Lab' },
+                { code: '23BT6PCPW-1', title: 'Project Work-1' },
+                { code: '23BT6AEISD', title: 'Industry Skill Development' }
+            ], electives: {
+                'Professional Elective 2': [
+                    { code: '23BT6PESYB', title: 'Systems Biology' },
+                    { code: '23BT6PETAP', title: 'Toxicology & Pharmacology' },
+                    { code: '23BT6PEPBT', title: 'Plant Biotechnology' },
+                    { code: '23BT6PEAFC', title: 'Advances in Food Chemistry' },
+                    { code: '23BT6PEBIM', title: 'Biomaterials' }
+                ],
+                'Open Elective 1': [
+                    { code: '23BT6OEIMA', title: 'Instrumental Methods of Analysis' },
+                    { code: '23BT6OEBBI', title: 'Biosensors & Bioinstrumentation' },
+                    { code: '23BT6OEBTE', title: 'Battery Technology' }
+                ]
+            }},
+            7: { name: 'VII Semester', subjects: [
+                { code: '23BT7PCEQD', title: 'Bioprocess Equipment Design and CAED' },
+                { code: '23BT7PCEQL', title: 'Bioprocess Equipment Design and CAED Lab' },
+                { code: '23BT7PCPW-3', title: 'Project-3' },
+                { code: '25MA7HSIKL', title: 'Indian Knowledge Systems' }
+            ], electives: {
+                'Professional Elective 3': [
+                    { code: '23BT7PEGIN', title: 'Genome Informatics' },
+                    { code: '23BT7PEBNB', title: 'Biologics & Biopharmaceuticals' },
+                    { code: '23BT7PEABT', title: 'Animal Biotechnology' },
+                    { code: '23BT7PEFPC', title: 'Food Processing and Quality Control' },
+                    { code: '23BT7PETEN', title: 'Tissue Engineering' }
+                ],
+                'Open Elective 2': [
+                    { code: '23BT7OEIPR', title: 'IPR in Engineering' },
+                    { code: '23BT7OEEEM', title: 'Ecology and Environmental Management' },
+                    { code: '23BT7OESEN', title: 'Sustainability Engineering' }
+                ]
+            }},
+            8: { name: 'VIII Semester', subjects: [
+                { code: '23BT8SRIN', title: 'Internship-Based Seminar' }
+            ], electives: {
+                'Professional Elective 4': [
+                    { code: '23BT8PEBDA', title: 'Biological Data Analytics' },
+                    { code: '23BT8PEDRD', title: 'Drug Discovery' },
+                    { code: '23BT8PEABP', title: 'Advanced BT Processes and Products' },
+                    { code: '23BT8PEFWM', title: 'Food Waste Management' },
+                    { code: '23BT8PENAT', title: 'Nanotechnology' }
+                ],
+                'Open Elective 3': [
+                    { code: '23BT8OEFRS', title: 'Forensic Science' },
+                    { code: '23BT8OEHAN', title: 'Health and Nutrition' }
+                ]
+            }}
+        };
+
         const IC=[{key:'unit1',label:'Unit 1'},{key:'unit2',label:'Unit 2'},{key:'unit3',label:'Unit 3'},{key:'unit4',label:'Unit 4'},{key:'unit5',label:'Unit 5'},{key:'textbook',label:'Textbook'}];
         const GC=[{gk:'cie',gl:'CIE Papers',sc:[{key:'cie1',label:'CIE 1'},{key:'cie2',label:'CIE 2'},{key:'cie3',label:'CIE 3'}]},{gk:'endsem',gl:'Endsem Papers',sc:[{key:'endsem',label:'Endsem'}]}];
         const LIC=[{key:'labmanual',label:'Lab Manual'}];
         function isLab(t){return t.toLowerCase().includes('lab');}
-        let nd={},cs='3',scCode=null,og={},gf='';
+        let nd={},cs='3',gf='';
 
-        async function fln(){showLoadingMascot();try{const r=await fetch('./notes-data.json');if(r.ok)nd=await r.json();else nd=JSON.parse(localStorage.getItem('bn')||'{}');}catch(e){nd=JSON.parse(localStorage.getItem('bn')||'{}');}setTimeout(()=>{const s=document.getElementById('loadingSkeleton');if(s)s.style.display='none';hideLoadingMascot();renderAll();},600);}
+        async function fln(){try{const r=await fetch('./notes-data.json');if(r.ok)nd=await r.json();else nd=JSON.parse(localStorage.getItem('bn')||'{}');}catch(e){nd=JSON.parse(localStorage.getItem('bn')||'{}');}const s=document.getElementById('loadingSkeleton');if(s)s.style.display='none';renderAll();maybeOpenFromHash();}
         function sl(){localStorage.setItem('bn',JSON.stringify(nd));}
         function gk(s,c,cat){return`${s}|${c}|${cat}`;}
         function gn(s,c,cat){return nd[gk(s,c,cat)]||[];}
         function extractFileId(u){const m=u.match(/\/d\/([a-zA-Z0-9_-]+)/)||u.match(/[?&]id=([a-zA-Z0-9_-]+)/);return m?m[1]:null;}
 
+        // ══ FOCUS MODE ══
+        const focusOverlay = document.getElementById('focusOverlay');
+        const focusCard    = document.getElementById('focusCard');
+        const focusBody    = document.getElementById('focusBody');
+        const focusTitleEl = document.getElementById('focusSubjectTitle');
+        const focusCodeEl  = document.getElementById('focusSubjectCode');
+        let lastScrollY = 0;
+        let currentFocusCode = null;
+        let focusOpen = false;
+
+        function findSubjectByCode(code){
+            for (let s=3;s<=8;s++){
+                const sub = gas(s).find(x=>x.code===code);
+                if (sub) return { sem: s, sub };
+            }
+            return null;
+        }
+
+        function openFocus(sem, code, pushHistory=true){
+            const found = findSubjectByCode(code);
+            if (!found) return;
+            currentFocusCode = code;
+
+            // Ensure correct semester is visible behind
+            cs = String(sem);
+
+            // Save current scroll position
+            lastScrollY = window.scrollY;
+
+            // Populate header
+            focusTitleEl.textContent = found.sub.title;
+            focusCodeEl.textContent = found.sub.code;
+
+            // Build body content — reuse existing renderCard internals but as flat sections
+            focusBody.innerHTML = buildFocusBody(found.sem, found.sub);
+
+            // Cascade delay — apply per direct child
+            [...focusBody.children].forEach((el, i) => {
+                el.style.animationDelay = (0.12 + i * 0.06) + 's';
+            });
+
+            // Show overlay
+            document.body.classList.add('focus-mode');
+            focusOverlay.classList.add('open');
+            focusOpen = true;
+            document.body.style.overflow = 'hidden';
+
+            // Update URL hash (so the link is shareable)
+            if (pushHistory && location.hash !== '#subject=' + code) {
+                history.pushState({ focus: code }, '', '#subject=' + code);
+            }
+
+            // Focus management
+            setTimeout(() => document.getElementById('focusCloseBtn').focus(), 100);
+
+            // Scroll overlay to top
+            focusOverlay.scrollTop = 0;
+        }
+
+        function closeFocus(pushHistory=true){
+            if (!focusOpen) return;
+            focusOpen = false;
+
+            // Animate out
+            focusCard.classList.add('closing');
+            setTimeout(() => {
+                focusOverlay.classList.remove('open');
+                focusCard.classList.remove('closing');
+                document.body.classList.remove('focus-mode');
+                document.body.style.overflow = '';
+
+                // Restore scroll position
+                window.scrollTo({ top: lastScrollY, behavior: 'auto' });
+
+                // Clear body after transition
+                setTimeout(() => { focusBody.innerHTML = ''; focusTitleEl.textContent=''; focusCodeEl.textContent=''; }, 200);
+            }, 320);
+
+            currentFocusCode = null;
+
+            // Remove hash
+            if (pushHistory && location.hash.startsWith('#subject=')) {
+                history.pushState({}, '', location.pathname + location.search);
+            }
+        }
+
+        function buildFocusBody(sem, sub){
+            const ic = isLab(sub.title) ? LIC : IC;
+            const gc = isLab(sub.title) ? [] : GC;
+            let html = '';
+            // Regular categories (Unit 1..5, Textbook or Lab Manual)
+            ic.forEach(c => {
+                const notes = gn(sem, sub.code, c.key);
+                html += buildCategory(c.label, notes);
+            });
+            // Grouped (CIE / Endsem) — kept collapsed but available
+            gc.forEach(g => {
+                const allNotes = g.sc.flatMap(sc => gn(sem, sub.code, sc.key));
+                const hasContent = allNotes.length > 0;
+                html += `<div class="grouped-section" data-group="${g.gk}">
+                    <div class="grouped-section-header" onclick="this.parentElement.classList.toggle('open')">
+                        <span>${g.gl}${hasContent ? ' (' + allNotes.length + ')' : ''}</span>
+                        <span class="grouped-section-chevron">▾</span>
+                    </div>
+                    <div class="grouped-section-body">
+                        <div class="grouped-section-body-inner">
+                            ${g.sc.map(sc => {
+                                const notes = gn(sem, sub.code, sc.key);
+                                return `<div class="sub-cat-title">${sc.label}</div>${buildCategoryInner(notes)}`;
+                            }).join('')}
+                        </div>
+                    </div>
+                </div>`;
+            });
+            return html;
+        }
+
+        function buildCategory(label, notes){
+            return `<div class="note-category">
+                <div class="note-cat-title">${label}</div>
+                ${buildCategoryInner(notes)}
+            </div>`;
+        }
+
+        function buildCategoryInner(notes){
+            if (!notes.length) return '<span class="no-files">Empty</span>';
+            return notes.map(x => {
+                const icon = getFileIcon(x.driveUrl);
+                const dl = getDl(x.driveUrl);
+                const nb = isNew(x.addedAt || 0) ? '<span class="new-badge">New</span>' : '';
+                const safeLabel = (x.label || 'file').replace(/'/g, "\\'");
+                return `<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)">
+                    <span class="file-icon">${icon}</span>
+                    <span style="overflow:hidden;text-overflow:ellipsis;">${x.label || 'File'}</span>
+                    ${nb}
+                    <button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${safeLabel}')" title="Download">↓</button>
+                </a>`;
+            }).join('');
+        }
+
+        // Close listeners
+        document.getElementById('focusCloseBtn').addEventListener('click', () => closeFocus(true));
+        focusOverlay.addEventListener('click', (e) => { if (e.target === focusOverlay) closeFocus(true); });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && focusOpen) { e.preventDefault(); closeFocus(true); }
+        });
+
+        // Back/forward button
+        window.addEventListener('popstate', () => {
+            if (location.hash.startsWith('#subject=')) {
+                const code = location.hash.replace('#subject=', '');
+                const found = findSubjectByCode(code);
+                if (found) openFocus(found.sem, code, false);
+            } else if (focusOpen) {
+                closeFocus(false);
+            }
+        });
+
+        function maybeOpenFromHash(){
+            if (location.hash.startsWith('#subject=')) {
+                const code = location.hash.replace('#subject=', '');
+                const found = findSubjectByCode(code);
+                if (found) setTimeout(() => openFocus(found.sem, code, false), 250);
+            }
+        }
+
+        // ── RENDER ──
         function renderAll(){renderSemesterNav();renderMobileNav();renderPanels();}
-        function renderSemesterNav(){const n=document.getElementById('semesterNav');n.innerHTML='';for(let s=3;s<=8;s++){const b=document.createElement('button');b.className='sem-tab'+(s.toString()===cs&&!gf?' active':'');const d=SEMESTER_DATA[s];const t=(d.subjects?.length||0)+(d.electives?Object.values(d.electives).flat().length:0);b.innerHTML=`Sem ${s}<span class="badge">${t}</span>`;b.onclick=()=>{clearGlobalSearch();cs=s.toString();scCode=null;og={};renderAll();};n.appendChild(b);}}
-        function renderMobileNav(){const n=document.getElementById('mobileNavInner');n.innerHTML='';for(let s=3;s<=8;s++){const b=document.createElement('button');b.className='mobile-nav-btn'+(s.toString()===cs&&!gf?' active':'');b.innerHTML=`<span class="nav-icon">${s}</span>Sem ${s}`;b.onclick=()=>{clearGlobalSearch();cs=s.toString();scCode=null;renderAll();};n.appendChild(b);}}
-        function showAllCards(){scCode=null;og={};renderAll();}
-        function applyGlobalSearch(){gf=document.getElementById('globalSearchInput').value.trim().toLowerCase();scCode=null;renderAll();}
-        function clearGlobalSearch(){document.getElementById('globalSearchInput').value='';gf='';scCode=null;renderAll();}
-        function ggk(s,c,gk){return`${s}|${c}|${gk}`;}
-        function igo(s,c,gk){return og[ggk(s,c,gk)]||false;}
-        function tg(s,c,gk){const k=ggk(s,c,gk);og[k]=!og[k];renderPanels();}
-        window.tg=tg;
+        function renderSemesterNav(){const n=document.getElementById('semesterNav');n.innerHTML='';for(let s=3;s<=8;s++){const b=document.createElement('button');b.className='sem-tab'+(s.toString()===cs&&!gf?' active':'');const d=SEMESTER_DATA[s];const t=(d.subjects?.length||0)+(d.electives?Object.values(d.electives).flat().length:0);b.innerHTML=`Sem ${s}<span class="badge">${t}</span>`;b.onclick=()=>{clearGlobalSearch();cs=s.toString();renderAll();};n.appendChild(b);}}
+        function renderMobileNav(){const n=document.getElementById('mobileNavInner');n.innerHTML='';for(let s=3;s<=8;s++){const b=document.createElement('button');b.className='mobile-nav-btn'+(s.toString()===cs&&!gf?' active':'');b.innerHTML=`<span class="nav-icon">${s}</span>Sem ${s}`;b.onclick=()=>{clearGlobalSearch();cs=s.toString();renderAll();};n.appendChild(b);}}
+        function applyGlobalSearch(){gf=document.getElementById('globalSearchInput').value.trim().toLowerCase();renderAll();}
+        function clearGlobalSearch(){document.getElementById('globalSearchInput').value='';gf='';renderAll();}
 
         function renderPanels(){
             const mc=document.getElementById('mainContainer');const sk=document.getElementById('loadingSkeleton');if(sk)sk.style.display='none';mc.innerHTML='';
-            if(gf){/* search handled separately */ return;}
-            for(let s=3;s<=8;s++){const p=document.createElement('div');p.className='semester-panel';p.style.display=s.toString()===cs?'':'none';const isSc=scCode&&s.toString()===cs;p.innerHTML=rsc(s,isSc);mc.appendChild(p);}
+            if(gf){
+                const all=[];
+                for(let s=3;s<=8;s++){gas(s).forEach(sub=>{if(sub.title.toLowerCase().includes(gf)||sub.code.toLowerCase().includes(gf))all.push({sem:s,sub});});}
+                mc.innerHTML=`<div class="semester-header"><h2 class="semester-title">Search Results</h2><p class="semester-subtitle">${all.length} subject${all.length===1?'':'s'} found</p></div><div class="subjects-grid">${all.map(x=>renderCard(x.sem,x.sub,0)).join('')}</div>`;
+                attachListeners();return;
+            }
+            for(let s=3;s<=8;s++){const p=document.createElement('div');p.className='semester-panel';p.style.display=s.toString()===cs?'':'none';p.innerHTML=rsc(s);mc.appendChild(p);}
             attachListeners();
         }
-        function rsc(sem,isSc){let h=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2>`;if(!isSc)h+='<p class="semester-subtitle">Click a subject to explore its resources</p>';h+='</div>';if(isSc)h+='<div class="back-bar visible"><button class="btn btn-ghost" onclick="showAllCards()">← Back (Esc)</button></div>';else h+='<div class="search-bar"><input type="text" placeholder="Filter subjects..." oninput="filterCards(this,\''+sem+'\')"></div>';h+=`<div class="subjects-grid" id="grid${sem}">`;if(isSc){const sub=gas(sem).find(s=>s.code===scCode);if(sub)h+=renderCard(sem,sub,true);}else h+=rac(sem);return h+'</div>';}
+        function rsc(sem){let h=`<div class="semester-header"><h2 class="semester-title">${SEMESTER_DATA[sem].name}</h2><p class="semester-subtitle">Click a subject to open</p></div>`;h+='<div class="search-bar"><input type="text" placeholder="Filter subjects..." oninput="filterCards(this,\''+sem+'\')"></div>';h+=`<div class="subjects-grid" id="grid${sem}">`+rac(sem)+'</div>';return h;}
         function gas(sem){const d=SEMESTER_DATA[sem];let a=[...(d.subjects||[])];if(d.electives)Object.values(d.electives).forEach(arr=>a.push(...arr));return a;}
-        function rac(sem){const d=SEMESTER_DATA[sem];let h='',si=0;if(d.subjects)d.subjects.forEach(s=>{h+=renderCard(sem,s,false,si);si++;});if(d.electives)for(const[g,ss]of Object.entries(d.electives)){h+=`<div class="elective-group-label">${g}</div>`;ss.forEach(s=>{h+=renderCard(sem,s,false,si);si++;});}return h;}
-        function renderCard(sem,sub,isSelected,si=0){const ic=isLab(sub.title)?LIC:IC;const gc=isLab(sub.title)?[]:GC;const cc=isSelected?'subject-card selected-card':'subject-card card-enter';const hc=scCode&&!isSelected?' hidden-card':'';const sc=!isSelected&&si<16?` style="animation-delay:${si*0.04}s"`:'';let h=`<div class="${cc}${hc}" data-code="${sub.code}" data-sem="${sem}"${sc}><div class="card-header"><div class="card-header-left"><div class="card-title">${sub.title}</div><div class="card-code">${sub.code}</div></div><span class="card-chevron">▾</span></div><div class="card-expand"><div class="card-expand-inner">`;ic.forEach(c=>{const n=gn(sem,sub.code,c.key);h+=rcb(c.label,n);});gc.forEach(g=>{const o=igo(sem,sub.code,g.gk);const an=g.sc.flatMap(sc=>gn(sem,sub.code,sc.key));const hasContent=an.length>0;h+=`<div class="grouped-section${o?' open':''}" data-group="${g.gk}"><div class="grouped-section-header" onclick="event.stopPropagation();tg('${sem}','${sub.code}','${g.gk}')"><span>${g.gl}${hasContent?' ('+an.length+')':''}</span><span class="grouped-section-chevron">▾</span></div><div class="grouped-section-body"><div class="grouped-section-body-inner">`;g.sc.forEach(sc=>{const n=gn(sem,sub.code,sc.key);h+=`<div class="sub-cat-title">${sc.label}</div>`;if(!n.length)h+='<span class="no-files">Empty</span>';else n.forEach(x=>{const icon=getFileIcon(x.driveUrl);const dl=getDl(x.driveUrl);const nb=isNew(x.addedAt||0)?'<span class="new-badge">New</span>':'';h+=`<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${x.label||'File'}${nb}<button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(x.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;});});h+='</div></div></div>';});h+='</div></div></div>';return h;}
-        function rcb(label,notes){let h=`<div class="note-category"><div class="note-cat-title">${label}</div>`;if(!notes.length)h+='<span class="no-files">Empty</span>';else notes.forEach(x=>{const icon=getFileIcon(x.driveUrl);const dl=getDl(x.driveUrl);const nb=isNew(x.addedAt||0)?'<span class="new-badge">New</span>':'';h+=`<a class="file-link" data-drive-url="${x.driveUrl}" href="javascript:void(0)"><span class="file-icon">${icon}</span>${x.label||'File'}${nb}<button class="file-download-btn" onclick="event.stopPropagation();event.preventDefault();downloadFile('${dl}','${(x.label||'file').replace(/'/g,"\\'")}')" title="Download">↓</button></a>`;});return h+'</div>';}
+        function rac(sem){const d=SEMESTER_DATA[sem];let h='',si=0;if(d.subjects)d.subjects.forEach(s=>{h+=renderCard(sem,s,si);si++;});if(d.electives)for(const[g,ss]of Object.entries(d.electives)){h+=`<div class="elective-group-label">${g}</div>`;ss.forEach(s=>{h+=renderCard(sem,s,si);si++;});}return h;}
+        function renderCard(sem,sub,si=0){
+            const sc=si<16?` style="animation-delay:${si*0.04}s"`:'';
+            return `<div class="subject-card card-enter" data-code="${sub.code}" data-sem="${sem}"${sc}>
+                <div class="card-header" style="padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;">
+                    <div style="flex:1;min-width:0;">
+                        <div class="card-title" style="font-weight:700;font-size:1rem;line-height:1.4;">${sub.title}</div>
+                        <div class="card-code" style="font-family:var(--font-mono);font-size:0.7rem;color:var(--text-muted);margin-top:0.25rem;letter-spacing:1px;text-transform:uppercase;">${sub.code}</div>
+                    </div>
+                    <span style="color:var(--text-muted);font-size:0.7rem;">→</span>
+                </div>
+            </div>`;
+        }
+
         window.downloadFile=function(u,n){const a=document.createElement('a');a.href=u;a.download=n;document.body.appendChild(a);a.click();document.body.removeChild(a);showToast('Downloading...');};
-        function attachListeners(){document.querySelectorAll('.subject-card:not(.selected-card)').forEach(c=>{c.addEventListener('click',function(e){if(e.target.closest('.file-link')||e.target.closest('button')||e.target.closest('.grouped-section-header'))return;scCode=this.getAttribute('data-code');renderPanels();scrollTo({top:0,behavior:'smooth'});});});document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{l.addEventListener('click',function(e){if(e.target.closest('button'))return;e.stopPropagation();const p=extractFileId(this.getAttribute('data-drive-url'));if(p){document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${p}/preview`;document.getElementById('previewIframe').style.display='';document.getElementById('quickViewInput').style.display='none';openPreviewModal();}});});}
-        window.filterCards=function(i,s){const q=i.value.toLowerCase();document.querySelectorAll(`#grid${s} .subject-card:not(.selected-card)`).forEach(c=>{c.style.display=(!q||c.querySelector('.card-title').textContent.toLowerCase().includes(q))?'':'none';});};
 
-        document.addEventListener('keydown',function(e){if(e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT')return;if((e.ctrlKey||e.metaKey)&&e.shiftKey&&e.key==='D'){e.preventDefault();document.getElementById('themeToggle').click();return;}if(e.key>='3'&&e.key<='8'){e.preventDefault();clearGlobalSearch();cs=e.key;scCode=null;og={};renderAll();showKcToast('Semester '+e.key);}if(e.key==='Escape'){e.preventDefault();if(document.getElementById('adminModalOverlay').classList.contains('open'))closeAdminModal();else if(document.getElementById('previewModalOverlay').classList.contains('open'))closePreview();else if(scCode){showAllCards();showKcToast('All Subjects');}}});
+        function attachListeners(){
+            document.querySelectorAll('.subject-card').forEach(c=>{
+                c.addEventListener('click', function(){
+                    const sem = this.getAttribute('data-sem');
+                    const code = this.getAttribute('data-code');
+                    openFocus(sem, code, true);
+                });
+            });
+            document.querySelectorAll('.file-link[data-drive-url]').forEach(l=>{
+                l.addEventListener('click', function(e){
+                    if (e.target.closest('button')) return;
+                    e.stopPropagation();
+                    const p = extractFileId(this.getAttribute('data-drive-url'));
+                    if (p) {
+                        document.getElementById('previewIframe').src = `https://drive.google.com/file/d/${p}/preview`;
+                        document.getElementById('previewIframe').style.display='';
+                        document.getElementById('quickViewInput').style.display='none';
+                        openPreviewModal();
+                    }
+                });
+            });
+        }
+        window.filterCards=function(i,s){const q=i.value.toLowerCase();document.querySelectorAll(`#grid${s} .subject-card`).forEach(c=>{c.style.display=(!q||c.querySelector('.card-title').textContent.toLowerCase().includes(q))?'':'none';});};
 
+        // Keyboard semester shortcuts
+        document.addEventListener('keydown',function(e){
+            if (e.target.tagName==='INPUT'||e.target.tagName==='TEXTAREA'||e.target.tagName==='SELECT') return;
+            if (focusOpen) return;
+            if (e.key>='3'&&e.key<='8'){e.preventDefault();clearGlobalSearch();cs=e.key;renderAll();showKcToast('Semester '+e.key);}
+        });
+
+        // ── ADMIN ──
         function openAdminModal(){document.getElementById('adminModalOverlay').classList.add('open');pas();if(ia){document.getElementById('adminAuth').style.display='none';document.getElementById('adminPanel').style.display='';uas();uaco();rae();}else{document.getElementById('adminAuth').style.display='';document.getElementById('adminPanel').style.display='none';}}
         function closeAdminModal(){document.getElementById('adminModalOverlay').classList.remove('open');}
         function openPreviewModal(){document.getElementById('previewModalOverlay').classList.add('open');}
@@ -598,18 +1069,40 @@
         function pas(){const s=document.getElementById('adminSemester');s.innerHTML='';for(let i=3;i<=8;i++){const o=document.createElement('option');o.value=i;o.textContent='Semester '+i;s.appendChild(o);}}
         function uas(){const d=SEMESTER_DATA[parseInt(document.getElementById('adminSemester').value)],s=document.getElementById('adminSubject');s.innerHTML='';[...(d.subjects||[]),...(d.electives?Object.values(d.electives).flat():[])].forEach(x=>{const o=document.createElement('option');o.value=x.code;o.textContent=x.code+' - '+x.title;o.dataset.title=x.title;s.appendChild(o);});}
         function uaco(){const s=document.getElementById('adminCategory');const o=document.getElementById('adminSubject').selectedOptions[0];const t=o?(o.dataset.title||o.textContent.split(' - ')[1]||''):'';let ac=[];if(isLab(t)){ac=[...LIC];}else{ac=[...IC];GC.forEach(g=>{g.sc.forEach(sc=>ac.push(sc));});}s.innerHTML='';ac.forEach(x=>{const e=document.createElement('option');e.value=x.key;e.textContent=x.label;s.appendChild(e);});rae();}
-        function rae(){const n=gn(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles');d.innerHTML=n.length?'':'No files yet.';n.forEach((x,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.2rem 0;';e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:50%;width:20px;height:20px;cursor:pointer;font-size:0.5rem;">x</button>`;e.querySelector('button').onclick=()=>{const k=gk(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);if(nd[k]){nd[k].splice(i,1);if(!nd[k].length)delete nd[k];sl();rae();renderPanels();showToast('Deleted');}};d.appendChild(e);});}
+        function rae(){const n=gn(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value),d=document.getElementById('adminExistingFiles');d.innerHTML=n.length?'':'No files yet.';n.forEach((x,i)=>{const e=document.createElement('div');e.style.cssText='display:flex;justify-content:space-between;align-items:center;padding:0.2rem 0;';e.innerHTML=`<span>${x.label}</span><button style="background:#ef4444;color:#fff;border:none;border-radius:2px;width:20px;height:20px;cursor:pointer;font-size:0.55rem;">x</button>`;e.querySelector('button').onclick=()=>{const k=gk(document.getElementById('adminSemester').value,document.getElementById('adminSubject').value,document.getElementById('adminCategory').value);if(nd[k]){nd[k].splice(i,1);if(!nd[k].length)delete nd[k];sl();rae();renderPanels();showToast('Deleted');}};d.appendChild(e);});}
         async function ctg(){try{const c=JSON.stringify(nd,null,2);const b64=btoa(unescape(encodeURIComponent(c)));const gr=await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{headers:{Authorization:`token ${githubToken}`}});const fi=await gr.json();await fetch(`https://api.github.com/repos/${REPO_OWNER}/${REPO_NAME}/contents/notes-data.json`,{method:'PUT',headers:{Authorization:`token ${githubToken}`,'Content-Type':'application/json'},body:JSON.stringify({message:'Update notes',content:b64,sha:fi.sha})});return true;}catch(e){return false;}}
         async function adminAddSingle(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value,l=document.getElementById('adminFileLabel').value.trim();const u=document.getElementById('adminDriveLink').value.trim();if(!l||!u)return showToast('Fill all fields');if(!extractFileId(u))return showToast('Invalid file link');const k=gk(s,c,cat);if(!nd[k])nd[k]=[];nd[k].push({label:l,driveUrl:u,addedAt:Date.now()});sl();const ok=await ctg();showToast(ok?'Published!':'Saved locally');document.getElementById('adminFileLabel').value='';document.getElementById('adminDriveLink').value='';rae();renderPanels();}
         async function adminAddBulk(){const s=document.getElementById('adminSemester').value,c=document.getElementById('adminSubject').value;const cat=document.getElementById('adminCategory').value;const raw=document.getElementById('adminBulkLinks').value.trim();if(!raw)return showToast('Paste some links first');const lines=raw.split('\n').filter(l=>l.trim());let added=0;for(const line of lines){const parts=line.split('|');if(parts.length<2)continue;const label=parts[0].trim();const url=parts.slice(1).join('|').trim();if(!label||!url)continue;if(!extractFileId(url))continue;const k=gk(s,c,cat);if(!nd[k])nd[k]=[];nd[k].push({label,driveUrl:url,addedAt:Date.now()});added++;}if(!added)return showToast('No valid links found');sl();const ok=await ctg();showToast(ok?`${added} files published!`:`${added} files saved locally`);document.getElementById('adminBulkLinks').value='';rae();renderPanels();}
         window.adminAddSingle=adminAddSingle;window.adminAddBulk=adminAddBulk;
         function exportJSON(){const b=new Blob([JSON.stringify(nd,null,2)],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='notes-data.json';a.click();}
         function importJSON(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>{nd=JSON.parse(ev.target.result);sl();renderPanels();rae();showToast('Imported');};r.readAsText(f);e.target.value='';}
+        function refreshAdminExisting(){rae();}
 
         document.getElementById('quickViewBtn').addEventListener('click',()=>{document.getElementById('previewIframe').style.display='none';document.getElementById('quickViewInput').style.display='';openPreviewModal();});
         window.quickPreview=function(){const i=extractFileId(document.getElementById('quickDriveLink').value.trim());if(i){document.getElementById('previewIframe').src=`https://drive.google.com/file/d/${i}/preview`;document.getElementById('previewIframe').style.display='';document.getElementById('quickViewInput').style.display='none';}else showToast('Invalid link');};
-        document.getElementById('themeToggle').addEventListener('click',()=>{document.body.classList.toggle('dark');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
+        document.getElementById('themeToggle').addEventListener('click',()=>{document.body.classList.toggle('dark');document.body.classList.toggle('light');localStorage.setItem('theme',document.body.classList.contains('dark')?'dark':'light');});
+
         fln();
+    </script>
+
+    <!-- ══ MOUSE EDGE NAV ══ -->
+    <script>
+    (function () {
+        const PAGES=[{file:"index.html",name:"Home"},{file:"notes.html",name:"Notes"},{file:"events.html",name:"Events"},{file:"magazine.html",name:"Magazine"}];
+        const currentFile=location.pathname.split("/").pop()||"index.html";
+        const idx=PAGES.findIndex(p=>p.file===currentFile);if(idx===-1)return;
+        const prev=PAGES[(idx-1+PAGES.length)%PAGES.length],next=PAGES[(idx+1)%PAGES.length];
+        function makeEdge(side,target){const el=document.createElement("div");el.className=`rb-edge-nav ${side}`;el.innerHTML=`<svg class="edge-ring" viewBox="0 0 44 44" width="44" height="44"><circle cx="22" cy="22" r="20"></circle></svg><div class="edge-pill">${side==="left"?"◀":""}<span>${target.name}</span>${side==="right"?"▶":""}</div>`;document.body.appendChild(el);return el;}
+        const leftNav=makeEdge("left",prev),rightNav=makeEdge("right",next);
+        const DWELL_MS=900;let hoverStart=0,rafId=null,activeNav=null;
+        function animateRing(nav,p){const c=nav.querySelector(".edge-ring circle");if(c)c.style.strokeDashoffset=String(126*(1-p));}
+        function startDwell(nav,target){if(activeNav&&activeNav!==nav){const o=activeNav===leftNav?rightNav:leftNav;o.classList.remove("visible");animateRing(o,0);}activeNav=nav;nav.classList.add("visible");hoverStart=performance.now();function tick(now){const p=Math.min(1,(now-hoverStart)/DWELL_MS);animateRing(nav,p);if(p>=1){navigate(target);return;}rafId=requestAnimationFrame(tick);}cancelAnimationFrame(rafId);rafId=requestAnimationFrame(tick);}
+        function stopDwell(nav){if(activeNav===nav){activeNav=null;animateRing(nav,0);}cancelAnimationFrame(rafId);setTimeout(()=>{if(activeNav!==nav)nav.classList.remove("visible");},200);}
+        function navigate(target){if(document.body.classList.contains('focus-mode'))return;document.body.style.transition='opacity 0.3s';document.body.style.opacity='0';setTimeout(()=>{window.location.href=target.file;},280);}
+        const TRIGGER=90;
+        document.addEventListener("mousemove",(e)=>{if(document.body.classList.contains('focus-mode'))return;const w=window.innerWidth,x=e.clientX;if(x<TRIGGER){if(activeNav!==leftNav)startDwell(leftNav,prev);return;}if(x>w-TRIGGER){if(activeNav!==rightNav)startDwell(rightNav,next);return;}if(activeNav===leftNav)stopDwell(leftNav);if(activeNav===rightNav)stopDwell(rightNav);leftNav.classList.remove("visible");rightNav.classList.remove("visible");animateRing(leftNav,0);animateRing(rightNav,0);});
+        leftNav.addEventListener("click",()=>navigate(prev));rightNav.addEventListener("click",()=>navigate(next));
+    })();
     </script>
 </body>
 </html>
