@@ -4,72 +4,128 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Synapse — BMSCE Biotech Club</title>
-    <!-- Dynamic favicon (will be toggled by JS) -->
-    <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>">
+    <link rel="icon" type="image/svg+xml" id="favicon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0d10'/><text x='50' y='72' font-size='58' font-weight='900' text-anchor='middle' fill='%23db0a40' font-family='Arial,sans-serif'>S</text></svg>">
+
+    <!-- ── FONT SYSTEM: Anton + Inter + JetBrains Mono ── -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;500;600;700;800&display=swap');
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        /* ====== RED BULL-INSPIRED DESIGN SYSTEM ====== */
+        :root {
+            --rb-red: #db0a40;
+            --rb-blue: #002b5c;
+            --rb-silver: #c9ced6;
+            --rb-dark: #0b0d10;
+            --rb-darker: #05070a;
+            --rb-light: #f4f5f7;
+            --rb-yellow: #ffcc00;
+
+            --accent: var(--rb-red);
+            --accent-2: #1f6fd6;
+            --text: #f4f5f7;
+            --text-dim: #a8adb8;
+            --text-mute: #6a7280;
+            --surface: rgba(255,255,255,0.04);
+            --surface-alt: rgba(255,255,255,0.07);
+            --border: rgba(255,255,255,0.12);
+            --border-strong: rgba(255,255,255,0.25);
+            --shadow: 0 8px 32px rgba(0,0,0,0.45);
+            --shadow-xl: 0 24px 64px rgba(0,0,0,0.7);
+            --transition: 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+
+            /* ── TYPE TOKENS ── */
+            --font-display: 'Anton', 'Arial Narrow', system-ui, sans-serif;
+            --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+            --font-mono: 'JetBrains Mono', 'Consolas', monospace;
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
         body {
-            font-family: 'Inter', system-ui, sans-serif;
-            background: radial-gradient(circle at 50% 30%, #1a1f2a 0%, #0a0c10 100%);
+            font-family: var(--font-body);
+            background: var(--rb-darker);
+            color: var(--text);
+            line-height: 1.55;
             min-height: 100vh;
+            overflow-x: hidden;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            color: #fff;
             padding: 2rem;
-            overflow-x: hidden;
             position: relative;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
-        /* Background orbs */
+        /* Energetic background */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(1200px 600px at 10% -10%, rgba(219,10,64,0.22), transparent 60%),
+                radial-gradient(1000px 500px at 110% 110%, rgba(31,111,214,0.22), transparent 60%),
+                repeating-linear-gradient(135deg, transparent 0 38px, rgba(255,255,255,0.02) 38px 40px);
+        }
+
         .orb {
             position: absolute;
             border-radius: 50%;
             filter: blur(120px);
-            opacity: 0.15;
+            opacity: 0.18;
             pointer-events: none;
             animation: float 20s ease-in-out infinite;
         }
-        .orb-1 { width: 600px; height: 600px; background: #c8944a; top: -150px; left: -100px; animation-delay: 0s; }
-        .orb-2 { width: 500px; height: 500px; background: #2a5c45; bottom: -150px; right: -100px; animation-delay: -7s; }
-        .orb-3 { width: 400px; height: 400px; background: #8b5a2b; top: 40%; left: 60%; animation-delay: -14s; }
+        .orb-1 { width: 600px; height: 600px; background: var(--rb-red); top: -150px; left: -100px; }
+        .orb-2 { width: 500px; height: 500px; background: var(--rb-blue); bottom: -150px; right: -100px; animation-delay: -7s; }
+        .orb-3 { width: 400px; height: 400px; background: var(--rb-yellow); top: 40%; left: 60%; animation-delay: -14s; opacity: 0.08; }
         @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(60px, 40px) scale(1.1); }
-            50% { transform: translate(-30px, -50px) scale(0.9); }
-            75% { transform: translate(-80px, 20px) scale(1.05); }
+            0%, 100% { transform: translate(0,0) scale(1); }
+            25% { transform: translate(60px,40px) scale(1.1); }
+            50% { transform: translate(-30px,-50px) scale(0.9); }
+            75% { transform: translate(-80px,20px) scale(1.05); }
         }
 
         .content {
             position: relative;
             z-index: 1;
             animation: fadeInUp 0.8s ease;
+            max-width: 100%;
         }
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* Text reveal for the logo */
+        /* ── LOGO / WORDMARK ── */
         .logo {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3.5rem, 12vw, 7rem);
-            font-weight: 800;
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 14vw, 9rem);
+            font-weight: 400;
             display: inline-block;
-            margin-bottom: 1rem;
-            letter-spacing: -2px;
-            text-shadow: 0 0 60px rgba(200,148,74,0.4);
+            margin-bottom: 0.8rem;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            line-height: 0.9;
+            text-shadow: 0 0 80px rgba(219,10,64,0.45);
         }
         .logo .char {
             display: inline-block;
             opacity: 0;
-            transform: translateY(20px);
-            animation: revealChar 0.6s ease forwards;
+            transform: translateY(30px);
+            animation: revealChar 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
             color: transparent;
-            background: linear-gradient(135deg, #c8944a, #e0b96b, #c8944a);
+            background: linear-gradient(135deg, #db0a40 0%, #ff3366 45%, #ffcc00 100%);
             -webkit-background-clip: text;
             background-clip: text;
         }
@@ -77,120 +133,175 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
+        /* ── TAGLINE (mono — technical, like a spec label) ── */
         .tagline {
-            font-size: clamp(1rem, 3vw, 1.6rem);
-            font-weight: 300;
+            font-family: var(--font-mono);
+            font-size: clamp(0.75rem, 1.6vw, 0.9rem);
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
             opacity: 0;
             animation: blurIn 0.8s 0.5s forwards;
             filter: blur(10px);
-            margin-bottom: 0.5rem;
-            letter-spacing: 0.5px;
+            margin-bottom: 0;
+            color: var(--rb-silver);
         }
-        .desc {
-            font-size: clamp(0.9rem, 2.5vw, 1.15rem);
-            opacity: 0;
-            animation: blurIn 0.8s 0.7s forwards;
-            filter: blur(10px);
-            max-width: 550px;
-            margin: 0 auto 1.5rem;
-            line-height: 1.6;
+        .tagline::before,
+        .tagline::after {
+            content: "";
+            display: inline-block;
+            width: 28px;
+            height: 1px;
+            background: var(--rb-red);
+            vertical-align: middle;
+            margin: 0 1rem;
         }
         @keyframes blurIn {
             to { opacity: 1; filter: blur(0); }
         }
 
-        /* Golden rule separator */
+        /* ── SLASH RULE ── */
         .golden-rule {
             width: 60%;
-            max-width: 400px;
-            height: 2px;
-            margin: 1.5rem auto 2rem;
-            background: linear-gradient(90deg, transparent, #c8944a, transparent);
-            opacity: 0.7;
-            animation: fadeInUp 0.8s 0.9s forwards;
+            max-width: 420px;
+            height: 3px;
+            margin: 2rem auto 2.4rem;
+            background: linear-gradient(90deg, transparent, var(--rb-red) 20%, var(--rb-yellow) 50%, var(--rb-red) 80%, transparent);
+            opacity: 0.9;
+            transform: skewX(-18deg);
         }
 
-        /* Glass-morphism card wrapper */
+        /* ── GLASS CARD ── */
         .glass-card {
-            background: rgba(255, 255, 255, 0.04);
+            background: rgba(255,255,255,0.04);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 24px;
-            padding: 2rem 1.5rem;
+            border: 1px solid var(--border);
+            border-left: 4px solid var(--rb-red);
+            padding: 1.6rem 1.4rem;
             display: inline-flex;
-            gap: 1.5rem;
+            gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            clip-path: polygon(0 0, calc(100% - 26px) 0, 100% 26px, 100% 100%, 26px 100%, 0 calc(100% - 26px));
             animation: fadeInUp 0.8s 1s forwards;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
         .btn-group {
             display: flex;
-            gap: 1.5rem;
+            gap: 1rem;
             flex-wrap: wrap;
             justify-content: center;
         }
+
+        /* ── BUTTONS (Anton for punch) ── */
         .btn {
-            padding: 0.9rem 2.5rem;
-            border-radius: 50px;
-            font-weight: 700;
+            font-family: var(--font-display);
+            padding: 0.9rem 2.4rem;
+            font-weight: 400;
             font-size: 1rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
             cursor: pointer;
             border: none;
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-block;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: 0.3px;
             position: relative;
             overflow: hidden;
+            clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+            transition: var(--transition);
+            line-height: 1;
         }
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.6s;
-        }
-        .btn:hover::before { left: 100%; }
-
         .btn-primary {
-            background: linear-gradient(135deg, #c8944a, #e0b96b);
-            color: #0a0c10;
-            box-shadow: 0 8px 30px rgba(200,148,74,0.4);
+            background: var(--rb-red);
+            color: #fff;
+            box-shadow: 0 8px 30px rgba(219,10,64,0.45);
         }
         .btn-primary:hover {
+            background: #ff1150;
             transform: translateY(-3px);
-            box-shadow: 0 14px 40px rgba(200,148,74,0.7);
+            box-shadow: 0 14px 40px rgba(219,10,64,0.7);
         }
         .btn-ghost {
             background: transparent;
             color: #fff;
-            border: 2px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(10px);
+            border: 1.5px solid var(--border-strong);
         }
         .btn-ghost:hover {
-            background: rgba(255,255,255,0.12);
-            border-color: #c8944a;
-            color: #c8944a;
+            border-color: var(--rb-red);
+            color: var(--rb-red);
             transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(200,148,74,0.25);
         }
 
+        /* ── FOOTER (mono, like a version stamp) ── */
         .footer-text {
-            margin-top: 3rem;
-            font-size: 0.8rem;
-            opacity: 0.4;
-            letter-spacing: 0.5px;
+            margin-top: 3.5rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            opacity: 0;
             animation: fadeInUp 1s 1.2s forwards;
+            animation-fill-mode: forwards;
+            color: var(--text-mute);
         }
 
         @media (max-width: 600px) {
-            .logo { font-size: 3rem; }
-            .btn { padding: 0.75rem 1.8rem; font-size: 0.9rem; }
+            .btn { padding: 0.75rem 1.6rem; font-size: 0.85rem; letter-spacing: 2px; }
+            .tagline::before,
+            .tagline::after { width: 16px; margin: 0 0.6rem; }
         }
+
+        /* ====== MOUSE EDGE NAV ====== */
+        .rb-edge-nav {
+            position: fixed; top: 50%; z-index: 150;
+            width: 64px; height: 200px;
+            display: flex; align-items: center; justify-content: center;
+            pointer-events: auto; cursor: pointer;
+            opacity: 0; transition: opacity 0.3s, transform 0.3s;
+        }
+        .rb-edge-nav.left  { left: 0;  transform: translate(-30px, -50%); }
+        .rb-edge-nav.right { right: 0; transform: translate(30px, -50%); }
+        .rb-edge-nav.visible.left  { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav.visible.right { opacity: 1; transform: translate(0, -50%); }
+        .rb-edge-nav .edge-pill {
+            display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+            background: rgba(5,7,10,0.85);
+            border: 1.5px solid var(--rb-red);
+            padding: 1rem 0.7rem;
+            color: var(--text);
+            font-family: var(--font-display);
+            font-weight: 400;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            writing-mode: vertical-rl;
+            backdrop-filter: blur(12px);
+            clip-path: polygon(0 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%);
+            transition: var(--transition);
+            line-height: 1;
+        }
+        .rb-edge-nav.right .edge-pill { transform: rotate(180deg); }
+        .rb-edge-nav:hover .edge-pill { background: var(--rb-red); color: #fff; }
+        .rb-edge-nav .edge-ring { position: absolute; inset: 0; pointer-events: none; }
+        .rb-edge-nav .edge-ring circle {
+            fill: none; stroke: var(--rb-red); stroke-width: 3;
+            stroke-dasharray: 126; stroke-dashoffset: 126;
+            transition: stroke-dashoffset 0.15s linear;
+            transform: rotate(-90deg); transform-origin: center;
+        }
+
+        .rb-page { animation: rbPageIn 0.5s cubic-bezier(0.4,0,0.2,1) both; }
+        @keyframes rbPageIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to   { opacity: 1; transform: translateX(0); }
+        }
+        .rb-page.slide-out-left  { animation: rbSlideOutLeft 0.35s ease forwards; }
+        .rb-page.slide-out-right { animation: rbSlideOutRight 0.35s ease forwards; }
+        @keyframes rbSlideOutLeft  { to { opacity: 0; transform: translateX(-80px); } }
+        @keyframes rbSlideOutRight { to { opacity: 0; transform: translateX(80px); } }
     </style>
 </head>
 <body>
@@ -198,10 +309,9 @@
     <div class="orb orb-2"></div>
     <div class="orb orb-3"></div>
 
-    <div class="content">
+    <main class="rb-page content">
         <div class="logo" id="logoText">Synapse</div>
         <div class="tagline">The Biotech Club of BMSCE</div>
-        <div class="desc">Access semester notes, register for events, and explore the monthly magazine — all in one place.</div>
         <div class="golden-rule"></div>
         <div class="glass-card">
             <div class="btn-group">
@@ -211,10 +321,10 @@
             </div>
         </div>
         <div class="footer-text">Department of Biotechnology · BMSCE</div>
-    </div>
+    </main>
 
     <script>
-        // Text reveal for "Synapse"
+        // ── Logo character reveal ──
         (function() {
             const logoEl = document.getElementById('logoText');
             const text = logoEl.textContent;
@@ -223,22 +333,104 @@
                 const span = document.createElement('span');
                 span.className = 'char';
                 span.textContent = char;
-                span.style.animationDelay = (i * 0.1) + 's';
+                span.style.animationDelay = (i * 0.07) + 's';
                 logoEl.appendChild(span);
             });
         })();
 
-        // Dynamic favicon glow – alternates between dark green and gold
+        // ── Dynamic favicon ──
         (function() {
             const favicon = document.getElementById('favicon');
-            const greenSVG = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b3b2e'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%23c8944a' font-family='Georgia,serif'>S</text></svg>";
-            const goldSVG = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23c8944a'/><text x='50' y='72' font-size='58' font-weight='bold' text-anchor='middle' fill='%231b3b2e' font-family='Georgia,serif'>S</text></svg>";
-            let isGreen = true;
-            setInterval(() => {
-                favicon.href = isGreen ? goldSVG : greenSVG;
-                isGreen = !isGreen;
-            }, 1200);
+            const darkSVG = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230b0d10'/><text x='50' y='72' font-size='58' font-weight='900' text-anchor='middle' fill='%23db0a40' font-family='Arial,sans-serif'>S</text></svg>";
+            const redSVG  = "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%23db0a40'/><text x='50' y='72' font-size='58' font-weight='900' text-anchor='middle' fill='%23fff' font-family='Arial,sans-serif'>S</text></svg>";
+            let isDark = true;
+            setInterval(() => { favicon.href = isDark ? redSVG : darkSVG; isDark = !isDark; }, 1200);
         })();
+    </script>
+
+    <!-- ── MOUSE LEFT/RIGHT PAGE NAVIGATION ── -->
+    <script>
+    (function () {
+        const PAGES = [
+            { file: "index.html",    name: "Home" },
+            { file: "notes.html",    name: "Notes" },
+            { file: "events.html",   name: "Events" },
+            { file: "magazine.html", name: "Magazine" }
+        ];
+        const currentFile = location.pathname.split("/").pop() || "index.html";
+        const idx = PAGES.findIndex(p => p.file === currentFile);
+        if (idx === -1) return;
+        const prev = PAGES[(idx - 1 + PAGES.length) % PAGES.length];
+        const next = PAGES[(idx + 1) % PAGES.length];
+
+        function makeEdge(side, target) {
+            const el = document.createElement("div");
+            el.className = `rb-edge-nav ${side}`;
+            el.innerHTML = `
+              <svg class="edge-ring" viewBox="0 0 44 44" width="44" height="44">
+                <circle cx="22" cy="22" r="20"></circle>
+              </svg>
+              <div class="edge-pill">
+                ${side === "left" ? "◀" : ""}
+                <span>${target.name}</span>
+                ${side === "right" ? "▶" : ""}
+              </div>`;
+            document.body.appendChild(el);
+            return el;
+        }
+        const leftNav  = makeEdge("left",  prev);
+        const rightNav = makeEdge("right", next);
+
+        const DWELL_MS = 900;
+        let hoverStart = 0, rafId = null, activeNav = null;
+
+        function animateRing(nav, p) {
+            const c = nav.querySelector(".edge-ring circle");
+            if (c) c.style.strokeDashoffset = String(126 * (1 - p));
+        }
+        function startDwell(nav, target) {
+            if (activeNav && activeNav !== nav) {
+                const other = activeNav === leftNav ? rightNav : leftNav;
+                other.classList.remove("visible");
+                animateRing(other, 0);
+            }
+            activeNav = nav;
+            nav.classList.add("visible");
+            hoverStart = performance.now();
+            function tick(now) {
+                const p = Math.min(1, (now - hoverStart) / DWELL_MS);
+                animateRing(nav, p);
+                if (p >= 1) { navigate(target); return; }
+                rafId = requestAnimationFrame(tick);
+            }
+            cancelAnimationFrame(rafId);
+            rafId = requestAnimationFrame(tick);
+        }
+        function stopDwell(nav) {
+            if (activeNav === nav) { activeNav = null; animateRing(nav, 0); }
+            cancelAnimationFrame(rafId);
+            setTimeout(() => { if (activeNav !== nav) nav.classList.remove("visible"); }, 200);
+        }
+        function navigate(target) {
+            const page = document.querySelector(".rb-page") || document.body;
+            page.classList.add(target === prev ? "slide-out-left" : "slide-out-right");
+            setTimeout(() => { window.location.href = target.file; }, 300);
+        }
+
+        const TRIGGER = 90;
+        document.addEventListener("mousemove", (e) => {
+            const w = window.innerWidth, x = e.clientX;
+            if (x < TRIGGER) { if (activeNav !== leftNav) startDwell(leftNav, prev); return; }
+            if (x > w - TRIGGER) { if (activeNav !== rightNav) startDwell(rightNav, next); return; }
+            if (activeNav === leftNav) stopDwell(leftNav);
+            if (activeNav === rightNav) stopDwell(rightNav);
+            leftNav.classList.remove("visible");
+            rightNav.classList.remove("visible");
+            animateRing(leftNav, 0); animateRing(rightNav, 0);
+        });
+        leftNav.addEventListener("click",  () => navigate(prev));
+        rightNav.addEventListener("click", () => navigate(next));
+    })();
     </script>
 </body>
 </html>
